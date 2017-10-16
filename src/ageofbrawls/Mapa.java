@@ -17,10 +17,14 @@ public class Mapa {
     int columnas;
     
     public Mapa(int filas, int columnas){
-        mapa = new ArrayList();
+        mapa = new ArrayList<>();
         for(int i=0;i<filas;i++){
-            ArrayList<Celda> b = new ArrayList(columnas);
-            mapa.add(b);
+            ArrayList<Celda> b = new ArrayList<>();
+            for (int j=0;j<columnas;j++){
+                
+                b.add(j,null);
+            }
+            mapa.add(i,b);
         }
         this.filas = filas;
         this.columnas = columnas;
@@ -45,11 +49,12 @@ public class Mapa {
         System.out.println();
         
         for(int i=0;i<filas;i++){
-            System.out.println("|");
+            System.out.print("|");
             for(int j=0;j<columnas;j++){
-                System.out.println(mapa.get(i).get(j));
+                System.out.print(mapa.get(i).get(j));
             }
-            System.out.println("|");
+            System.out.print("|");
+            System.out.println();
 
         }
         
@@ -57,5 +62,6 @@ public class Mapa {
         
         for(int i=0;i<columnas+2;i++)
             System.out.print("_");
+        System.out.println();
     }
 }
