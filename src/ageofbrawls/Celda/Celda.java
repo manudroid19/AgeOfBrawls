@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls;
+package ageofbrawls.Celda;
+
+import ageofbrawls.Edificio;
 
 /**
  *
@@ -12,7 +14,7 @@ package ageofbrawls;
 public class Celda {
     private int cantidadRec;
     private Edificio edificio;
-
+    private boolean oculto;
     public int getCantidadRec() {
         
         return cantidadRec;
@@ -23,8 +25,20 @@ public class Celda {
         }
         else
             throw new IllegalArgumentException();
+        
     }
     
-    
+    @Override
+    public String toString(){
+        return " ";
+    }
+
+    public boolean isOculto() {
+        return oculto;
+    }
+
+    public void setOculto(boolean oculto) {
+        this.oculto = oculto;
+    }
     
 }

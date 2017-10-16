@@ -5,6 +5,7 @@
  */
 package ageofbrawls;
 
+import ageofbrawls.Celda.Celda;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +23,7 @@ public class Mapa {
             ArrayList<Celda> b = new ArrayList<>();
             for (int j=0;j<columnas;j++){
                 
-                b.add(j,null);
+                b.add(j,new Celda());
             }
             mapa.add(i,b);
         }
