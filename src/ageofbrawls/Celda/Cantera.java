@@ -9,6 +9,6 @@ package ageofbrawls.Celda;
  *
  * @author mprad
  */
-public class Cantera {
+public class Cantera extends Celda{
     
 }

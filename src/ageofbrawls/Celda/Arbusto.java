@@ -9,6 +9,6 @@ package ageofbrawls.Celda;
  *
  * @author mprad
  */
-public class Arbusto {
+public class Arbusto extends Celda{
     
 }

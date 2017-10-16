@@ -30,6 +30,7 @@ public class Celda {
     
     @Override
     public String toString(){
+        System.out.println(this.getClass());
         return " ";
     }
 

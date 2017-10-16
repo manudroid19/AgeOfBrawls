@@ -5,7 +5,7 @@
  */
 package ageofbrawls;
 
-import ageofbrawls.Celda.Celda;
+import ageofbrawls.Celda.*;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +18,8 @@ public class Mapa {
     int columnas;
     
     public Mapa(int filas, int columnas){
+                Bosque bosque = new Bosque();
+System.out.println(bosque);
         mapa = new ArrayList<>();
         for(int i=0;i<filas;i++){
             ArrayList<Celda> b = new ArrayList<>();
@@ -37,6 +39,7 @@ public class Mapa {
         ArrayList<Celda> fila = mapa.get(i);
         fila.set(j, celda);
         mapa.set(i, fila);
+        
     }
     public Celda getCelda(int i, int j){
         return mapa.get(i).get(j);
