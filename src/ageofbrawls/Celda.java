@@ -22,7 +22,7 @@ public class Celda {
             cantidadRec=valor;
         }
         else
-            throw Exception;
+            throw new IllegalArgumentException();
     }
     
     
