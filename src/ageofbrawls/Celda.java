@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.Celda;
+package ageofbrawls;
 
 import ageofbrawls.Edificio;
 
@@ -12,25 +12,27 @@ import ageofbrawls.Edificio;
  * @author Santiago
  */
 public class Celda {
-    private int cantidadRec;
     private Edificio edificio;
     private boolean oculto;
-    public int getCantidadRec() {
-        
-        return cantidadRec;
+    private ContenedorRecurso recurso;
+    
+    public Celda(int tipo, int cantidadRecurso,int edificio){
+        edificio = new Edificio();
+        recurso = new ContenedorRecurso(tipo,cantidadRecurso);
     }
-    public void setCantidadRec(int valor){
-        if(valor>(-1)){
-            cantidadRec=valor;
-        }
-        else
-            throw new IllegalArgumentException();
-        
+    public Celda(int edificio){
+        this(0,0,edificio);
     }
+    public Celda(int tipo, int cantidadRecurso){
+        this(tipo,cantidadRecurso,0);
+    }
+    public ContenedorRecurso getRecurso() {
+        return recurso;
+    }
+    
     
     @Override
     public String toString(){
-        System.out.println(this.getClass());
         return " ";
     }
 

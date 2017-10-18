@@ -5,7 +5,6 @@
  */
 package ageofbrawls;
 
-import ageofbrawls.Celda.*;
 import java.util.ArrayList;
 
 /**
@@ -14,17 +13,14 @@ import java.util.ArrayList;
  */
 public class Mapa {
     private ArrayList<ArrayList<Celda>> mapa;
-    int filas;
-    int columnas;
+    private int filas;
+    private int columnas;
     
     public Mapa(int filas, int columnas){
-                Bosque bosque = new Bosque();
-System.out.println(bosque);
         mapa = new ArrayList<>();
         for(int i=0;i<filas;i++){
             ArrayList<Celda> b = new ArrayList<>();
             for (int j=0;j<columnas;j++){
-                
                 b.add(j,new Celda());
             }
             mapa.add(i,b);
@@ -39,7 +35,6 @@ System.out.println(bosque);
         ArrayList<Celda> fila = mapa.get(i);
         fila.set(j, celda);
         mapa.set(i, fila);
-        
     }
     public Celda getCelda(int i, int j){
         return mapa.get(i).get(j);
