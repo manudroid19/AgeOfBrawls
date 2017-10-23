@@ -33,14 +33,21 @@ public class Mapa {
             for(int j=0;j<mapa.get(0).size();j++){
                 if(i%2==0 && j%2==0){
                     this.putCelda(new Celda(ContenedorRecurso.BOSQUE,0),i,j);
+                    if((i==filas-2 && j==0)||(i==0&&j==columnas-2)||(i==0&&j==0)||(i==filas-2&&j==columnas-2))//si estamos en las esquinas
+                        this.makeBloquePrad(i, j);
+                    
                 }else
                     this.putCelda(new Celda(),i,j);
             }
         
     }
     private void makeBloquePrad(int i, int j){
-        
+        this.putCelda(new Celda(), i, j);
+        this.putCelda(new Celda(), i+1, j);
+        this.putCelda(new Celda(), i, j+1);
+        this.putCelda(new Celda(), i+1, j+1);
     }
+    
     public Mapa(){
         this(10,10);
     }
