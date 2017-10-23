@@ -28,7 +28,7 @@ public class ContenedorRecurso {
             
     }
     public ContenedorRecurso(){
-        this(0,0);
+        this(ContenedorRecurso.PRADERA,0);
     }
     public int getTipo(){
         return this.tipo;

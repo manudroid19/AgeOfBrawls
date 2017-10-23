@@ -28,8 +28,21 @@ public class Mapa {
         this.filas = filas;
         this.columnas = columnas;
     }
+    public void inicializar(){
+        for(int i =0;i<mapa.size();i++)
+            for(int j=0;j<mapa.get(0).size();j++){
+                if(i%2==0 && j%2==0){
+                    this.putCelda(new Celda(ContenedorRecurso.BOSQUE,0),i,j);
+                }else
+                    this.putCelda(new Celda(),i,j);
+            }
+        
+    }
+    private void makeBloquePrad(int i, int j){
+        
+    }
     public Mapa(){
-        this(5,5);
+        this(10,10);
     }
     public void putCelda(Celda celda, int i, int j){
         ArrayList<Celda> fila = mapa.get(i);

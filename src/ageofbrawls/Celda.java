@@ -17,14 +17,21 @@ public class Celda {
     private ContenedorRecurso recurso;
     
     public Celda(int tipo, int cantidadRecurso,int edificio){
-        edificio = new Edificio();
+        if(edificio==0){
+            this.edificio=null;
+        }else{
+            this.edificio = new Edificio(edificio);
+        }
         recurso = new ContenedorRecurso(tipo,cantidadRecurso);
     }
     public Celda(int edificio){
-        this(0,0,edificio);
+        this(ContenedorRecurso.PRADERA,0,edificio);
     }
     public Celda(int tipo, int cantidadRecurso){
         this(tipo,cantidadRecurso,0);
+    }
+    public Celda(){
+        this(ContenedorRecurso.PRADERA,0,0);
     }
     public ContenedorRecurso getRecurso() {
         return recurso;
@@ -33,7 +40,14 @@ public class Celda {
     
     @Override
     public String toString(){
-        return " ";
+        switch (this.recurso.getTipo()) {
+            case ContenedorRecurso.BOSQUE:
+                return "B";
+            case ContenedorRecurso.PRADERA:
+                return " ";
+            default:
+                return " ";
+        }
     }
 
     public boolean isOculto() {
