@@ -45,6 +45,10 @@ public class Celda {
                 return "B";
             case ContenedorRecurso.PRADERA:
                 return " ";
+            case ContenedorRecurso.CANTERA:
+                return "C";
+            case ContenedorRecurso.ARBUSTO:
+                    return "A";
             default:
                 return " ";
         }
