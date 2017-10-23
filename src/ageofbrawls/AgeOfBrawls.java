@@ -16,6 +16,7 @@ public class AgeOfBrawls {
      */
     public static void main(String[] args) {
         Mapa mapa = new Mapa();
+        mapa.inicializar();
         mapa.imprimir();
     }
     
