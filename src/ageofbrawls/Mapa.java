@@ -6,6 +6,8 @@
 package ageofbrawls;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  *
@@ -47,6 +49,28 @@ public class Mapa {
         this.putCelda(new Celda(), i, j+1);
         this.putCelda(new Celda(), i+1, j+1);
     }
+    private void makeBloqueRec(int i, int j){
+        int b=0;
+        ArrayList<Integer> bloque=new ArrayList<>(4);
+        for(int k=1;k<4;k++){
+            bloque.add(k);
+        }
+        Collections.shuffle(bloque);
+        Random rn = new Random();
+        int n = rn.nextInt(3 - 2) + 1;
+        
+        for(int h=0;h<4;h++){
+        Random rt = new Random();
+        int a = rt.nextInt(100 - 1) + 1;
+        b=a;
+        }
+        this.putCelda(new Celda(bloque.get(0),b), i, j);
+        this.putCelda(new Celda(bloque.get(1),b), i+1, j);
+        this.putCelda(new Celda(bloque.get(2),b), i, j+1);
+        this.putCelda(new Celda(n,b), i+1, j+1);
+        
+    
+}
     
     public Mapa(){
         this(10,10);
