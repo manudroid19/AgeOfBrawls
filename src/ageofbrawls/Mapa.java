@@ -6,6 +6,7 @@
 package ageofbrawls;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -36,18 +37,22 @@ public class Mapa {
         for (int i = 0; i < mapa.size(); i++) {
             for (int j = 0; j < mapa.get(0).size(); j++) {
                 if (i % 2 == 0 && j % 2 == 0) {
-                    this.putCelda(new Celda(ContenedorRecurso.BOSQUE, 0), i, j);
                     if ((i == filas - 2 && j == 0) || (i == 0 && j == columnas - 2) || (i == 0 && j == 0) || (i == filas - 2 && j == columnas - 2))//si estamos en las esquinas
                     {
                         this.makeBloquePrad(i, j);
-                    }else if(i==0){
-                        if(getCelda(i,j-2).getRecurso().getTipo()==ContenedorRecurso.PRADERA)
+                    } else if (j > 1 && i % 4 == 0) {
+                        if (getCelda(i, j - 2).getRecurso().getTipo() == ContenedorRecurso.PRADERA) {
                             this.makeBloqueRec(i, j);
+                        }
+                    } else if (j % 4 == 0 && i % 4 == 2) {
+                        this.makeBloqueRec(i, j);
                     }
 
                 }
             }
         }
+        this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
+        this.putCelda(new Celda(Edificio.CIUDADELA), (mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
 
     }
 
@@ -58,6 +63,15 @@ public class Mapa {
         this.putCelda(new Celda(), i + 1, j + 1);
     }
 
+    private void makeAdyPrad(int i, int j) {
+        for (int h = i - 1; h < i + 3; h++) {
+            for (int k = j - 1; k < j + 3; k++) {
+                this.putCelda(new Celda(), h, k);
+            }
+        }
+
+    }
+
     private void makeBloqueRec(int i, int j) {
         int b = 0;
         ArrayList<Integer> bloque = new ArrayList<>(3);
@@ -66,10 +80,13 @@ public class Mapa {
         }
         Collections.shuffle(bloque);
         Random rt = new Random();
-        this.putCelda(new Celda(bloque.get(0), rt.nextInt(100 - 1 +1) + 1), i, j);
-        this.putCelda(new Celda(bloque.get(1), rt.nextInt(100 - 1 +1) + 1), i + 1, j);
-        this.putCelda(new Celda(bloque.get(2), rt.nextInt(100 - 1 +1) + 1), i, j + 1);
-        this.putCelda(new Celda(),i+1,j+1);
+        Celda[] celdasA = {new Celda(bloque.get(0), rt.nextInt(100 - 1 + 1) + 1), new Celda(bloque.get(1), rt.nextInt(100 - 1 + 1) + 1), new Celda(bloque.get(2), rt.nextInt(100 - 1 + 1) + 1), new Celda()};
+        ArrayList<Celda> celdas = new ArrayList(Arrays.asList(celdasA));
+        Collections.shuffle(celdas);
+        this.putCelda(celdas.get(0), i, j);
+        this.putCelda(celdas.get(1), i + 1, j);
+        this.putCelda(celdas.get(2), i, j + 1);
+        this.putCelda(celdas.get(3), i + 1, j + 1);
 
     }
 
@@ -92,24 +109,24 @@ public class Mapa {
     }
 
     public void imprimir() {
-        for (int i = 0; i < columnas + 2; i++) {
-            System.out.print("_");
+        for (int i = 0; i < columnas; i++) {
+            System.out.print("───");
         }
         System.out.println();
 
         for (int i = 0; i < filas; i++) {
-            System.out.print("|");
             for (int j = 0; j < columnas; j++) {
                 System.out.print(mapa.get(i).get(j));
             }
-            System.out.print("|");
+            System.out.print("│");
+            System.out.println();
+            for (int j = 0; j < columnas; j++) {
+                System.out.print("───");
+            }
             System.out.println();
 
         }
 
-        for (int i = 0; i < columnas + 2; i++) {
-            System.out.print("_");
-        }
         System.out.println();
     }
 }

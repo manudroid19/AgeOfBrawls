@@ -42,13 +42,16 @@ public class Celda {
     public String toString(){
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
-                return "B";
+                return " │ B";
             case ContenedorRecurso.PRADERA:
-                return " ";
+                if(this.edificio==null)
+                    return " │  ";
+                else if(this.edificio.getTipo()==Edificio.CIUDADELA)
+                    return " │ U";
             case ContenedorRecurso.CANTERA:
-                return "C";
+                return " │ C";
             case ContenedorRecurso.ARBUSTO:
-                    return "A";
+                    return " │ A";
             default:
                 return " ";
         }

@@ -21,6 +21,9 @@ public class Edificio {
         if(tipo>=1&&tipo<=3)
             this.tipo=tipo;
     }
+    public int getTipo(){
+        return tipo;
+    }
     
     
 }
