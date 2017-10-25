@@ -26,5 +26,21 @@ public class Personaje {
     public int getTipo(){
         return tipo;
     }
+
+    public int getSalud() {
+        return salud;
+    }
+
+    public int getArmadura() {
+        return armadura;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public int getCapRec() {
+        return capRec;
+    }
     
 }
