@@ -17,6 +17,7 @@ public class Edificio {
     private int tipo;
     private int ps;
     private boolean estaDestruido;
+    
     public Edificio(int tipo){
         if(tipo>=1&&tipo<=3)
             this.tipo=tipo;
@@ -24,6 +25,13 @@ public class Edificio {
     public int getTipo(){
         return tipo;
     }
+    public int getPs(){
+        
+        return ps;
+}
+    /*public boolean EstaDestruido(int tipo){
+      
+    }*/
     
     
 }
