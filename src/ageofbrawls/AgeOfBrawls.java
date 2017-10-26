@@ -19,5 +19,5 @@ public class AgeOfBrawls {
         mapa.inicializar();
         mapa.imprimir();
     }
-    
+     
 }
