@@ -25,7 +25,7 @@ public class Mapa {
         for (int i = 0; i < filas; i++) {
             ArrayList<Celda> b = new ArrayList<>();
             for (int j = 0; j < columnas; j++) {
-                b.add(j, new Celda());
+                b.add(j, new Celda(i,j));
             }
             mapa.add(i, b);
         }
@@ -51,8 +51,6 @@ public class Mapa {
 
     }
 
-    
-
     private void makeAdyPrad(int i, int j) {
         for (int h = i - 1; h < i + 3; h++) {
             for (int k = j - 1; k < j + 3; k++) {
@@ -70,7 +68,7 @@ public class Mapa {
         }
         Collections.shuffle(bloque);
         Random rt = new Random();
-        Celda[] celdasA = {new Celda(bloque.get(0), rt.nextInt(100 - 1 + 1) + 1), new Celda(bloque.get(1), rt.nextInt(100 - 1 + 1) + 1), new Celda(bloque.get(2), rt.nextInt(100 - 1 + 1) + 1), new Celda()};
+        Celda[] celdasA = {new Celda(bloque.get(0), rt.nextInt(100 - 1 + 1) + 1,0,0), new Celda(bloque.get(1), rt.nextInt(100 - 1 + 1) + 1,0,0), new Celda(bloque.get(2), rt.nextInt(100 - 1 + 1) + 1), new Celda(0,0)};
         ArrayList<Celda> celdas = new ArrayList(Arrays.asList(celdasA));
         Collections.shuffle(celdas);
         Posicion posicion = new Posicion(i,j);

@@ -15,8 +15,10 @@ public class Celda {
     private Edificio edificio;
     private boolean oculto;
     private ContenedorRecurso recurso;
+    private Posicion posicion;
     
-    public Celda(int tipo, int cantidadRecurso,int edificio){
+    public Celda(int tipo, int cantidadRecurso,int edificio,int i, int j){
+        posicion = new Posicion(i,j);
         if(edificio==0){
             this.edificio=null;
         }else{
@@ -24,14 +26,14 @@ public class Celda {
         }
         recurso = new ContenedorRecurso(tipo,cantidadRecurso);
     }
-    public Celda(int edificio){
-        this(ContenedorRecurso.PRADERA,0,edificio);
+    public Celda(int edificio,int i,int j){
+        this(ContenedorRecurso.PRADERA,0,edificio,i,j);
     }
-    public Celda(int tipo, int cantidadRecurso){
-        this(tipo,cantidadRecurso,0);
+    public Celda(int tipo, int cantidadRecurso,int i, int j){
+        this(tipo,cantidadRecurso,0,i,j);
     }
-    public Celda(){
-        this(ContenedorRecurso.PRADERA,0,0);
+    public Celda(int i,int j){
+        this(ContenedorRecurso.PRADERA,0,0,i,j);
     }
     
     public ContenedorRecurso getContenedorRec() {
