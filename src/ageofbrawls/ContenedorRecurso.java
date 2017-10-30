@@ -36,4 +36,14 @@ public class ContenedorRecurso {
     public int getCantidad(){
         return this.cantidad;
     }
+    public void setTipo(int tipo){
+        this.tipo =tipo;
+    }
+    public void setCantidad(int cantidad){
+        this.cantidad=cantidad;
+    }
+    public void set(int tipo, int cantidad){
+        this.cantidad=cantidad;
+        this.tipo=tipo;
+    }
 }

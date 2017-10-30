@@ -39,29 +39,23 @@ public class Mapa {
                 if (i % 2 == 0 && j % 2 == 0) {
                     if ((i == filas - 2 && j == 0) || (i == 0 && j == columnas - 2) || (i == 0 && j == 0) || (i == filas - 2 && j == columnas - 2))//si estamos en las esquinas
                     {
-                        this.makeBloquePrad(i, j);
+                        
                     } else if (j > 1 && i % 4 == 0) {
-                        if (getCelda(i, j - 2).getRecurso().getTipo() == ContenedorRecurso.PRADERA) {
+                        if (getCelda(i, j - 2).getContenedorRec().getTipo() == ContenedorRecurso.PRADERA)
                             this.makeBloqueRec(i, j);
-                        }
-                    } else if (j % 4 == 0 && i % 4 == 2) {
+                    } else if (j % 4 == 0 && i % 4 == 2) 
                         this.makeBloqueRec(i, j);
-                    }
-
                 }
             }
         }
         this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-        this.putCelda(new Celda(Edificio.CIUDADELA), (mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
+        Posicion ciudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
+        this.getCelda(ciudadela).setEdificio(Edificio.CIUDADELA);
+        //this.putCelda(new Celda(Edificio.CIUDADELA), (mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
 
     }
 
-    private void makeBloquePrad(int i, int j) {
-        this.putCelda(new Celda(), i, j);
-        this.putCelda(new Celda(), i + 1, j);
-        this.putCelda(new Celda(), i, j + 1);
-        this.putCelda(new Celda(), i + 1, j + 1);
-    }
+    
 
     private void makeAdyPrad(int i, int j) {
         for (int h = i - 1; h < i + 3; h++) {
@@ -102,6 +96,9 @@ public class Mapa {
 
     public Celda getCelda(int i, int j) {
         return mapa.get(i).get(j);
+    }
+    public Celda getCelda(Posicion posicion){
+        return mapa.get(posicion.getX()).get(posicion.getY());
     }
 
     public boolean esCeldaVacia(int i, int j) {

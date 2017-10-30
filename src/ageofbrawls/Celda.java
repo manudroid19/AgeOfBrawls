@@ -33,10 +33,14 @@ public class Celda {
     public Celda(){
         this(ContenedorRecurso.PRADERA,0,0);
     }
-    public ContenedorRecurso getRecurso() {
+    
+    public ContenedorRecurso getContenedorRec() {
         return recurso;
     }
-    
+    public void setEdificio(int edificio){
+        this.recurso.set(ContenedorRecurso.PRADERA, 0);
+        this.edificio.setTipo(edificio);
+    }
     
     @Override
     public String toString(){
