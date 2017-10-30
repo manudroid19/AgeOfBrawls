@@ -37,9 +37,9 @@ public class Celda {
     public ContenedorRecurso getContenedorRec() {
         return recurso;
     }
-    public void setEdificio(int edificio){
+    public void setEdificio(Edificio edificio){
         this.recurso.set(ContenedorRecurso.PRADERA, 0);
-        this.edificio.setTipo(edificio);
+        this.edificio = edificio;
     }
     
     @Override

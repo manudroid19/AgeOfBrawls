@@ -15,6 +15,7 @@ public class Posicion {
     public static final int NORTE = 1;
     public static final int OESTE = 2;
     public static final int SUR = 3;
+    public static final int NORESTE = 4;
     private int x;
     private int y;
 
@@ -41,6 +42,8 @@ public class Posicion {
                 return new Posicion(x, y + 1);
             case Posicion.SUR:
                 return new Posicion(x, y - 1);
+            case Posicion.NORESTE:
+                return new Posicion(x+1,y+1);
             default:
                 return this;
         }
