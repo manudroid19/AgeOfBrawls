@@ -21,27 +21,32 @@ public class Mapa {
     private int columnas;
 
     public Mapa(int filas, int columnas) {
-        mapa = new ArrayList<>();
-        for (int i = 0; i < filas; i++) {
-            ArrayList<Celda> b = new ArrayList<>();
-            for (int j = 0; j < columnas; j++) {
-                b.add(j, new Celda(i,j));
+        if (filas > 0 && columnas > 0) {
+            mapa = new ArrayList<>();
+            for (int i = 0; i < filas; i++) {
+                ArrayList<Celda> b = new ArrayList<>();
+                for (int j = 0; j < columnas; j++) {
+                    b.add(j, new Celda(i, j));
+                }
+                mapa.add(i, b);
             }
-            mapa.add(i, b);
+            this.filas = filas;
+            this.columnas = columnas;
         }
-        this.filas = filas;
-        this.columnas = columnas;
+        System.out.println("Error construyendo Mapa.");
     }
 
     public void inicializar() {
         for (int i = 0; i < mapa.size(); i++) {
             for (int j = 0; j < mapa.get(0).size(); j++) {
-                if (i % 2 == 0 && j % 2 == 0) {       
+                if (i % 2 == 0 && j % 2 == 0) {
                     if (j > 1 && i % 4 == 0) {
-                        if (getCelda(i, j - 2).getContenedorRec().getTipo() == ContenedorRecurso.PRADERA)
+                        if (getCelda(i, j - 2).getContenedorRec().getTipo() == ContenedorRecurso.PRADERA) {
                             this.makeBloqueRec(i, j);
-                    } else if (j % 4 == 0 && i % 4 == 2) 
+                        }
+                    } else if (j % 4 == 0 && i % 4 == 2) {
                         this.makeBloqueRec(i, j);
+                    }
                 }
             }
         }
@@ -54,44 +59,51 @@ public class Mapa {
     private void makeAdyPrad(int i, int j) {
         for (int h = i - 1; h < i + 3; h++) {
             for (int k = j - 1; k < j + 3; k++) {
-                this.getCelda(h,k).getContenedorRec().set(ContenedorRecurso.PRADERA, 0);
+                this.getCelda(h, k).getContenedorRec().set(ContenedorRecurso.PRADERA, 0);
             }
         }
-
     }
 
     private void makeBloqueRec(int i, int j) {
-        int b = 0;
-        ArrayList<Integer> bloque = new ArrayList<>(3);
-        for (int k = 1; k < 4; k++) {
+        ArrayList<Integer> bloque = new ArrayList<>(4);
+        for (int k = 0; k < 4; k++) {
             bloque.add(k);
         }
         Collections.shuffle(bloque);
         Random rt = new Random();
-        Celda[] celdasA = {new Celda(bloque.get(0), rt.nextInt(100 - 1 + 1) + 1,0,0), new Celda(bloque.get(1), rt.nextInt(100 - 1 + 1) + 1,0,0), new Celda(bloque.get(2), rt.nextInt(100 - 1 + 1) + 1), new Celda(0,0)};
-        ArrayList<Celda> celdas = new ArrayList(Arrays.asList(celdasA));
-        Collections.shuffle(celdas);
-        Posicion posicion = new Posicion(i,j);
-        this.getCelda(posicion).getContenedorRec().set(celdas.get(0).getContenedorRec().getTipo(),celdas.get(0).getContenedorRec().getCantidad());
-        this.getCelda(posicion.get(Posicion.ESTE)).getContenedorRec().set(celdas.get(1).getContenedorRec().getTipo(),celdas.get(1).getContenedorRec().getCantidad());
-        this.getCelda(posicion.get(Posicion.NORTE)).getContenedorRec().set(celdas.get(2).getContenedorRec().getTipo(),celdas.get(2).getContenedorRec().getCantidad());
-        this.getCelda(posicion.get(Posicion.NORESTE)).getContenedorRec().set(celdas.get(3).getContenedorRec().getTipo(),celdas.get(3).getContenedorRec().getCantidad());
+        int[] cantidad = new int[]{rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1};
+
+        Posicion posicion = new Posicion(i, j);
+        getCelda(posicion).getContenedorRec().set(bloque.get(0), cantidad[0]);
+        getCelda(posicion.get(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
+        getCelda(posicion.get(Posicion.NORTE)).getContenedorRec().set(bloque.get(2), cantidad[2]);
+        getCelda(posicion.get(Posicion.NORESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
     }
 
     public Mapa() {
         this(10, 10);
     }
 
-
     public Celda getCelda(int i, int j) {
-        return mapa.get(i).get(j);
+        if (i < filas && j < columnas && i > -1 && j > -1) {
+            return mapa.get(i).get(j);
+        }
+        return null;
     }
-    public Celda getCelda(Posicion posicion){
-        return mapa.get(posicion.getX()).get(posicion.getY());
+
+    public Celda getCelda(Posicion posicion) {
+        if (posicion.getX() < filas && posicion.getY() < columnas && posicion.getX() > -1 && posicion.getY() > -1) {
+            return mapa.get(posicion.getX()).get(posicion.getY());
+        }
+        return null;
     }
 
     public boolean esCeldaVacia(int i, int j) {
-        return (mapa.get(i).get(j) == null); //expresion logica= true si celda==null
+        if (i < filas && j < columnas && i > -1 && j > -1) {
+            return (mapa.get(i).get(j) == null); //expresion logica= true si celda==null
+        }
+        System.out.println("Error esCeldaVacia");
+        return false;
     }
 
     public void imprimir() {
