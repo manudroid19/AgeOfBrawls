@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls;
+package ageofbrawls.plataforma;
 
+import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.Edificio;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls;
+package ageofbrawls.plataforma;
 
-import ageofbrawls.Edificio;
+import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.Edificio;
 
 /**
  *
@@ -44,6 +46,16 @@ public class Celda {
         this.edificio = edificio;
     }
     
+    public boolean isOculto() {
+        return oculto;
+    }
+
+    public void setOculto(boolean oculto) {
+        this.oculto = oculto;
+    }
+    public Posicion getPosicion(){
+        return posicion;
+    }
     @Override
     public String toString(){
         switch (this.recurso.getTipo()) {
@@ -61,14 +73,5 @@ public class Celda {
             default:
                 return " ";
         }
-    }
-
-    public boolean isOculto() {
-        return oculto;
-    }
-
-    public void setOculto(boolean oculto) {
-        this.oculto = oculto;
-    }
-    
+    }    
 }

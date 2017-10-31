@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls;
+package ageofbrawls.plataforma;
 
 /**
  *
@@ -22,6 +22,9 @@ public class Posicion {
     public Posicion(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+    public Posicion(){
+        this(0,0);
     }
 
     public int getX() {
