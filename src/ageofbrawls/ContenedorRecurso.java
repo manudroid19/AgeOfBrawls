@@ -16,6 +16,7 @@ public class ContenedorRecurso {
     public final static int ARBUSTO = 3;
     private int tipo;
     private int cantidad;
+    
     public ContenedorRecurso(int tipo, int cantidad){
         if(tipo>=0&&tipo<=3)
             this.tipo=tipo;
@@ -37,13 +38,29 @@ public class ContenedorRecurso {
         return this.cantidad;
     }
     public void setTipo(int tipo){
+        if(tipo>=0&&tipo<=3)
         this.tipo =tipo;
+        
+        else
+            System.out.println("El tipo introducido no es válido");
+        
     }
     public void setCantidad(int cantidad){
-        this.cantidad=cantidad;
+        if(cantidad>0)
+            this.cantidad=cantidad;
+        
+        else
+            System.out.println("Cantidad introducida no es válida");
+        
     }
     public void set(int tipo, int cantidad){
-        this.cantidad=cantidad;
-        this.tipo=tipo;
+        if(cantidad>0 && (tipo>=1 && tipo<=3)){
+            this.cantidad=cantidad;
+            this.tipo=tipo;
+        }
+        if(tipo==0){
+           this.cantidad=0; 
+        }
+        
     }
 }
