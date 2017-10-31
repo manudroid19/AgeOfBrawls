@@ -42,11 +42,11 @@ public class Posicion {
             case Posicion.OESTE:
                 return new Posicion(x - 1, y);
             case Posicion.NORTE:
-                return new Posicion(x, y + 1);
-            case Posicion.SUR:
                 return new Posicion(x, y - 1);
+            case Posicion.SUR:
+                return new Posicion(x, y + 1);
             case Posicion.NORESTE:
-                return new Posicion(x+1,y+1);
+                return new Posicion(x+1,y-1);
             default:
                 return this;
         }

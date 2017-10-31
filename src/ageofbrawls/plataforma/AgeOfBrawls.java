@@ -5,6 +5,8 @@
  */
 package ageofbrawls.plataforma;
 
+import java.util.Scanner;
+
 /**
  *
  * @author prada
@@ -18,6 +20,18 @@ public class AgeOfBrawls {
         Mapa mapa = new Mapa();
         mapa.inicializar();
         mapa.imprimir();
+        Scanner sca = new Scanner(System.in);
+        String orden ="";
+        while(!"salir".equals(orden)){
+            orden = sca.nextLine();
+            String comando = orden.substring(0,orden.indexOf(" "));
+            switch(comando){
+                case "mover":
+                    String sub = orden.substring(orden.indexOf(" "),orden.length());
+                    String quien = sub.substring(sub.indexOf(" "), sub.indexOf(" "));
+                    break;
+            }
+        }
     }
      
 }
