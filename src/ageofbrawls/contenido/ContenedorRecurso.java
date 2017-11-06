@@ -59,6 +59,7 @@ public class ContenedorRecurso {
             this.tipo=tipo;
         }
         if(tipo==0){
+            this.tipo=0;
            this.cantidad=0; 
         }
         

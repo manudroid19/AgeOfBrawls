@@ -16,6 +16,7 @@ public class Posicion {
     public static final int OESTE = 2;
     public static final int SUR = 3;
     public static final int NORESTE = 4;
+    public static final int SURESTE = 5;
     private int x;
     private int y;
 
@@ -47,8 +48,16 @@ public class Posicion {
                 return new Posicion(x, y + 1);
             case Posicion.NORESTE:
                 return new Posicion(x+1,y-1);
+            case Posicion.SURESTE:
+                return new Posicion(x+1,y+1);
             default:
                 return this;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Posicion{" + "x=" + x + ", y=" + y + '}';
+    }
+    
 }

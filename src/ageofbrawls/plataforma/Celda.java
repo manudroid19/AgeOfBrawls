@@ -37,6 +37,10 @@ public class Celda {
     public Celda(int i,int j){
         this(ContenedorRecurso.PRADERA,0,0,i,j);
     }
+    public Celda(int i, int j, boolean oculto){
+        this(ContenedorRecurso.PRADERA,0,0,i,j);
+        this.setOculto(true);
+    }
     
     public ContenedorRecurso getContenedorRec() {
         return recurso;
@@ -58,6 +62,9 @@ public class Celda {
     }
     @Override
     public String toString(){
+        if(this.oculto){
+            return " │ O";
+        }
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
                 return " │ B";
@@ -66,6 +73,8 @@ public class Celda {
                     return " │  ";
                 else if(this.edificio.getTipo()==Edificio.CIUDADELA)
                     return " │ U";
+                else if(this.edificio.getTipo()==Edificio.CASA)
+                    return " │ K";
             case ContenedorRecurso.CANTERA:
                 return " │ C";
             case ContenedorRecurso.ARBUSTO:
