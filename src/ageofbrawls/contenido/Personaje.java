@@ -5,14 +5,17 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.plataforma.Posicion;
+
 /**
  *
  * @author Santiago
  */
 public class Personaje {
 
-    public final static int PAISANO = 1,SOLDADO = 2;
-    private int tipo,salud,armadura,ataque,capRec,cantRec;
+    public final static int PAISANO = 1, SOLDADO = 2;
+    private int tipo, salud, armadura, ataque, capRec, cantRec;
+    private Posicion posicion;
     private boolean estaMuerto;
 
     public Personaje(int tipo) {
@@ -23,22 +26,23 @@ public class Personaje {
                 armadura = 200;
                 ataque = 30;
                 estaMuerto = false;
-                cantRec =-1;
+                cantRec = -1;
                 capRec = -1;
             } else {
                 salud = 50;
                 armadura = 100;
                 ataque = -1;
-                cantRec=0;
+                cantRec = 0;
                 capRec = 40;
                 estaMuerto = false;
             }
         }
     }
-    public Personaje(){
+
+    public Personaje() {
         this(Personaje.PAISANO);
     }
-            
+
     public int getTipo() {
         return tipo;
     }
@@ -59,6 +63,10 @@ public class Personaje {
         return capRec;
     }
 
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
     public void setCapRec(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             capRec = valor;
@@ -67,12 +75,27 @@ public class Personaje {
         }
     }
 
-    public void describirPersonaje() {
+    public void setPosicion(Posicion posicion) {
+        if (posicion != null) {
+            this.posicion = posicion;
+        } else {
+            System.out.println("Posicion introducida errónea");
+        }
+    }
 
+    public void describirPersonaje(Personaje personaje) {
+        System.out.println("Salud :" + personaje.getSalud());
+        System.out.println("Armadura :" + personaje.getArmadura());
+        System.out.println("Ataque :" + personaje.getAtaque());
+
+    }
+    public void mover(Personaje personaje){
+        
     }
 
     public void recolectar(Personaje personaje) {
-        if (personaje.getTipo() == 1) {
+        if (personaje.getTipo() == Personaje.PAISANO) {
+            
 
         } else {
             System.out.println("Un soldado no puede recolectar");
@@ -80,7 +103,7 @@ public class Personaje {
     }
 
     public void consEdif(Personaje personaje) {
-        if (personaje.getTipo() == 1) {
+        if (personaje.getTipo() == Personaje.PAISANO) {
 
         } else {
             System.out.println("Un soldado no puede construir edificios");
@@ -88,7 +111,7 @@ public class Personaje {
     }
 
     public void almacenar(Personaje personaje) {
-        if (personaje.getTipo() == 1) {
+        if (personaje.getTipo() == Personaje.PAISANO) {
 
         } else {
             System.out.println("Un soldado no puede almacenar recursos ");
