@@ -21,11 +21,19 @@ public class Posicion {
     private int y;
 
     public Posicion(int x, int y) {
-        this.x = x;
-        this.y = y;
+        if (x > -1 && y > -1) {
+            this.x = x;
+            this.y = y;
+        }else
+            System.out.println("Error:posicion no valida.");
     }
-    public Posicion(){
-        this(0,0);
+
+    public Posicion(Posicion posicion) {
+        this(posicion.getX(), posicion.getY());
+    }
+
+    public Posicion() {
+        this(0, 0);
     }
 
     public int getX() {
@@ -47,10 +55,11 @@ public class Posicion {
             case Posicion.SUR:
                 return new Posicion(x, y + 1);
             case Posicion.NORESTE:
-                return new Posicion(x+1,y-1);
+                return new Posicion(x + 1, y - 1);
             case Posicion.SURESTE:
-                return new Posicion(x+1,y+1);
+                return new Posicion(x + 1, y + 1);
             default:
+                System.out.println("Error: posicion no valida.");
                 return this;
         }
     }
@@ -59,5 +68,5 @@ public class Posicion {
     public String toString() {
         return "Posicion{" + "x=" + x + ", y=" + y + '}';
     }
-    
+
 }

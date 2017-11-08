@@ -14,42 +14,52 @@ import ageofbrawls.contenido.Edificio;
  * @author Santiago
  */
 public class Celda {
+
     private Edificio edificio;
     private boolean oculto;
     private ContenedorRecurso recurso;
     private Posicion posicion;
-    
-    public Celda(int tipo, int cantidadRecurso,int edificio,int i, int j){
-        posicion = new Posicion(i,j);
-        if(edificio==0){
-            this.edificio=null;
-        }else{
-            this.edificio = new Edificio(edificio);
+
+    public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion) {
+        this.posicion = new Posicion(posicion);//valida a posicion
+        if (edificio == 0) {
+            this.edificio = null;
+        } else {
+            this.edificio = new Edificio(edificio);//valida o edificio
         }
-        recurso = new ContenedorRecurso(tipo,cantidadRecurso);
+        recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
     }
-    public Celda(int edificio,int i,int j){
-        this(ContenedorRecurso.PRADERA,0,edificio,i,j);
+
+    public Celda(int edificio, int i, int j) {
+        this(ContenedorRecurso.PRADERA, 0, edificio, new Posicion(i, j));
     }
-    public Celda(int tipo, int cantidadRecurso,int i, int j){
-        this(tipo,cantidadRecurso,0,i,j);
+
+    public Celda(int tipo, int cantidadRecurso, int i, int j) {
+        this(tipo, cantidadRecurso, 0, new Posicion(i, j));
     }
-    public Celda(int i,int j){
-        this(ContenedorRecurso.PRADERA,0,0,i,j);
+
+    public Celda(int i, int j) {
+        this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j));
     }
-    public Celda(int i, int j, boolean oculto){
-        this(ContenedorRecurso.PRADERA,0,0,i,j);
-        this.setOculto(true);
+
+    public Celda(int i, int j, boolean oculto) {
+        this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j));
+        this.oculto = oculto;
     }
-    
+
     public ContenedorRecurso getContenedorRec() {
         return recurso;
     }
-    public void setEdificio(Edificio edificio){
-        this.recurso.set(ContenedorRecurso.PRADERA, 0);
-        this.edificio = edificio;
+
+    public void setEdificio(Edificio edificio) {
+        if (edificio != null) {
+            this.recurso.set(ContenedorRecurso.PRADERA, 0);
+            this.edificio = edificio;
+        }else{
+            System.out.println("Error:edificio es nulo");
+        }
     }
-    
+
     public boolean isOculto() {
         return oculto;
     }
@@ -57,30 +67,33 @@ public class Celda {
     public void setOculto(boolean oculto) {
         this.oculto = oculto;
     }
-    public Posicion getPosicion(){
+
+    public Posicion getPosicion() {
         return posicion;
     }
+
     @Override
-    public String toString(){
-        if(this.oculto){
-            return " │ O";
+    public String toString() {
+        if (this.oculto) {
+            return "O";
         }
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
-                return " │ B";
+                return "B";
             case ContenedorRecurso.PRADERA:
-                if(this.edificio==null)
-                    return " │  ";
-                else if(this.edificio.getTipo()==Edificio.CIUDADELA)
-                    return " │ U";
-                else if(this.edificio.getTipo()==Edificio.CASA)
-                    return " │ K";
+                if (this.edificio == null) {
+                    return Mapa.ANSI_GREEN_BACKGROUND + " ";
+                } else if (this.edificio.getTipo() == Edificio.CIUDADELA) {
+                    return "U";
+                } else if (this.edificio.getTipo() == Edificio.CASA) {
+                    return "K";
+                }
             case ContenedorRecurso.CANTERA:
-                return " │ C";
+                return "C";
             case ContenedorRecurso.ARBUSTO:
-                    return " │ A";
+                return "A";
             default:
                 return " ";
         }
-    }    
+    }
 }

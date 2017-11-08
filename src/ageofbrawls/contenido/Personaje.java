@@ -36,6 +36,8 @@ public class Personaje {
                 capRec = 40;
                 estaMuerto = false;
             }
+        } else {
+            System.out.println("Error seteando tipo");
         }
     }
 
@@ -71,7 +73,7 @@ public class Personaje {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             capRec = valor;
         } else {
-            System.out.println("Capacidad introducida errónea");
+            System.out.println("Error: capacidad introducida errónea");
         }
     }
 
@@ -79,42 +81,41 @@ public class Personaje {
         if (posicion != null) {
             this.posicion = posicion;
         } else {
-            System.out.println("Posicion introducida errónea");
+            System.out.println("Error: posicion introducida errónea");
         }
     }
 
-    public void describirPersonaje(Personaje personaje) {
-        System.out.println("Salud :" + personaje.getSalud());
-        System.out.println("Armadura :" + personaje.getArmadura());
-        System.out.println("Ataque :" + personaje.getAtaque());
-
-    }
-    public void mover(Personaje personaje){
-        
+    public void describirPersonaje() {
+        System.out.println("Salud :" + salud);
+        System.out.println("Armadura :" + armadura);
+        System.out.println("Ataque :" + ataque);
     }
 
-    public void recolectar(Personaje personaje) {
-        if (personaje.getTipo() == Personaje.PAISANO) {
-            
+    public void mover() {
+
+    }
+
+    public void recolectar() {
+        if (tipo == Personaje.PAISANO) {
 
         } else {
-            System.out.println("Un soldado no puede recolectar");
+            System.out.println("Error: Un soldado no puede recolectar");
         }
     }
 
-    public void consEdif(Personaje personaje) {
-        if (personaje.getTipo() == Personaje.PAISANO) {
+    public void consEdif() {
+        if (tipo == Personaje.PAISANO) {
 
         } else {
-            System.out.println("Un soldado no puede construir edificios");
+            System.out.println("Error: Un soldado no puede construir edificios");
         }
     }
 
-    public void almacenar(Personaje personaje) {
-        if (personaje.getTipo() == Personaje.PAISANO) {
+    public void almacenar() {
+        if (tipo == Personaje.PAISANO) {
 
         } else {
-            System.out.println("Un soldado no puede almacenar recursos ");
+            System.out.println("Error: Un soldado no puede almacenar recursos ");
         }
     }
 

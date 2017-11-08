@@ -9,7 +9,6 @@ import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -23,9 +22,27 @@ public class Mapa {
     private ArrayList<ArrayList<Celda>> mapa;
     private int filas;
     private int columnas;
-    HashMap<String,Personaje> personajes;
-    HashMap<String , Edificio> edificios;
+    HashMap<String, Personaje> personajes;
+    HashMap<String, Edificio> edificios;
     
+    
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
     public Mapa(int filas, int columnas) {
         if (filas > 0 && columnas > 0) {
@@ -33,7 +50,7 @@ public class Mapa {
             for (int i = 0; i < filas; i++) {
                 ArrayList<Celda> b = new ArrayList<>();
                 for (int j = 0; j < columnas; j++) {
-                    b.add(j, new Celda(i, j,true));
+                    b.add(j, new Celda(i, j, false));
                 }
                 mapa.add(i, b);
             }
@@ -44,7 +61,7 @@ public class Mapa {
         }
     }
 
-    public Mapa(int filas, boolean inicializar) {
+    public Mapa(int filas, boolean inicializar) { //Inicializo mapa cuadrado con elementos
         this(filas, filas);
         int columnas = filas;
         if (inicializar) {
@@ -61,14 +78,15 @@ public class Mapa {
                     }
                 }
             }
-            
+
             this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
             Posicion ciudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
             this.getCelda(ciudadela).setEdificio(new Edificio(Edificio.CIUDADELA));
+            Personaje personaje = new Personaje();
         }
     }
 
-    private void makeAdyPrad(int i, int j) {
+    private void makeAdyPrad(int i, int j) { //Hacer todas las celdas asyacentes pradera
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 this.getCelda(h, k).getContenedorRec().set(ContenedorRecurso.PRADERA, 0);
@@ -76,23 +94,23 @@ public class Mapa {
         }
     }
 
-    private void makeBloqueRec(int i, int j) {
+    private void makeBloqueRec(int i, int j) {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
         ArrayList<Integer> bloque = new ArrayList<>(4);
         for (int k = 0; k < 4; k++) {
             bloque.add(k);
         }
-        Collections.shuffle(bloque);
+        Collections.shuffle(bloque); //Cada int es un recurso, aleatorizo orden
         Random rt = new Random();
-        int[] cantidad = new int[]{rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1, rt.nextInt(100 - 1 + 1) + 1};
+        int[] cantidad = new int[]{rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1};
         Posicion posicion = new Posicion(i, j);
-            getCelda(posicion).getContenedorRec().set(bloque.get(0), cantidad[0]);
-            getCelda(posicion.get(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
-            getCelda(posicion.get(Posicion.SUR)).getContenedorRec().set(bloque.get(2), cantidad[2]);
-            getCelda(posicion.get(Posicion.SURESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
+        getCelda(posicion).getContenedorRec().set(bloque.get(0), cantidad[0]);
+        getCelda(posicion.get(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
+        getCelda(posicion.get(Posicion.SUR)).getContenedorRec().set(bloque.get(2), cantidad[2]);
+        getCelda(posicion.get(Posicion.SURESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
     }
 
     public Mapa() {
-        this(10, 10);
+        this(10, true);
     }
 
     public Celda getCelda(int x, int y) {
@@ -119,26 +137,30 @@ public class Mapa {
     }
 
     public void imprimir() {
-        System.out.print("    ");
+        System.out.print("   │");
         for (int i = 0; i < columnas; i++) {
-            System.out.print(i + "  │");
+            System.out.print("C" + i + " │");
         }
         System.out.println();
+        //Primera linea: numeracion de columna
 
         for (int i = 0; i < filas; i++) {
-            System.out.print(i);
-            for (int j = 0; j < columnas; j++) {
-                System.out.print(mapa.get(i).get(j).toString());
-            }
-            System.out.print("│");
-            System.out.println();
+
+            System.out.print("  ");
             for (int j = 0; j < columnas; j++) {
                 System.out.print("───");
             }
             System.out.println();
+            //Linea de separacion entre filas
 
+            System.out.print("F" + i); //Numeracion de fila
+            for (int j = 0; j < columnas; j++) {
+                System.out.print(ANSI_RESET + " │ " + mapa.get(i).get(j).toString());
+            }
+            System.out.print(ANSI_RESET + " │");//Ultimo separador de fila
+            System.out.println();
+            //Linea de mapa
         }
-
         System.out.println();
     }
 }

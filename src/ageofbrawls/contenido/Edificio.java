@@ -17,11 +17,13 @@ public class Edificio {
     public final static int CASA = 3;
     private int tipo;
     private int ps;
-    private boolean estaDestruido;
+    private boolean destruido;
 
     public Edificio(int tipo) {
-        if (tipo >= 1 && tipo <= 3) {
+        if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
+        }else{
+            System.out.println("Error seteando tipo");
         }
     }
 
@@ -32,11 +34,30 @@ public class Edificio {
     public int getPs() {
         return ps;
     }
-    public void setTipo(int tipo){
-        this.tipo=tipo;
+
+    public void setTipo(int tipo) {
+        if (tipo > 0 && tipo < 4) {
+            this.tipo = tipo;
+        }else{
+            System.out.println("Error seteando tipo");
     }
-    /*public boolean EstaDestruido(int tipo){
-      
-    }*/
+    }
+
+    public boolean estaDestruido() {
+        return destruido;
+    }
+
+    public void danar(int dano) {
+        if (dano > 0) {
+            if (ps - dano > 0) {
+                ps -= dano;
+            } else {
+                ps = 0;
+                destruido = true;
+            }
+        } else {
+            System.out.println("Error dañando edificio.");
+        }
+    }
 
 }
