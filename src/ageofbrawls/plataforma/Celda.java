@@ -32,7 +32,11 @@ public class Celda {
         recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
         personajes = new ArrayList<>();
     }
-
+    
+    public boolean esCeldaLibre() {
+        return getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && getEdificio() == null;
+    }
+    
     public Celda(int edificio, int i, int j, String nombreEdificio) {
         this(ContenedorRecurso.PRADERA, 0, edificio, new Posicion(i, j), nombreEdificio);
     }
@@ -60,6 +64,11 @@ public class Celda {
     public void addPersonaje(Personaje personaje){
         if(personaje!=null){
             personajes.add(personaje);
+        }
+    }
+    public void removePersonaje(Personaje personaje){
+        if(personaje!=null){
+            personajes.remove(personaje);
         }
     }
 

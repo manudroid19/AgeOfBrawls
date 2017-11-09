@@ -92,23 +92,29 @@ public class Personaje {
         System.out.println("Ataque :" + ataque);
     }
 
-    private void mover(Mapa mapa, Posicion posicion, int direccion) {
-        mapa.getCelda(posicion).removePersonaje(this);
-        posicion = posicion.get(direccion);
-        mapa.getCelda(posicion).addPersonaje(this);
-        mapa.makeAdyVisible(posicion);
+    private void mover(Mapa mapa, int direccion) {
+        if (mapa.getCelda(posicion.get(direccion)).esCeldaLibre()) {
+            mapa.getCelda(posicion).removePersonaje(this);
+            posicion = posicion.get(direccion);
+            mapa.getCelda(posicion).addPersonaje(this);
+            mapa.makeAdyVisible(posicion);
+        }else
+            System.out.println("Error: No te puedes mover a esa celda.");
     }
 
     public void mover(Mapa mapa, String direccion) {
         switch (direccion.toLowerCase()) {
             case "norte":
-                mover(mapa,)
+                mover(mapa, Posicion.NORTE);
                 break;
             case "sur":
+                mover(mapa, Posicion.SUR);
                 break;
             case "este":
+                mover(mapa, Posicion.ESTE);
                 break;
             case "oeste":
+                mover(mapa, Posicion.OESTE);
                 break;
             default:
                 System.out.println("Error: direccion no valida.");
