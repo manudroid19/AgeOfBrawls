@@ -20,7 +20,7 @@ public class Celda {
     private boolean oculto;
     private ContenedorRecurso recurso;
     private Posicion posicion;
-    ArrayList<Personaje> personajes;
+    private ArrayList<Personaje> personajes;
 
     public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio) {
         this.posicion = new Posicion(posicion);//valida a posicion
@@ -71,7 +71,9 @@ public class Celda {
             personajes.remove(personaje);
         }
     }
-
+    public ArrayList<Personaje> getPersonajes(){
+        return personajes;
+    }
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {
             this.recurso.set(ContenedorRecurso.PRADERA, 0);
@@ -96,26 +98,26 @@ public class Celda {
     @Override
     public String toString() {
         if (this.oculto) {
-            return "?";
+            return " ? ";
         }
         if(!this.personajes.isEmpty()){
-            return Mapa.ANSI_CYAN_BACKGROUND+"P";
+            return Mapa.ANSI_WHITE+Mapa.ANSI_RED_BACKGROUND+" P ";
         }
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
-                return "B";
+                return Mapa.ANSI_CYAN_BACKGROUND+" B ";
             case ContenedorRecurso.PRADERA:
                 if (this.edificio == null) {
-                    return Mapa.ANSI_GREEN_BACKGROUND + " ";
+                    return Mapa.ANSI_GREEN_BACKGROUND + "   ";
                 } else if (this.edificio.getTipo() == Edificio.CIUDADELA) {
-                    return "U";
+                    return Mapa.ANSI_PURPLE_BACKGROUND+" U ";
                 } else if (this.edificio.getTipo() == Edificio.CASA) {
-                    return "K";
+                    return Mapa.ANSI_PURPLE_BACKGROUND+" K ";
                 }
             case ContenedorRecurso.CANTERA:
-                return "C";
+                return Mapa.ANSI_BLUE_BACKGROUND+Mapa.ANSI_WHITE+" C ";
             case ContenedorRecurso.ARBUSTO:
-                return "A";
+                return Mapa.ANSI_YELLOW_BACKGROUND+" A ";
             default:
                 return " ";
         }

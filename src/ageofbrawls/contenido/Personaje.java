@@ -85,6 +85,9 @@ public class Personaje {
             System.out.println("Error: posicion introducida errónea");
         }
     }
+    public String getNombre(){
+        return nombre;
+    }
 
     public void describirPersonaje() {
         System.out.println("Salud :" + salud);

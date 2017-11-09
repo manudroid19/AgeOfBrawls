@@ -42,6 +42,7 @@ public class Mapa {
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
 
     public Mapa(int filas, int columnas) {
         if (filas > 0 && columnas > 0) {
@@ -105,8 +106,9 @@ public class Mapa {
         int i = posicion.getX(), j = posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
-                if(h==i || j==k || (this.getCelda(h, k).getEdificio()!=null && this.getCelda(h,k).getEdificio().getTipo()==Edificio.CIUDADELA))
-                this.getCelda(h, k).setOculto(false);
+                if (this.getCelda(h,k)!=null && (h == i || j == k || (this.getCelda(h, k).getEdificio() != null && this.getCelda(h, k).getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                    this.getCelda(h, k).setOculto(false);
+                }
             }
         }
     }
@@ -146,11 +148,11 @@ public class Mapa {
         return null;
     }
 
-    
-    public HashMap<String, Personaje> getPersonajes(){
+    public HashMap<String, Personaje> getPersonajes() {
         return personajes;
     }
-    public HashMap<String, Edificio> getEdificios(){
+
+    public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
 
@@ -162,8 +164,7 @@ public class Mapa {
     }
 
     public void imprimir() {
-        System.out.println();
-        System.out.print("   │");
+        System.out.print("\r  │");
         for (int i = 0; i < columnas; i++) {
             System.out.print("C" + i + " │");
         }
@@ -180,10 +181,32 @@ public class Mapa {
             //Linea de separacion entre filas
 
             System.out.print("F" + i); //Numeracion de fila
+            boolean flagpers = false;
             for (int j = 0; j < columnas; j++) {
-                System.out.print(ANSI_RESET + " │ " + mapa.get(i).get(j).toString());
+                System.out.print(ANSI_RESET + "│" + mapa.get(i).get(j).toString());
+                if (!mapa.get(i).get(j).getPersonajes().isEmpty()) {
+                    flagpers = true;
+                }
             }
-            System.out.print(ANSI_RESET + " │");//Ultimo separador de fila
+            System.out.print(ANSI_RESET + "│");//Ultimo separador de fila
+            if (flagpers) {
+                for (int j = 0; j < columnas; j++) {
+                    if (!mapa.get(i).get(j).getPersonajes().isEmpty()) {
+                        System.out.print(" F" + i + ",C" + j + ": ");
+                        for (int k = 0; k < mapa.get(i).get(j).getPersonajes().size(); k++) {
+                            if (k != 0) {
+                                System.out.print(", ");
+                            }
+                            if (mapa.get(i).get(j).getPersonajes().get(k).getTipo() == Personaje.PAISANO) {
+                                System.out.print("paisano " + mapa.get(i).get(j).getPersonajes().get(k).getNombre());
+                            } else {
+                                System.out.print("soldado " + mapa.get(i).get(j).getPersonajes().get(k).getNombre());
+                            }
+
+                        }
+                    }
+                }
+            }
             System.out.println();
             //Linea de mapa
         }
