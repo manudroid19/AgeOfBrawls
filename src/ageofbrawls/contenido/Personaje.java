@@ -162,21 +162,7 @@ public class Personaje {
         return hash;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + this.tipo;
-        hash = 37 * hash + this.salud;
-        hash = 37 * hash + this.armadura;
-        hash = 37 * hash + this.ataque;
-        hash = 37 * hash + this.capRec;
-        hash = 37 * hash + this.cantRec;
-        hash = 37 * hash + Objects.hashCode(this.posicion);
-        hash = 37 * hash + (this.estaMuerto ? 1 : 0);
-        hash = 37 * hash + Objects.hashCode(this.nombre);
-        return hash;
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
