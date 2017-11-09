@@ -62,6 +62,11 @@ public class Celda {
             personajes.add(personaje);
         }
     }
+    public void removePersonaje(Personaje personaje){
+        if(personaje!=null){
+            personajes.remove(personaje);
+        }
+    }
 
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {

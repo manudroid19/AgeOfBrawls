@@ -101,10 +101,11 @@ public class Mapa {
         this.makeAdyVisible(posPaisano);
     }
 
-    private void makeAdyVisible(Posicion posicion) {
-        int i=posicion.getX(),j=posicion.getY();
-for (int h = i - 1; h < i + 2; h++) {
+    public void makeAdyVisible(Posicion posicion) {
+        int i = posicion.getX(), j = posicion.getY();
+        for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
+                if(h==i || j==k || (this.getCelda(h, k).getEdificio()!=null && this.getCelda(h,k).getEdificio().getTipo()==Edificio.CIUDADELA))
                 this.getCelda(h, k).setOculto(false);
             }
         }
@@ -149,6 +150,12 @@ for (int h = i - 1; h < i + 2; h++) {
         Celda celda = this.getCelda(posicion);
         return celda.getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && celda.getEdificio() == null;
     }
+    public HashMap<String, Personaje> getPersonajes(){
+        return personajes;
+    }
+    public HashMap<String, Edificio> getEdificios(){
+        return edificios;
+    }
 
     public Celda getCelda(Posicion posicion) {
         if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
@@ -158,6 +165,7 @@ for (int h = i - 1; h < i + 2; h++) {
     }
 
     public void imprimir() {
+        System.out.println();
         System.out.print("   │");
         for (int i = 0; i < columnas; i++) {
             System.out.print("C" + i + " │");

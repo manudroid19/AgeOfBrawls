@@ -5,7 +5,9 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import java.util.Objects;
 
 /**
  *
@@ -44,7 +46,7 @@ public class Personaje {
         }
     }
 
-    
+
 
     public int getTipo() {
         return tipo;
@@ -92,8 +94,23 @@ public class Personaje {
         System.out.println("Ataque :" + ataque);
     }
 
-    public void mover() {
-
+    public void mover(Mapa mapa, String direccion) {
+        switch (direccion.toLowerCase()) {
+            case "norte":
+                mapa.getCelda(posicion).removePersonaje(this);
+                posicion = posicion.get(Posicion.NORTE);
+                mapa.getCelda(posicion).addPersonaje(this);
+                mapa.makeAdyVisible(posicion);
+                break;
+            case "sur":
+                break;
+            case "este":
+                break;
+            case "oeste":
+                break;
+            default:
+                System.out.println("Error: direccion no valida.");
+        }
     }
 
     public void recolectar() {
@@ -119,5 +136,60 @@ public class Personaje {
             System.out.println("Error: Un soldado no puede almacenar recursos ");
         }
     }
+        @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.tipo;
+        hash = 37 * hash + this.salud;
+        hash = 37 * hash + this.armadura;
+        hash = 37 * hash + this.ataque;
+        hash = 37 * hash + this.capRec;
+        hash = 37 * hash + this.cantRec;
+        hash = 37 * hash + Objects.hashCode(this.posicion);
+        hash = 37 * hash + (this.estaMuerto ? 1 : 0);
+        hash = 37 * hash + Objects.hashCode(this.nombre);
+        return hash;
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Personaje other = (Personaje) obj;
+        if (this.tipo != other.tipo) {
+            return false;
+        }
+        if (this.salud != other.salud) {
+            return false;
+        }
+        if (this.armadura != other.armadura) {
+            return false;
+        }
+        if (this.ataque != other.ataque) {
+            return false;
+        }
+        if (this.capRec != other.capRec) {
+            return false;
+        }
+        if (this.cantRec != other.cantRec) {
+            return false;
+        }
+        if (this.estaMuerto != other.estaMuerto) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.posicion, other.posicion)) {
+            return false;
+        }
+        return true;
+    }
 }

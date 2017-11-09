@@ -5,6 +5,7 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.contenido.Personaje;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.io.IOException;
@@ -25,10 +26,10 @@ public class AgeOfBrawls {
 
         Mapa mapa = new Mapa(10, true);
         Scanner sca = new Scanner(System.in);
-        String jugador="";
-        
+        String jugador = "";
+
         System.out.print("Bienvenido a Age Of Brawls!!\n\rIntroduce un nombre para tu primer jugador: ");
-        jugador=sca.nextLine();
+        jugador = sca.nextLine();
         mapa.inicializar(jugador);
         System.out.print("Todo listo! Pulsa intro para comenzar...");
         sca.nextLine();
@@ -38,9 +39,9 @@ public class AgeOfBrawls {
             Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        mapa.imprimir();
         String orden = "";
         while (!"salir".equals(orden)) {
+            mapa.imprimir();
             System.out.print("Introduce orden: ");
             orden = sca.nextLine();
             if (orden.contains(" ")) {
@@ -50,6 +51,9 @@ public class AgeOfBrawls {
                         String sub = orden.substring(orden.indexOf(" ") + 1, orden.length());
                         String quien = sub.substring(0, sub.indexOf(" "));
                         String donde = sub.substring(sub.indexOf(" ") + 1, sub.length());
+                        Personaje personaje = mapa.getPersonajes().get(quien);
+                        personaje.mover(mapa, donde);
+                        
                         break;
                 }
             }
