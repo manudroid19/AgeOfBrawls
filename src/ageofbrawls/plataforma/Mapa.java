@@ -24,8 +24,7 @@ public class Mapa {
     private int columnas;
     HashMap<String, Personaje> personajes;
     HashMap<String, Edificio> edificios;
-    
-    
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -47,10 +46,12 @@ public class Mapa {
     public Mapa(int filas, int columnas) {
         if (filas > 0 && columnas > 0) {
             mapa = new ArrayList<>();
+            edificios = new HashMap<>();
+            personajes = new HashMap<>();
             for (int i = 0; i < filas; i++) {
                 ArrayList<Celda> b = new ArrayList<>();
                 for (int j = 0; j < columnas; j++) {
-                    b.add(j, new Celda(i, j, false));
+                    b.add(j, new Celda(i, j, true));
                 }
                 mapa.add(i, b);
             }
@@ -80,9 +81,32 @@ public class Mapa {
             }
 
             this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-            Posicion ciudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-            this.getCelda(ciudadela).setEdificio(new Edificio(Edificio.CIUDADELA));
-            Personaje personaje = new Personaje();
+            Posicion posCiudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
+            String nombre = "Ciudadela-1";
+            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nombre);
+            this.getCelda(posCiudadela).setEdificio(ciud);
+//            int i=1;
+//            while(!edificios.containsKey(nombre)){
+//                nombre = nombre.replace("-"+i, "-"+(++i));
+//            }
+            edificios.put(nombre, ciud);
+        }
+    }
+
+    public void inicializar(String paisano) {
+        Posicion posPaisano = edificios.get("Ciudadela-1").getPosicion().PosicionAdyacenteLibre(this);
+        Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, paisano);
+        personajes.put(paisano, paisano1);
+        this.getCelda(posPaisano).addPersonaje(paisano1);
+        this.makeAdyVisible(posPaisano);
+    }
+
+    private void makeAdyVisible(Posicion posicion) {
+        int i=posicion.getX(),j=posicion.getY();
+for (int h = i - 1; h < i + 2; h++) {
+            for (int k = j - 1; k < j + 2; k++) {
+                this.getCelda(h, k).setOculto(false);
+            }
         }
     }
 
@@ -121,19 +145,16 @@ public class Mapa {
         return null;
     }
 
+    public boolean esCeldaLibre(Posicion posicion) {
+        Celda celda = this.getCelda(posicion);
+        return celda.getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && celda.getEdificio() == null;
+    }
+
     public Celda getCelda(Posicion posicion) {
         if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
             return mapa.get(posicion.getY()).get(posicion.getX());
         }
         return null;
-    }
-
-    public boolean esCeldaVacia(int i, int j) {
-        if (i < filas && j < columnas && i > -1 && j > -1) {
-            return (mapa.get(j).get(i) == null); //expresion logica= true si celda==null
-        }
-        System.out.println("Error esCeldaVacia");
-        return false;
     }
 
     public void imprimir() {

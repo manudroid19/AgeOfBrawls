@@ -17,10 +17,13 @@ public class Personaje {
     private int tipo, salud, armadura, ataque, capRec, cantRec;
     private Posicion posicion;
     private boolean estaMuerto;
+    private String nombre;
 
-    public Personaje(int tipo) {
+    public Personaje(int tipo, Posicion posicion, String nombre) {
         if (tipo == 1 || tipo == 2) {
             this.tipo = tipo;
+            this.posicion = posicion;
+            this.nombre = nombre;
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
                 armadura = 200;
@@ -41,9 +44,7 @@ public class Personaje {
         }
     }
 
-    public Personaje() {
-        this(Personaje.PAISANO);
-    }
+    
 
     public int getTipo() {
         return tipo;

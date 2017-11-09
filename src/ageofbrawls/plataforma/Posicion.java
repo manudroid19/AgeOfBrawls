@@ -5,6 +5,9 @@
  */
 package ageofbrawls.plataforma;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  *
  * @author mprad
@@ -24,8 +27,9 @@ public class Posicion {
         if (x > -1 && y > -1) {
             this.x = x;
             this.y = y;
-        }else
+        } else {
             System.out.println("Error:posicion no valida.");
+        }
     }
 
     public Posicion(Posicion posicion) {
@@ -42,6 +46,22 @@ public class Posicion {
 
     public int getY() {
         return y;
+    }
+
+    public Posicion PosicionAdyacenteLibre(Mapa mapa) {
+        int i=x;
+        int j=y;
+        ArrayList<Posicion> candidatos = new ArrayList<>();
+        for (int h = i - 1; h < i + 2; h++) {
+            for (int k = j - 1; k < j + 2; k++) {
+                Posicion pos= new Posicion(h,k);
+                if(mapa.esCeldaLibre(pos)){
+                    candidatos.add(pos);
+                }
+            }
+        }
+        Collections.shuffle(candidatos);
+        return candidatos.get(0);
     }
 
     public Posicion get(int pos) {

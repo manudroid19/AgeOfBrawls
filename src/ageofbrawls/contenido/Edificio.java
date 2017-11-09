@@ -5,6 +5,8 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.plataforma.Posicion;
+
 /**
  *
  * @author Santiago
@@ -15,18 +17,25 @@ public class Edificio {
     public final static int CIUDADELA = 1;
     public final static int CUARTEL = 2;
     public final static int CASA = 3;
+    private Posicion posicion;
     private int tipo;
     private int ps;
     private boolean destruido;
+    private String nombre;
 
-    public Edificio(int tipo) {
+    public Edificio(int tipo, Posicion posicion, String nombre) {
         if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
+            this.posicion = posicion;
+            this.nombre = nombre;
         }else{
             System.out.println("Error seteando tipo");
         }
     }
-
+    public Posicion getPosicion(){
+        return new Posicion(posicion);
+    }
+    
     public int getTipo() {
         return tipo;
     }
