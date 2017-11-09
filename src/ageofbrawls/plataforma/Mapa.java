@@ -155,6 +155,12 @@ public class Mapa {
     public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
+    public HashMap<String, Personaje> getPersonajes(){
+        return personajes;
+    }
+    public HashMap<String, Edificio> getEdificios(){
+        return edificios;
+    }
 
     public Celda getCelda(Posicion posicion) {
         if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
