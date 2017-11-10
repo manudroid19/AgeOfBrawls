@@ -26,8 +26,9 @@ public class ContenedorRecurso {
             } else {
                 this.cantidad = 0;
             }
-        }else
+        } else {
             System.out.println("Error: tipo de CR no valido.");
+        }
     }
 
     public ContenedorRecurso() {
@@ -68,8 +69,30 @@ public class ContenedorRecurso {
             } else {
                 this.cantidad = 0;
             }
-        }else
+        } else {
             System.out.println("Error: tipo de CR no valido.");
+        }
+
+    }
+
+    public void describirContenedorRecurso() {
+        switch (tipo) {
+            case 0:
+                System.out.println("Tipo: PRADERA");
+                System.out.println("Cantidad de Recurso: 0");
+            case 1:
+                System.out.println("Tipo: BOSQUE");
+                System.out.println("Cantidad de Recurso :" + cantidad);
+                break;
+            case 2:
+                System.out.println("Tipo: CANTERA");
+                System.out.println("Cantidad de Recurso" + cantidad);
+                break;
+            case 3:
+                System.out.println("Tipo: ARBUSTO");
+                System.out.println("Cantidad de Recurso" +cantidad);
+                break;
+        }
 
     }
 }

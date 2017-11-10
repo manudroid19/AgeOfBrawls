@@ -17,6 +17,7 @@ public class Edificio {
     public final static int CIUDADELA = 1;
     public final static int CUARTEL = 2;
     public final static int CASA = 3;
+     private final static int CAPALMACEN=10000;
     private Posicion posicion;
     private int tipo;
     private int ps;
@@ -50,6 +51,29 @@ public class Edificio {
         }else{
             System.out.println("Error seteando tipo");
     }
+    }
+    
+    public void describirEdificio(){
+        switch(tipo){
+            case 1:
+                System.out.println("Tipo: CIUDADELA");
+                System.out.println("PS: " +ps);
+                System.out.println("Nome:" +nombre);
+                break;
+                
+            case 2:
+                System.out.println("Tipo: CUARTEL");
+                System.out.println("PS: " +ps);
+                System.out.println("Nome:" +nombre);
+                break;
+                
+            case 3:
+                System.out.println("Tipo: CASA");
+                System.out.println("PS: " +ps);
+                System.out.println("Nome:" +nombre);
+                break;
+                
+        }
     }
 
     public boolean estaDestruido() {

@@ -11,7 +11,9 @@ import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -100,6 +102,34 @@ public class Mapa {
         personajes.put(paisano, paisano1);
         this.getCelda(posPaisano).addPersonaje(paisano1);
         this.makeAdyVisible(posPaisano);
+    }
+    
+    public void listarPersonajes (){
+        Set <Map.Entry<String,Personaje>> pers= personajes.entrySet();
+        for(Map.Entry<String,Personaje> entry : pers){
+            System.out.println(entry.getKey() + entry.getValue().getPosicion());
+            
+        }
+    }
+    public void listarEdificios(){
+        Set <Map.Entry<String,Edificio>> pers= edificios.entrySet();
+        for(Map.Entry<String,Edificio> entry : pers){
+            System.out.println(entry.getKey() + entry.getValue().getPosicion());
+            
+        }
+    }
+    
+    public void mirar(Celda celda){
+        if(this.getCelda(celda.getPosicion()).getEdificio()!= null){
+            this.getCelda(celda.getPosicion()).getEdificio().describirEdificio();//En caso de que en la celda haya un edificio, lo describimos
+        }
+        else if (this.getCelda(celda.getPosicion()).getContenedorRec().getTipo()!= ContenedorRecurso.PRADERA){
+            this.getCelda(celda.getPosicion()).getContenedorRec().describirContenedorRecurso();//En caso de estar en un contenedor de Recursos, imprimimos su descripción
+        }
+        if(this.getCelda(celda.getPosicion()).getContenedorRec().getTipo()==ContenedorRecurso.PRADERA && celda.getPersonajes() != null){
+            this.getCelda(celda.getPosicion()).getPersonajes().get(0).describirPersonaje();//enseñamos la info del 0, ya que es el único de momento que se puede alamcenar en la celda
+        }
+        
     }
 
     public void makeAdyVisible(Posicion posicion) {

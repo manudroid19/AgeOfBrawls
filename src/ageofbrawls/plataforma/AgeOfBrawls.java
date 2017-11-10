@@ -88,7 +88,10 @@ public class AgeOfBrawls {
                         }
 
                         break;
+                        
                     case "listar":
+
+                        mapa.listarPersonajes();
                         
                         break;
                 }
