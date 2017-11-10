@@ -122,20 +122,30 @@ public class AgeOfBrawls {
                     break;
 
                 case "describir":
-                    String sub2 = orden.substring(orden.indexOf(" ") + 1, orden.length());
-                    if (mapa.getPersonajes().containsKey(sub2)) {
-                        Personaje personaje1 = mapa.getPersonajes().get(sub2);
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String sujeto = comando[1];
+                    if (mapa.getPersonajes().containsKey(sujeto)) {
+                        Personaje personaje1 = mapa.getPersonajes().get(sujeto);
                         personaje1.describirPersonaje();
-                    } else if (mapa.getEdificios().containsKey(sub2)) {
-                        Edificio edificio = mapa.getEdificios().get(sub2);
+                    } else if (mapa.getEdificios().containsKey(sujeto)) {
+                        Edificio edificio = mapa.getEdificios().get(sujeto);
                         edificio.describirEdificio();
-                    } else if (mapa.getContenedoresRecurso().containsKey(sub2)) {
-                        ContenedorRecurso rec = mapa.getContenedoresRecurso().get(sub2);
+                    } else if (mapa.getContenedoresRecurso().containsKey(sujeto)) {
+                        ContenedorRecurso rec = mapa.getContenedoresRecurso().get(sujeto);
                         rec.describirContenedorRecurso();
+                    }else{
+                        System.out.println("Error: sujeto a describir no encontrado.");
                     }
                     break;
                 case "mirar":
-                    String sub3 = orden.substring(orden.indexOf(" ") + 1, orden.length());
+                    if (comando.length != 2 || comando[1].length()!=5||comando[1].charAt(0)!='(' || comando[1].charAt(2)!=',' || comando[1].charAt(4)!=')' ) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String sub3 = comando[1];
                     int x = Integer.parseInt(sub3.substring(1, sub3.indexOf(",")));
                     int y = Integer.parseInt(sub3.substring(sub3.indexOf(",") + 1, sub3.length() - 1));
                     Celda celda = mapa.getCelda(new Posicion(y, x));
