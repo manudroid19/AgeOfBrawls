@@ -9,6 +9,7 @@ import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -179,9 +180,27 @@ public class Mapa {
     public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
+    
 
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
+    }
+    public int contarEdificios(int tipo){
+        int n=0;
+        if(tipo>0 && tipo<3){
+        Collection<Edificio> edifs= this.getEdificios().values();
+        for(Edificio ed: edifs){
+           if(ed.getTipo()==tipo){
+               n++;
+           }
+        }
+        return n;
+        }
+        
+        else{
+            System.out.println("Tipo mal introducido");
+        }
+        return -1;
     }
 
     public Celda getCelda(Posicion posicion) {
