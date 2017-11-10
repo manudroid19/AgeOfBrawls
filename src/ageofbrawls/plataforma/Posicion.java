@@ -85,6 +85,21 @@ public class Posicion {
                 return this;
         }
     }
+    public Posicion get(String direccion){
+        switch (direccion.toLowerCase()) {
+            case "norte":
+                return get(Posicion.NORTE);
+            case "sur":
+                return get(Posicion.SUR);
+            case "este":
+                return get(Posicion.ESTE);
+            case "oeste":
+                return get(Posicion.OESTE);
+            default:
+                System.out.println("Error: direccion no valida.");
+                return this;
+        }
+    }
 
     @Override
     public String toString() {
