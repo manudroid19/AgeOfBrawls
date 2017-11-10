@@ -55,19 +55,19 @@ public class Edificio {
     
     public void describirEdificio(){
         switch(tipo){
-            case 1:
+            case Edificio.CIUDADELA:
                 System.out.println("Tipo: CIUDADELA");
                 System.out.println("PS: " +ps);
                 System.out.println("Nome:" +nombre);
                 break;
                 
-            case 2:
+            case Edificio.CUARTEL:
                 System.out.println("Tipo: CUARTEL");
                 System.out.println("PS: " +ps);
                 System.out.println("Nome:" +nombre);
                 break;
                 
-            case 3:
+            case Edificio.CASA:
                 System.out.println("Tipo: CASA");
                 System.out.println("PS: " +ps);
                 System.out.println("Nome:" +nombre);

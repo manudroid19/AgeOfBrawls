@@ -5,6 +5,7 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personaje;
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -90,10 +91,27 @@ public class AgeOfBrawls {
                         break;
                         
                     case "listar":
-
-                        mapa.listarPersonajes();
-                        
+                        String sub1 = orden.substring(orden.indexOf(" ") + 1, orden.length());
+                        if(sub1.equals("personajes")){
+                          mapa.listarPersonajes();  
+                        }
+                        else if(sub1.equals("edificios")){
+                            mapa.listarEdificios();
+                        }
                         break;
+                        
+                    case "describir":
+                        String sub2 = orden.substring(orden.indexOf(" ") + 1, orden.length());
+                        if(mapa.getPersonajes().containsKey(sub2)){
+                        Personaje personaje1 = mapa.getPersonajes().get(sub2);
+                        personaje1.describirPersonaje();
+                        }
+                        else if(mapa.getEdificios().containsKey(sub2)){
+                        Edificio edificio= mapa.getEdificios().get(sub2);
+                        edificio.describirEdificio();
+                        }
+                        //else
+                            
                 }
             }
         }

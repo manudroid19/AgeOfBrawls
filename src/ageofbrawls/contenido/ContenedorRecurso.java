@@ -77,18 +77,18 @@ public class ContenedorRecurso {
 
     public void describirContenedorRecurso() {
         switch (tipo) {
-            case 0:
+            case ContenedorRecurso.PRADERA:
                 System.out.println("Tipo: PRADERA");
                 System.out.println("Cantidad de Recurso: 0");
-            case 1:
+            case ContenedorRecurso.BOSQUE:
                 System.out.println("Tipo: BOSQUE");
                 System.out.println("Cantidad de Recurso :" + cantidad);
                 break;
-            case 2:
+            case ContenedorRecurso.CANTERA:
                 System.out.println("Tipo: CANTERA");
                 System.out.println("Cantidad de Recurso" + cantidad);
                 break;
-            case 3:
+            case ContenedorRecurso.ARBUSTO:
                 System.out.println("Tipo: ARBUSTO");
                 System.out.println("Cantidad de Recurso" +cantidad);
                 break;

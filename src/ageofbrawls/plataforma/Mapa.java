@@ -107,30 +107,19 @@ public class Mapa {
     public void listarPersonajes (){
         Set <Map.Entry<String,Personaje>> pers= personajes.entrySet();
         for(Map.Entry<String,Personaje> entry : pers){
-            System.out.println(entry.getKey() + entry.getValue().getPosicion());
+            System.out.println("\n"+ entry.getKey() +"\t"+  entry.getValue().getPosicion());
             
         }
     }
     public void listarEdificios(){
         Set <Map.Entry<String,Edificio>> pers= edificios.entrySet();
         for(Map.Entry<String,Edificio> entry : pers){
-            System.out.println(entry.getKey() + entry.getValue().getPosicion());
+            System.out.println("\n"+ entry.getKey() +"\t"+  entry.getValue().getPosicion());
             
         }
     }
     
-    public void mirar(Celda celda){
-        if(this.getCelda(celda.getPosicion()).getEdificio()!= null){
-            this.getCelda(celda.getPosicion()).getEdificio().describirEdificio();//En caso de que en la celda haya un edificio, lo describimos
-        }
-        else if (this.getCelda(celda.getPosicion()).getContenedorRec().getTipo()!= ContenedorRecurso.PRADERA){
-            this.getCelda(celda.getPosicion()).getContenedorRec().describirContenedorRecurso();//En caso de estar en un contenedor de Recursos, imprimimos su descripción
-        }
-        if(this.getCelda(celda.getPosicion()).getContenedorRec().getTipo()==ContenedorRecurso.PRADERA && celda.getPersonajes() != null){
-            this.getCelda(celda.getPosicion()).getPersonajes().get(0).describirPersonaje();//enseñamos la info del 0, ya que es el único de momento que se puede alamcenar en la celda
-        }
-        
-    }
+    
 
     public void makeAdyVisible(Posicion posicion) {
         int i = posicion.getX(), j = posicion.getY();
