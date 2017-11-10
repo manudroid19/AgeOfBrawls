@@ -38,7 +38,7 @@ public class Personaje {
                 armadura = 100;
                 ataque = -1;
                 cantRec = 0;
-                capRec = 40;
+                capRec = 50;
                 estaMuerto = false;
             }
         } else {
@@ -65,6 +65,9 @@ public class Personaje {
     public int getCapRec() {
         return capRec;
     }
+    public int getCantRec(){
+        return cantRec;
+    }
 
     public Posicion getPosicion() {
         return posicion;
@@ -73,6 +76,13 @@ public class Personaje {
     public void setCapRec(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             capRec = valor;
+        } else {
+            System.out.println("Error: capacidad introducida errónea");
+        }
+    }
+    public void setCantRec(int valor){
+        if (valor > 0 && this.tipo == Personaje.PAISANO) {
+            cantRec = valor;
         } else {
             System.out.println("Error: capacidad introducida errónea");
         }
@@ -90,9 +100,16 @@ public class Personaje {
     }
 
     public void describirPersonaje() {
+        if(tipo==Personaje.SOLDADO){
         System.out.println("Salud :" + salud);
         System.out.println("Armadura :" + armadura);
         System.out.println("Ataque :" + ataque);
+        }
+        else
+        System.out.println("Salud :" + salud);
+        System.out.println("Armadura :" + armadura);
+        System.out.println("Capacidad de recolección :" + capRec); 
+        System.out.println("Cantidad de Recursos que lleva:" +cantRec);
     }
 
     private void mover(Mapa mapa, int direccion) {
@@ -123,13 +140,52 @@ public class Personaje {
                 System.out.println("Error: direccion no valida.");
         }
     }
-
-    public void recolectar() {
+    private void recolectar(Mapa mapa, int direccion) {
         if (tipo == Personaje.PAISANO) {
+            if(capRec>0){
+                if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio()==null) {
+                    if(this.getCantRec()+mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()<=this.getCapRec()){
+                    this.setCantRec(this.getCantRec()+mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
+                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
+                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
+                    
+                    }
+                    else
+                      this.setCantRec(this.getCantRec()+(this.getCapRec()-this.getCantRec()));
+                      mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad((mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad())-(this.getCapRec()-this.getCantRec()));
+        }else
+            System.out.println("Error: No te puedes mover a esa celda.");
+                
+                
+                
+            }
+            else
+                System.out.println("El personaje no puede recolectar más");
 
-        } else {
+        }
+        else {
             System.out.println("Error: Un soldado no puede recolectar");
         }
+    }
+    public void recolectar(Mapa mapa,String direccion) {
+        
+                switch (direccion.toLowerCase()) {
+            case "norte":
+                recolectar(mapa, Posicion.NORTE);
+                break;
+            case "sur":
+                recolectar(mapa, Posicion.SUR);
+                break;
+            case "este":
+                recolectar(mapa, Posicion.ESTE);
+                break;
+            case "oeste":
+                recolectar(mapa, Posicion.OESTE);
+                break;
+            default:
+                System.out.println("Error: direccion no valida.");
+        }
+        
     }
 
     public void consEdif() {
