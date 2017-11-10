@@ -17,6 +17,8 @@ public class ContenedorRecurso {
     public final static int ARBUSTO = 3;
     private int tipo;
     private int cantidad;
+    private String nombre;
+    private static int bosques=1, arbustos=1, canteras=1;
 
     public ContenedorRecurso(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
@@ -41,6 +43,18 @@ public class ContenedorRecurso {
 
     public int getCantidad() {
         return this.cantidad;
+    }
+    public int getContador(){
+        switch(tipo){
+            case ContenedorRecurso.BOSQUE:
+                return bosques++;
+            case ContenedorRecurso.CANTERA:
+                return canteras++;
+            case ContenedorRecurso.ARBUSTO:
+                return arbustos++;
+            default:
+                return -1;
+        }
     }
 
     public void setTipo(int tipo) {
@@ -74,7 +88,14 @@ public class ContenedorRecurso {
         }
 
     }
-
+    public String getNombre(){
+        return nombre;
+    }
+    public void setNombre(String nombre){
+        if(nombre!=null){
+            this.nombre=nombre;
+        }
+    }
     public void describirContenedorRecurso() {
         switch (tipo) {
             case ContenedorRecurso.PRADERA:
@@ -82,17 +103,34 @@ public class ContenedorRecurso {
                 System.out.println("Cantidad de Recurso: 0");
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Tipo: BOSQUE");
-                System.out.println("Cantidad de Recurso :" + cantidad);
+                System.out.println("Cantidad de madera:" + cantidad);
                 break;
             case ContenedorRecurso.CANTERA:
                 System.out.println("Tipo: CANTERA");
-                System.out.println("Cantidad de Recurso" + cantidad);
+                System.out.println("Cantidad de piedra" + cantidad);
                 break;
             case ContenedorRecurso.ARBUSTO:
                 System.out.println("Tipo: ARBUSTO");
-                System.out.println("Cantidad de Recurso" +cantidad);
+                System.out.println("Cantidad de comida" +cantidad);
                 break;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        switch(tipo){
+            
+            case ContenedorRecurso.PRADERA:
+                return "pradera";
+            case ContenedorRecurso.BOSQUE:
+                return "bosque";
+            case ContenedorRecurso.CANTERA:
+                return "cantera";
+            case ContenedorRecurso.ARBUSTO:
+                return "arbusto";
+            default:
+                return "";
+        }
     }
 }

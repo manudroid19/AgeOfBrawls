@@ -24,8 +24,9 @@ public class Mapa {
     private ArrayList<ArrayList<Celda>> mapa;
     private int filas;
     private int columnas;
-    HashMap<String, Personaje> personajes;
-    HashMap<String, Edificio> edificios;
+    private HashMap<String, Personaje> personajes;
+    private HashMap<String, Edificio> edificios;
+    private HashMap<String, ContenedorRecurso> recursosVisibles;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -51,6 +52,8 @@ public class Mapa {
             mapa = new ArrayList<>();
             edificios = new HashMap<>();
             personajes = new HashMap<>();
+            recursosVisibles = new HashMap<>();
+
             for (int i = 0; i < filas; i++) {
                 ArrayList<Celda> b = new ArrayList<>();
                 for (int j = 0; j < columnas; j++) {
@@ -103,30 +106,33 @@ public class Mapa {
         this.getCelda(posPaisano).addPersonaje(paisano1);
         this.makeAdyVisible(posPaisano);
     }
-    
-    public void listarPersonajes (){
-        Set <Map.Entry<String,Personaje>> pers= personajes.entrySet();
-        for(Map.Entry<String,Personaje> entry : pers){
-            System.out.println("\n"+ entry.getKey() +"\t"+  entry.getValue().getPosicion());
-            
+
+    public void listarPersonajes() {
+        Set<Map.Entry<String, Personaje>> pers = personajes.entrySet();
+        for (Map.Entry<String, Personaje> entry : pers) {
+            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
         }
     }
-    public void listarEdificios(){
-        Set <Map.Entry<String,Edificio>> pers= edificios.entrySet();
-        for(Map.Entry<String,Edificio> entry : pers){
-            System.out.println("\n"+ entry.getKey() +"\t"+  entry.getValue().getPosicion());
-            
+
+    public void listarEdificios() {
+        Set<Map.Entry<String, Edificio>> pers = edificios.entrySet();
+        for (Map.Entry<String, Edificio> entry : pers) {
+            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
+
         }
     }
-    
-    
 
     public void makeAdyVisible(Posicion posicion) {
         int i = posicion.getX(), j = posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
-                if (this.getCelda(h,k)!=null && (h == i || j == k || (this.getCelda(h, k).getEdificio() != null && this.getCelda(h, k).getEdificio().getTipo() == Edificio.CIUDADELA))) {
-                    this.getCelda(h, k).setOculto(false);
+                Celda c = this.getCelda(h, k);
+                if (c != null && c.isOculto() && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                    c.setOculto(false);
+                    if (c.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA ) {
+                        c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(c.getContenedorRec().getContador()));
+                        recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
+                    }
                 }
             }
         }
@@ -174,7 +180,9 @@ public class Mapa {
     public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
-    
+    public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
+        return recursosVisibles;
+    }
 
     public Celda getCelda(Posicion posicion) {
         if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
@@ -201,29 +209,18 @@ public class Mapa {
             //Linea de separacion entre filas
 
             System.out.print("F" + i); //Numeracion de fila
-            boolean flagpers = false;
+            boolean flagrec = false;
             for (int j = 0; j < columnas; j++) {
                 System.out.print(ANSI_RESET + "│" + mapa.get(i).get(j).toString());
-                if (!mapa.get(i).get(j).getPersonajes().isEmpty()) {
-                    flagpers = true;
+                if (mapa.get(i).get(j).getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
+                    flagrec = true;
                 }
             }
             System.out.print(ANSI_RESET + "│");//Ultimo separador de fila
-            if (flagpers) {
+            if (flagrec) {
                 for (int j = 0; j < columnas; j++) {
-                    if (!mapa.get(i).get(j).getPersonajes().isEmpty()) {
-                        System.out.print(" F" + i + ",C" + j + ": ");
-                        for (int k = 0; k < mapa.get(i).get(j).getPersonajes().size(); k++) {
-                            if (k != 0) {
-                                System.out.print(", ");
-                            }
-                            if (mapa.get(i).get(j).getPersonajes().get(k).getTipo() == Personaje.PAISANO) {
-                                System.out.print("paisano " + mapa.get(i).get(j).getPersonajes().get(k).getNombre());
-                            } else {
-                                System.out.print("soldado " + mapa.get(i).get(j).getPersonajes().get(k).getNombre());
-                            }
-
-                        }
+                    if (mapa.get(i).get(j).getContenedorRec().getTipo() != ContenedorRecurso.PRADERA && !mapa.get(i).get(j).isOculto()) {
+                        System.out.print(mapa.get(i).get(j).getContenedorRec().getNombre() + " ");
                     }
                 }
             }

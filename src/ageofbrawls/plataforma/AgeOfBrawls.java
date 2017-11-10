@@ -5,6 +5,7 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personaje;
 import java.awt.AWTException;
@@ -35,7 +36,7 @@ public class AgeOfBrawls {
         System.out.println();
         System.out.println("Leyenda: Pradera transitable" + Mapa.ANSI_GREEN_BACKGROUND + "   " + Mapa.ANSI_RESET + " Ciudadela:" + Mapa.ANSI_PURPLE_BACKGROUND + " U " + Mapa.ANSI_RESET);
         System.out.println("Casa:" + Mapa.ANSI_PURPLE_BACKGROUND + " K " + Mapa.ANSI_RESET + "Bosque:" + Mapa.ANSI_CYAN_BACKGROUND + " B " + Mapa.ANSI_RESET + "Cantera:" + Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C " + Mapa.ANSI_RESET + "Arbusto:" + Mapa.ANSI_YELLOW_BACKGROUND + " A " + Mapa.ANSI_RESET);
-        System.out.println("En las praderas transitables puede haber personajes, en \n\rcaso lo verás como " + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET + "y se te indicará en la fila sus nombres.");
+        System.out.println("En las praderas transitables puede haber personajes, en \n\rcaso lo verás como " + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET );
         System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje] [direccion: norte, sur, este o oeste]");
         System.out.println("manejar [personaje] (permite manejar el personaje usando ASDF o las flechas de control)");
         System.out.println("listar [personajes o edificios]");
@@ -59,7 +60,8 @@ public class AgeOfBrawls {
                         String quien = sub.substring(0, sub.indexOf(" "));
                         String donde = sub.substring(sub.indexOf(" ") + 1, sub.length());
                         Personaje personaje = mapa.getPersonajes().get(quien);
-                        personaje.mover(mapa, donde);
+                        if(personaje!=null)
+                            personaje.mover(mapa, donde);
                         break;
                     case "manejar":
                         System.out.println("Entra q para salir de este modo, a,s d, y w para desplazarte.");
@@ -92,10 +94,10 @@ public class AgeOfBrawls {
                         
                     case "listar":
                         String sub1 = orden.substring(orden.indexOf(" ") + 1, orden.length());
-                        if(sub1.equals("personajes")){
+                        if(sub1.toLowerCase().equals("personajes")){
                           mapa.listarPersonajes();  
                         }
-                        else if(sub1.equals("edificios")){
+                        else if(sub1.toLowerCase().equals("edificios")){
                             mapa.listarEdificios();
                         }
                         break;
@@ -110,7 +112,10 @@ public class AgeOfBrawls {
                         Edificio edificio= mapa.getEdificios().get(sub2);
                         edificio.describirEdificio();
                         }
-                        //else
+                        else if(mapa.getContenedoresRecurso().containsKey(sub2)){
+                            ContenedorRecurso rec = mapa.getContenedoresRecurso().get(sub2);
+                            rec.describirContenedorRecurso();
+                        }
                             
                 }
             }
