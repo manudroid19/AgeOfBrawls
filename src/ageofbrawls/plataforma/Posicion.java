@@ -29,6 +29,8 @@ public class Posicion {
             this.y = y;
         } else {
             System.out.println("Error:posicion no valida.");
+            this.x=-1;
+            this.y=-1;
         }
     }
 

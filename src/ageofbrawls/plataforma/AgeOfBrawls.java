@@ -41,7 +41,7 @@ public class AgeOfBrawls {
         while (!"salir".equals(orden)) {
             System.out.print("Introduce orden: ");
             orden = sca.nextLine();
-            if (!orden.contains(" ")) {
+            if (!orden.contains(" ") && !orden.equals("salir")) {
                 System.out.println("Error de sintaxis.");
                 continue;
             }
@@ -65,7 +65,6 @@ public class AgeOfBrawls {
                     mapa.imprimir();
                     break;
                 case "manejar":
-                    System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
                     quien = comando[1];
                     if (comando.length != 2) {
                         System.out.println("Error de sintaxis.");
@@ -76,9 +75,10 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
+                    System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
                     String tecla = "";
                     while (!tecla.equals("q")) {
-                        tecla = sca.next();
+                        tecla = sca.nextLine();
                         switch (tecla) {
                             case "a":
                                 person.mover(mapa, "oeste");
@@ -104,8 +104,11 @@ public class AgeOfBrawls {
                     }
                     break;
                 case "listar":
-                    String sub1 = orden.substring(orden.indexOf(" ") + 1, orden.length());
-                    switch (sub1.toLowerCase()) {
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    switch (comando[1].toLowerCase()) {
                         case "personajes":
                             mapa.listarPersonajes();
                             break;
@@ -174,7 +177,9 @@ public class AgeOfBrawls {
                     mapa.imprimir();
                     break;
                 default:
-                    System.out.println("Error de sintaxis.");
+                    if (!orden.equals("salir")) {
+                        System.out.println("Error de sintaxis.");
+                    }
             }
 
         }
