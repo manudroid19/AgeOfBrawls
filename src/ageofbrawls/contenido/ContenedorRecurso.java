@@ -18,7 +18,7 @@ public class ContenedorRecurso {
     private int tipo;
     private int cantidad;
     private String nombre;
-    private static int bosques=1, arbustos=1, canteras=1;
+    private static int bosques=1, arbustos=1, canteras=1; //contadores
 
     public ContenedorRecurso(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
@@ -99,19 +99,18 @@ public class ContenedorRecurso {
     public void describirContenedorRecurso() {
         switch (tipo) {
             case ContenedorRecurso.PRADERA:
-                System.out.println("Tipo: PRADERA");
-                System.out.println("Cantidad de Recurso: 0");
+                System.out.println("Celda de tipo pradera");
             case ContenedorRecurso.BOSQUE:
-                System.out.println("Tipo: BOSQUE");
-                System.out.println("Cantidad de madera:" + cantidad);
+                System.out.println("Contenedor de recurso:");
+                System.out.println("Cantidad de madera: " + cantidad);
                 break;
             case ContenedorRecurso.CANTERA:
-                System.out.println("Tipo: CANTERA");
-                System.out.println("Cantidad de piedra" + cantidad);
+                System.out.println("Contenedor de recurso:");
+                System.out.println("Cantidad de piedra: " + cantidad);
                 break;
             case ContenedorRecurso.ARBUSTO:
-                System.out.println("Tipo: ARBUSTO");
-                System.out.println("Cantidad de comida" +cantidad);
+                System.out.println("Contenedor de recurso:");
+                System.out.println("Cantidad de comida: " +cantidad);
                 break;
         }
 

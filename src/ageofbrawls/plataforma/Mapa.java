@@ -96,15 +96,12 @@ public class Mapa {
 //                nombre = nombre.replace("-"+i, "-"+(++i));
 //            }
             edificios.put(nombre, ciud);
+            Posicion posPaisano = edificios.get("Ciudadela-1").getPosicion().PosicionAdyacenteLibre(this);
+            Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1");
+            personajes.put("paisano1", paisano1);
+            this.getCelda(posPaisano).addPersonaje(paisano1);
+            this.makeAdyVisible(posPaisano);
         }
-    }
-
-    public void inicializar(String paisano) {
-        Posicion posPaisano = edificios.get("Ciudadela-1").getPosicion().PosicionAdyacenteLibre(this);
-        Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, paisano);
-        personajes.put(paisano, paisano1);
-        this.getCelda(posPaisano).addPersonaje(paisano1);
-        this.makeAdyVisible(posPaisano);
     }
 
     public void listarPersonajes() {
@@ -112,6 +109,9 @@ public class Mapa {
         for (Map.Entry<String, Personaje> entry : pers) {
             System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
         }
+    }
+    public boolean perteneceAMapa(Posicion posicion){
+        return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
     public void listarEdificios() {
@@ -129,7 +129,7 @@ public class Mapa {
                 Celda c = this.getCelda(h, k);
                 if (c != null && c.isOculto() && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(false);
-                    if (c.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA ) {
+                    if (c.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
                         c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(c.getContenedorRec().getContador()));
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
                     }
@@ -169,7 +169,6 @@ public class Mapa {
         if (x < columnas && y < filas && x > -1 && y > -1) {
             return mapa.get(y).get(x);
         }
-        System.out.println("getCelda devuelve null" + x + y);
         return null;
     }
 
@@ -180,6 +179,7 @@ public class Mapa {
     public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
+
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
     }

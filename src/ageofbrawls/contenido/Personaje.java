@@ -65,7 +65,8 @@ public class Personaje {
     public int getCapRec() {
         return capRec;
     }
-    public int getCantRec(){
+
+    public int getCantRec() {
         return cantRec;
     }
 
@@ -80,7 +81,8 @@ public class Personaje {
             System.out.println("Error: capacidad introducida errónea");
         }
     }
-    public void setCantRec(int valor){
+
+    public void setCantRec(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             cantRec = valor;
         } else {
@@ -95,31 +97,34 @@ public class Personaje {
             System.out.println("Error: posicion introducida errónea");
         }
     }
-    public String getNombre(){
+
+    public String getNombre() {
         return nombre;
     }
 
     public void describirPersonaje() {
-        if(tipo==Personaje.SOLDADO){
-        System.out.println("Salud :" + salud);
-        System.out.println("Armadura :" + armadura);
-        System.out.println("Ataque :" + ataque);
+        if (tipo == Personaje.SOLDADO) {
+            System.out.println("Nombre: "+nombre);
+            System.out.println("Salud :" + salud);
+            System.out.println("Armadura :" + armadura);
+            System.out.println("Ataque :" + ataque);
+        } else {
+            System.out.println("Nombre: "+nombre);
+            System.out.println("Salud :" + salud);
+            System.out.println("Capacidad de recolección :" + capRec);
+            System.out.println("Cantidad de Recursos que lleva:" + cantRec);
         }
-        else
-        System.out.println("Salud :" + salud);
-        System.out.println("Armadura :" + armadura);
-        System.out.println("Capacidad de recolección :" + capRec); 
-        System.out.println("Cantidad de Recursos que lleva:" +cantRec);
     }
 
     private void mover(Mapa mapa, int direccion) {
-        if (mapa.getCelda(posicion.get(direccion)).esCeldaLibre()) {
+        if (mapa.perteneceAMapa(posicion.get(direccion)) && mapa.getCelda(posicion.get(direccion)).esCeldaLibre()) {
             mapa.getCelda(posicion).removePersonaje(this);
             posicion = posicion.get(direccion);
             mapa.getCelda(posicion).addPersonaje(this);
             mapa.makeAdyVisible(posicion);
-        }else
+        } else {
             System.out.println("Error: No te puedes mover a esa celda.");
+        }
     }
 
     public void mover(Mapa mapa, String direccion) {
@@ -140,36 +145,36 @@ public class Personaje {
                 System.out.println("Error: direccion no valida.");
         }
     }
+
     private void recolectar(Mapa mapa, int direccion) {
         if (tipo == Personaje.PAISANO) {
-            if(capRec>0){
-                if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio()==null) {
-                    if(this.getCantRec()+mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()<=this.getCapRec()){
-                    this.setCantRec(this.getCantRec()+mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
-                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
-                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
-                    
-                    }
-                    else
-                      this.setCantRec(this.getCantRec()+(this.getCapRec()-this.getCantRec()));
-                      mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad((mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad())-(this.getCapRec()-this.getCantRec()));
-        }else
-            System.out.println("Error: No te puedes mover a esa celda.");
-                
-                
-                
-            }
-            else
-                System.out.println("El personaje no puede recolectar más");
+            if (capRec > 0) {
+                if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio() == null) {
+                    if (this.getCantRec() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() <= this.getCapRec()) {
+                        this.setCantRec(this.getCantRec() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
+                        mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
+                        mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
 
-        }
-        else {
+                    } else {
+                        this.setCantRec(this.getCantRec() + (this.getCapRec() - this.getCantRec()));
+                    }
+                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad((mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()) - (this.getCapRec() - this.getCantRec()));
+                } else {
+                    System.out.println("Error: No te puedes mover a esa celda.");
+                }
+
+            } else {
+                System.out.println("El personaje no puede recolectar más");
+            }
+
+        } else {
             System.out.println("Error: Un soldado no puede recolectar");
         }
     }
-    public void recolectar(Mapa mapa,String direccion) {
-        
-                switch (direccion.toLowerCase()) {
+
+    public void recolectar(Mapa mapa, String direccion) {
+
+        switch (direccion.toLowerCase()) {
             case "norte":
                 recolectar(mapa, Posicion.NORTE);
                 break;
@@ -185,7 +190,7 @@ public class Personaje {
             default:
                 System.out.println("Error: direccion no valida.");
         }
-        
+
     }
 
     public void consEdif() {
@@ -203,7 +208,8 @@ public class Personaje {
             System.out.println("Error: Un soldado no puede almacenar recursos ");
         }
     }
-        @Override
+
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + this.tipo;
@@ -218,7 +224,6 @@ public class Personaje {
         return hash;
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

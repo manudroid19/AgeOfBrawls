@@ -57,20 +57,20 @@ public class Edificio {
         switch(tipo){
             case Edificio.CIUDADELA:
                 System.out.println("Tipo: CIUDADELA");
-                System.out.println("PS: " +ps);
-                System.out.println("Nome:" +nombre);
+                System.out.println("Salud: " +ps);
+                System.out.println("Nombre: " +nombre);
                 break;
                 
             case Edificio.CUARTEL:
                 System.out.println("Tipo: CUARTEL");
-                System.out.println("PS: " +ps);
-                System.out.println("Nome:" +nombre);
+                System.out.println("Salud: " +ps);
+                System.out.println("Nombre: " +nombre);
                 break;
                 
             case Edificio.CASA:
                 System.out.println("Tipo: CASA");
-                System.out.println("PS: " +ps);
-                System.out.println("Nome:" +nombre);
+                System.out.println("Salud: " +ps);
+                System.out.println("Nombre: " +nombre);
                 break;
                 
         }

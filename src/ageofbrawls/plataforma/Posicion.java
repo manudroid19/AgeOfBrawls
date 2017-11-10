@@ -86,7 +86,7 @@ public class Posicion {
 
     @Override
     public String toString() {
-        return "Posicion: " + "Fila " + y + ", columna " + x;
+        return "Posicion: " + "fila " + y + ", columna " + x;
     }
         @Override
     public int hashCode() {

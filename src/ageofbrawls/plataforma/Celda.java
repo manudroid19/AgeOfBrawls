@@ -48,6 +48,20 @@ public class Celda {
     public Celda(int i, int j) {
         this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
     }
+    public String getTipo(){
+        switch (this.recurso.getTipo()) {
+            case ContenedorRecurso.PRADERA:
+                return "pradera";
+            case ContenedorRecurso.BOSQUE:
+                return "bosque";
+            case ContenedorRecurso.CANTERA:
+                return "cantera";
+            case ContenedorRecurso.ARBUSTO:
+                return "arbusto";
+            default:
+                return null;
+        }
+    }
 
     public Celda(int i, int j, boolean oculto) {
         this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
