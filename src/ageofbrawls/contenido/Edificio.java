@@ -5,6 +5,7 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 
 /**
@@ -17,9 +18,12 @@ public class Edificio {
     public final static int CIUDADELA = 1;
     public final static int CUARTEL = 2;
     public final static int CASA = 3;
-     private final static int CAPALMACEN=10000;
+    public final static int CAPALMACEN=100000;
+    public final static int CAPALOJ=10;
     private Posicion posicion;
     private int tipo;
+    private int capacidadAlojamiento;
+    private int capAlmacen;
     private int ps;
     private boolean destruido;
     private String nombre;
@@ -29,6 +33,21 @@ public class Edificio {
             this.tipo = tipo;
             this.posicion = posicion;
             this.nombre = nombre;
+        switch(tipo){
+            case Edificio.CASA:
+                this.ps=200;
+                this.capacidadAlojamiento=Edificio.CAPALOJ;
+                break;
+            case Edificio.CUARTEL:
+                this.ps=500;
+                break;
+            case Edificio.CIUDADELA:
+                this.ps=1000;
+                this.capAlmacen=Edificio.CAPALMACEN;
+                break;
+            
+            
+        }    
         }else{
             System.out.println("Error seteando tipo");
         }
@@ -44,6 +63,9 @@ public class Edificio {
     public int getPs() {
         return ps;
     }
+    public int getCapAloj(){
+        return capacidadAlojamiento;
+    }
 
     public void setTipo(int tipo) {
         if (tipo > 0 && tipo < 4) {
@@ -51,6 +73,20 @@ public class Edificio {
         }else{
             System.out.println("Error seteando tipo");
     }
+    }
+    
+    public void crearPersonaje(Mapa mapa){
+        if(tipo== Edificio.CIUDADELA){
+            if(mapa.getPersonajes().size()<mapa.contarEdificios(Edificio.CASA)*Edificio.CAPALOJ){
+                if()
+            }
+            
+            
+        }
+        else if(tipo==Edificio.CUARTEL){
+            
+        }
+            
     }
     
     public void describirEdificio(){
