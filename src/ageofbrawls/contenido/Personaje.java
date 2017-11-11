@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Personaje {
 
     public final static int PAISANO = 1, SOLDADO = 2;
-    private int tipo, salud, armadura, ataque, capRec, cantRec;
+    private int tipo, salud, armadura, ataque, capRec, cantRecMadera,cantRecPiedra,cantRecComida;
     private Posicion posicion;
     private boolean estaMuerto;
     private String nombre;
@@ -66,10 +66,15 @@ public class Personaje {
         return capRec;
     }
 
-    public int getCantRec() {
-        return cantRec;
+    public int getCantRecMadera() {
+        return cantRecMadera;
     }
-
+    public int getCantRecPiedra() {
+        return cantRecPiedra;
+    }
+    public int getCantRecComida() {
+        return cantRecComida;
+    }
     public Posicion getPosicion() {
         return posicion;
     }
@@ -82,9 +87,23 @@ public class Personaje {
         }
     }
 
-    public void setCantRec(int valor) {
+    public void setCantRecMadera(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
-            cantRec = valor;
+            cantRecMadera = valor;
+        } else {
+            System.out.println("Error: capacidad introducida errónea");
+        }
+    }
+    public void setCantRecPiedra(int valor) {
+        if (valor > 0 && this.tipo == Personaje.PAISANO) {
+            cantRecPiedra = valor;
+        } else {
+            System.out.println("Error: capacidad introducida errónea");
+        }
+    }
+    public void setCantRecComida(int valor) {
+        if (valor > 0 && this.tipo == Personaje.PAISANO) {
+            cantRecComida = valor;
         } else {
             System.out.println("Error: capacidad introducida errónea");
         }
@@ -112,8 +131,12 @@ public class Personaje {
             System.out.println("Nombre: "+nombre);
             System.out.println("Salud :" + salud);
             System.out.println("Capacidad de recolección :" + capRec);
-            System.out.println("Cantidad de Recursos que lleva:" + cantRec);
+            System.out.println("Cantidad de Recursos que lleva:" + (cantRecMadera+cantRecComida+cantRecPiedra));
         }
+    
+    }
+    public int getCantRecTotal(){
+        return (cantRecMadera+cantRecComida+cantRecPiedra);
     }
 
     private void mover(Mapa mapa, int direccion) {
@@ -150,17 +173,50 @@ public class Personaje {
         if (tipo == Personaje.PAISANO) {
             if (capRec > 0) {
                 if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio() == null) {
-                    if (this.getCantRec() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() <= this.getCapRec()) {
-                        this.setCantRec(this.getCantRec() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
-                        mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
-                        mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
+                    if (this.getCantRecTotal() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() <= this.getCapRec()) {
+                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()){
+                            case ContenedorRecurso.BOSQUE:
+                                this.setCantRecMadera(this.getCantRecMadera() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
+                                break;
+                                
+                            case ContenedorRecurso.ARBUSTO:
+                                this.setCantRecComida(this.getCantRecComida() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
+                                break;
+                                
+                            case ContenedorRecurso.CANTERA: 
+                                this.setCantRecPiedra(this.getCantRecPiedra() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
+                                break;
+                        }
+             
 
                     } else {
-                        this.setCantRec(this.getCantRec() + (this.getCapRec() - this.getCantRec()));
+                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()){
+                            case ContenedorRecurso.BOSQUE:
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+                                this.setCantRecMadera(this.getCantRecMadera() + (this.getCapRec() - this.getCantRecTotal()));
+                                break;
+                                
+                            case ContenedorRecurso.ARBUSTO:
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+                                this.setCantRecComida(this.getCantRecComida() + (this.getCapRec() - this.getCantRecTotal()));
+                                break;
+                                
+                            case ContenedorRecurso.CANTERA: 
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+                                this.setCantRecPiedra(this.getCantRecPiedra() + (this.getCapRec() - this.getCantRecTotal()));
+                                break;
+                        }
+   
                     }
-                    mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad((mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()) - (this.getCapRec() - this.getCantRec()));
-                } else {
-                    System.out.println("Error: No te puedes mover a esa celda.");
+                }
+                else {
+                    System.out.println("Error: La celda destino no es un contenedor de recursos.");
                 }
 
             } else {
