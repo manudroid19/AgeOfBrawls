@@ -67,7 +67,7 @@ public class ContenedorRecurso {
     }
 
     public void setCantidad(int cantidad) {
-        if (cantidad > 0) {
+        if (cantidad >= 0) {
             this.cantidad = cantidad;
         } else {
             System.out.println("Error: Cantidad introducida no es válida");

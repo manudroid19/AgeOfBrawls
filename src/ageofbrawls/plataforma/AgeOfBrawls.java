@@ -197,8 +197,25 @@ public class AgeOfBrawls {
                         break;
                     }
                     creador.crearPersonaje(mapa);
+                    mapa.imprimir();
                     
                     break;
+                    
+                case "recolectar":
+                    if (comando.length != 3) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String personaje2 = comando[1];
+                    String direccion = comando[2];
+                    Personaje personaje3= mapa.getPersonajes().get(personaje2);
+                    if (personaje3 == null) {
+                        System.out.println("El personaje no existe");
+                        break;
+                    }
+                    personaje3.recolectar(mapa, direccion);
+                    break;
+                    
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {
                         System.out.println("Error de sintaxis.");
