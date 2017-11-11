@@ -187,7 +187,7 @@ public class Mapa {
     }
     public int contarEdificios(int tipo){
         int n=0;
-        if(tipo>0 && tipo<3){
+        if(tipo>0 && tipo<4){
         Collection<Edificio> edifs= this.getEdificios().values();
         for(Edificio ed: edifs){
            if(ed.getTipo()==tipo){
@@ -195,10 +195,8 @@ public class Mapa {
            }
         }
         return n;
-        }
-        
-        else{
-            System.out.println("Tipo mal introducido");
+        }else{
+            System.out.println("Error: tipo incorrecto.");
         }
         return -1;
     }

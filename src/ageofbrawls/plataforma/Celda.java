@@ -139,6 +139,8 @@ public class Celda {
                     return Mapa.ANSI_PURPLE_BACKGROUND+" U ";
                 } else if (this.edificio.getTipo() == Edificio.CASA) {
                     return Mapa.ANSI_PURPLE_BACKGROUND+" K ";
+                }else if (this.edificio.getTipo() == Edificio.CUARTEL) {
+                    return Mapa.ANSI_PURPLE_BACKGROUND+" Z ";
                 }
             case ContenedorRecurso.CANTERA:
                 return Mapa.ANSI_BLUE_BACKGROUND+Mapa.ANSI_WHITE+" C ";

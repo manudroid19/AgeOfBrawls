@@ -178,7 +178,7 @@ public class Personaje {
 
     }
 
-    public boolean consEdif(String dir, String tipoC, Mapa mapa) {
+    public boolean consEdif(String tipoC, String dir, Mapa mapa) {
         if (tipo == Personaje.PAISANO) {
             Posicion posConstruir = posicion.get(dir);
             if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre()) { //direccion no valida
@@ -187,11 +187,15 @@ public class Personaje {
             }
                 switch (tipoC) {
                     case "casa":
-                        //Edificio edif = new Edificio(Edificio.CASA,posConstruir,);
-                        break;
+                        Edificio edif = new Edificio(Edificio.CASA,posConstruir,"casa"+mapa.contarEdificios(Edificio.CASA)+1);
+                        mapa.getCelda(posConstruir).setEdificio(edif);
+                        return true;
                     case "cuartel":
-                        break;
-
+                        Edificio cuart = new Edificio(Edificio.CASA,posConstruir,"cuartel"+mapa.contarEdificios(Edificio.CUARTEL)+1);
+                        mapa.getCelda(posConstruir).setEdificio(cuart);
+                        return true;
+                    default:
+                        System.out.println("Error: tipos de construccion incorrecta.");
                 }
             
         } else {
