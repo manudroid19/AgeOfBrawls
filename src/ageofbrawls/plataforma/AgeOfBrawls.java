@@ -209,7 +209,6 @@ public class AgeOfBrawls {
                         break;
                     }
                     creador.crearPersonaje(mapa);
-                    mapa.imprimir();
                     
                     break;
                     
@@ -226,6 +225,21 @@ public class AgeOfBrawls {
                         break;
                     }
                     personaje3.recolectar(mapa, direccion);
+                    break;
+                    
+                case "almacenar":
+                    if (comando.length != 3) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String personaje4 = comando[1];
+                    String direccion2 = comando[2];
+                    Personaje personaje5= mapa.getPersonajes().get(personaje4);
+                    if (personaje5 == null) {
+                        System.out.println("El personaje no existe");
+                        break;
+                    }
+                    personaje5.almacenar(mapa, direccion2);
                     break;
                     
                 default:

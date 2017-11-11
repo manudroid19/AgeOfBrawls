@@ -124,6 +124,28 @@ public class Edificio {
             System.out.println("Se ha creado "+person.getNombre()+" en la celda de "+pos);
 
         } else if (tipo == Edificio.CUARTEL) {
+            if (mapa.getEdificios().get("ciudadela1").getAlimentos() < 100) {
+                System.out.println("Error: no hay suficiente alimento disponible.");
+                return;
+            }
+            Posicion pos = posicion.PosicionAdyacenteLibre(mapa);
+            int i = 1;
+            String nombrePers = "soldado1";
+            while (mapa.getPersonajes().containsKey(nombrePers)) {
+                nombrePers = nombrePers.replace("soldado" + i, "soldado" + (++i));
+            }
+            Personaje person = new Personaje(Personaje.SOLDADO, pos, nombrePers);
+            mapa.getCelda(pos).addPersonaje(person);
+            mapa.getPersonajes().put(person.getNombre(), person);
+            mapa.getCelda(pos).setOculto(false);
+            mapa.getEdificios().get("ciudadela1").setAlimentos(-100, true);
+            mapa.makeAdyVisible(pos);
+            System.out.println();
+            mapa.imprimirCabecera();
+            mapa.imprimir();
+            System.out.println("Coste de creacion: 100 unidades de comida");
+            System.out.println("Te quedan "+((mapa.contarEdificios(Edificio.CASA) * CAPALOJ)-mapa.getPersonajes().size())+" unidades de capacidad de alojamiento");
+            System.out.println("Se ha creado "+person.getNombre()+" en la celda de "+pos);
 
         }
 

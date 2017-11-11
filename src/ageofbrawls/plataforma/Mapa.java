@@ -256,6 +256,8 @@ public class Mapa {
         System.out.println("construir [paisano] [casa o cuartel] [direccion: norte, sur, este o oeste]");
         System.out.println("crear [cuartel o ciudadela] [soldado o paisano]");
         System.out.println("reparar [paisano] [direccion edificio]");
+        System.out.println("recolectar [paisano] [direccion Contenedor Recursos]");
+        System.out.println("almacenar [paisano] [direccion Ciudadela]");
         System.out.println();
     }
 }
