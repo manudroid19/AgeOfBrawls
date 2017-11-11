@@ -298,6 +298,24 @@ public class Personaje {
         }
     }
 
+    public void reparar(Posicion pos, Mapa mapa){
+        if(pos==null || mapa==null||!mapa.perteneceAMapa(pos) || mapa.getCelda(pos).getEdificio()==null || mapa.getCelda(pos).getEdificio().getPs()==mapa.getCelda(pos).getEdificio().getMaxVida()){
+            System.out.println("Nada que reparar.");
+            return;
+        }
+        int puntosAReparar = mapa.getCelda(pos).getEdificio().getMaxVida()-mapa.getCelda(pos).getEdificio().getPs();
+        int costeMadera = (int) (puntosAReparar*0.4);
+        int costePiedra = (int) (puntosAReparar*0.5);
+        if(mapa.getEdificios().get("ciudadela1").getMadera()<costeMadera || mapa.getEdificios().get("ciudadela1").getPiedra()<costePiedra){
+            System.out.println("No tienes suficientes recursos disponibles!");
+            return;
+        }
+        mapa.getEdificios().get("ciudadela1").setMadera(-costeMadera, true);
+        mapa.getEdificios().get("ciudadela1").setPiedra(-costePiedra, true);   
+        mapa.getCelda(pos).getEdificio().reparar();
+        System.out.println("Reparación completada.");
+        System.out.println("Coste de la reparación: "+costeMadera+" unidades de madera y "+costePiedra+" unidades de piedra de la ciudadela.");        
+    }
     @Override
     public int hashCode() {
         int hash = 7;

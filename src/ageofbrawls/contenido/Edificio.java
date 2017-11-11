@@ -55,6 +55,20 @@ public class Edificio {
             System.out.println("Error seteando tipo");
         }
     }
+    public int getMaxVida(){
+        switch (tipo) {
+                case Edificio.CASA:
+                    return 200;
+                case Edificio.CUARTEL:
+                    return 500;
+                case Edificio.CIUDADELA:
+                    return 1000;
+            }
+        return -1;
+    }
+    public void reparar(){
+        ps=getMaxVida();
+    }
 
     public Posicion getPosicion() {
         return new Posicion(posicion);
