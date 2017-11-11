@@ -27,6 +27,7 @@ public class Edificio {
     private int ps;
     private boolean destruido;
     private String nombre;
+    private int madera,piedra, alimentos;
 
     public Edificio(int tipo, Posicion posicion, String nombre) {
         if (tipo > 0 && tipo < 4) {
@@ -44,6 +45,9 @@ public class Edificio {
             case Edificio.CIUDADELA:
                 this.ps=1000;
                 this.capAlmacen=Edificio.CAPALMACEN;
+                madera=500;
+                piedra =500;
+                alimentos=500;
                 break;
             
             
@@ -78,7 +82,7 @@ public class Edificio {
     public void crearPersonaje(Mapa mapa){
         if(tipo== Edificio.CIUDADELA){
             if(mapa.getPersonajes().size()<mapa.contarEdificios(Edificio.CASA)*Edificio.CAPALOJ){
-                if()
+                //if()
             }
             
             
@@ -94,6 +98,7 @@ public class Edificio {
             case Edificio.CIUDADELA:
                 System.out.println("Tipo: CIUDADELA");
                 System.out.println("Salud: " +ps);
+                System.out.println("Recursos: "+madera+ " de madera, "+piedra+" de piedra y "+alimentos+" de alimentos");
                 System.out.println("Nombre: " +nombre);
                 break;
                 
@@ -114,6 +119,42 @@ public class Edificio {
 
     public boolean estaDestruido() {
         return destruido;
+    }
+    public int getMadera(){
+        return this.madera;
+    }
+    public int getPiedra(){
+        return this.piedra;
+    }
+    public void setPiedra(int cant, boolean relative){
+        if(relative){
+            if(piedra+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }                
+            piedra+=cant;
+        }else{
+            if(piedra+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            piedra = cant;
+        }
+    }
+    public void setMadera(int cant, boolean relative){
+        if(relative){
+            if(madera+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }                
+            madera+=cant;
+        }else{
+            if(madera+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            madera = cant;
+        }
     }
 
     public void danar(int dano) {

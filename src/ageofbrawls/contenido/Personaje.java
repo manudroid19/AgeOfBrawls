@@ -242,12 +242,28 @@ public class Personaje {
             }
                 switch (tipoC) {
                     case "casa":
+                        if(mapa.getEdificios().get("ciudadela1").getMadera()<100 || mapa.getEdificios().get("ciudadela1").getPiedra()<100){
+                            System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes "+mapa.getEdificios().get("ciudadela1").getMadera()+" y "+mapa.getEdificios().get("ciudadela1").getPiedra());
+                            return false;
+                        }
+                        mapa.getEdificios().get("ciudadela1").setPiedra(-100,true);
+                        mapa.getEdificios().get("ciudadela1").setMadera(-100,true);
                         Edificio edif = new Edificio(Edificio.CASA,posConstruir,"casa"+mapa.contarEdificios(Edificio.CASA)+1);
                         mapa.getCelda(posConstruir).setEdificio(edif);
+                        System.out.println("Casa construida en "+posConstruir);
+                        System.out.println("Coste: 100 de madera, 100 de piedra.");
                         return true;
                     case "cuartel":
+                        if(mapa.getEdificios().get("ciudadela1").getMadera()<200 || mapa.getEdificios().get("ciudadela1").getPiedra()<200){
+                            System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes "+mapa.getEdificios().get("ciudadela1").getMadera()+" y "+mapa.getEdificios().get("ciudadela1").getPiedra());
+                            return false;
+                        }
+                        mapa.getEdificios().get("ciudadela1").setPiedra(-200,true);
+                        mapa.getEdificios().get("ciudadela1").setMadera(-200,true);
                         Edificio cuart = new Edificio(Edificio.CASA,posConstruir,"cuartel"+mapa.contarEdificios(Edificio.CUARTEL)+1);
                         mapa.getCelda(posConstruir).setEdificio(cuart);
+                        System.out.println("Cuartel construida en "+posConstruir);
+                        System.out.println("Coste: 200 de madera, 200 de piedra.");
                         return true;
                     default:
                         System.out.println("Error: tipos de construccion incorrecta.");

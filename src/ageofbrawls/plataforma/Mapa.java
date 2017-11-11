@@ -89,7 +89,7 @@ public class Mapa {
 
             this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
             Posicion posCiudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-            String nombre = "Ciudadela-1";
+            String nombre = "ciudadela1";
             Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nombre);
             this.getCelda(posCiudadela).setEdificio(ciud);
 //            int i=1;
@@ -97,7 +97,7 @@ public class Mapa {
 //                nombre = nombre.replace("-"+i, "-"+(++i));
 //            }
             edificios.put(nombre, ciud);
-            Posicion posPaisano = edificios.get("Ciudadela-1").getPosicion().PosicionAdyacenteLibre(this);
+            Posicion posPaisano = edificios.get("ciudadela1").getPosicion().PosicionAdyacenteLibre(this);
             Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1");
             personajes.put("paisano1", paisano1);
             this.getCelda(posPaisano).addPersonaje(paisano1);
