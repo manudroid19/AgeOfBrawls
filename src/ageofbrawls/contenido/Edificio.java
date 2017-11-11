@@ -93,7 +93,7 @@ public class Edificio {
             Posicion pos = posicion.PosicionAdyacenteLibre(mapa);
             int i = 1;
             String nombrePers = "paisano1";
-            while (mapa.getPersonajes().containsKey(nombre)) {
+            while (mapa.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("paisano" + i, "paisano" + (++i));
             }
             Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers);
@@ -106,7 +106,7 @@ public class Edificio {
             mapa.imprimirCabecera();
             mapa.imprimir();
             System.out.println("Coste de creacion: 50 unidades de comida");
-            System.out.println("Te quedan "+((mapa.contarEdificios(Edificio.CASA) * this.capacidadAlojamiento)-mapa.getPersonajes().size())+" unidades de capacidad de alojamiento");
+            System.out.println("Te quedan "+((mapa.contarEdificios(Edificio.CASA) * CAPALOJ)-mapa.getPersonajes().size())+" unidades de capacidad de alojamiento");
             System.out.println("Se ha creado "+person.getNombre()+" en la celda de "+pos);
 
         } else if (tipo == Edificio.CUARTEL) {
