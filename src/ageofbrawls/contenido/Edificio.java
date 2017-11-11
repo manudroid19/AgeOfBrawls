@@ -80,14 +80,18 @@ public class Edificio {
     }
     
     public void crearPersonaje(Mapa mapa){
+        if(mapa.getPersonajes().size()>=mapa.contarEdificios(Edificio.CASA)*Edificio.CAPALOJ){
+                System.out.println("Error: no hay suficiente espacio para crear.");
+                return;
+            }
         if(tipo== Edificio.CIUDADELA){
-            if(mapa.getPersonajes().size()<mapa.contarEdificios(Edificio.CASA)*Edificio.CAPALOJ){
-                //if()
+            if(mapa.getEdificios().get("ciudadela1").getAlimentos()<50){
+                System.out.println("Error: no hay suficiente alimento disponible.");
+                return;
             }
             
             
-        }
-        else if(tipo==Edificio.CUARTEL){
+        }else if(tipo==Edificio.CUARTEL){
             
         }
             
@@ -126,6 +130,9 @@ public class Edificio {
     public int getPiedra(){
         return this.piedra;
     }
+    public int getAlimentos(){
+        return this.alimentos;
+    }
     public void setPiedra(int cant, boolean relative){
         if(relative){
             if(piedra+cant<0){
@@ -139,6 +146,21 @@ public class Edificio {
                 return;
             }
             piedra = cant;
+        }
+    }
+    public void setAlimentos(int cant, boolean relative){
+        if(relative){
+            if(alimentos+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }                
+            alimentos+=cant;
+        }else{
+            if(alimentos+cant<0){
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            alimentos = cant;
         }
     }
     public void setMadera(int cant, boolean relative){

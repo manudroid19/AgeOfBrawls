@@ -28,9 +28,11 @@ public class AgeOfBrawls {
         Scanner sca = new Scanner(System.in);
         String jugador = "a";
 
-        System.out.print("Bienvenido a Age Of Brawls!!");
+        System.out.println("Bienvenido a Age Of Brawls!!");
+        System.out.println("Dispones inicialmente de 500 de piedra, madera y alimentos para levantar tu imperio.");
+        System.out.println("Construir una casa cuesta 100 de piedra y madera, un cuartel 200 de piedra y madera, crear un paisano 50 de alimentos y crear un soldado 100 de alimentos.");
         System.out.println();
-        imprimirCabecera();
+        mapa.imprimirCabecera();
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (IOException | InterruptedException ex) {
@@ -60,9 +62,6 @@ public class AgeOfBrawls {
                         break;
                     }
                     personaje.mover(mapa, donde);
-                    System.out.println();
-                    imprimirCabecera();
-                    mapa.imprimir();
                     break;
                 case "manejar":
                     quien = comando[1];
@@ -82,22 +81,22 @@ public class AgeOfBrawls {
                         switch (tecla) {
                             case "a":
                                 person.mover(mapa, "oeste");
-                                imprimirCabecera();
+                                mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "s":
                                 person.mover(mapa, "sur");
-                                imprimirCabecera();
+                                mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "d":
                                 person.mover(mapa, "este");
-                                imprimirCabecera();
+                                mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "w":
                                 person.mover(mapa, "norte");
-                                imprimirCabecera();
+                                mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                         }
@@ -136,12 +135,12 @@ public class AgeOfBrawls {
                     } else if (mapa.getContenedoresRecurso().containsKey(sujeto)) {
                         ContenedorRecurso rec = mapa.getContenedoresRecurso().get(sujeto);
                         rec.describirContenedorRecurso();
-                    }else{
+                    } else {
                         System.out.println("Error: sujeto a describir no encontrado.");
                     }
                     break;
                 case "mirar":
-                    if (comando.length != 2 || comando[1].length()!=5||comando[1].charAt(0)!='(' || comando[1].charAt(2)!=',' || comando[1].charAt(4)!=')' ) {
+                    if (comando.length != 2 || comando[1].length() != 5 || comando[1].charAt(0) != '(' || comando[1].charAt(2) != ',' || comando[1].charAt(4) != ')') {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
@@ -181,12 +180,25 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    if(personaje.consEdif(tipo,dir,mapa)){ //evaluar expresion=>construir. exito=> imprimo mapa
-                        System.out.println();
-                        imprimirCabecera();
-                        mapa.imprimir();
+                    if (personaje.consEdif(tipo, dir, mapa)) { //evaluar expresion=>construir. exito=> imprimo mapa
+
                     }
                     break;
+                case "crear":
+                    if (comando.length != 3) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String edificio = comando[1];
+                    tipo = comando[2];
+                    Edificio creador = mapa.getEdificios().get(edificio);
+                    if (creador == null || (creador.getTipo()==Edificio.CUARTEL &&!tipo.equals("soldado")) || (creador.getTipo()==Edificio.CIUDADELA &&!tipo.equals("paisano"))) {
+                        System.out.println("Comando erroneo. No se puede crear.");
+                        break;
+                    }
+                    creador.crearPersonaje(mapa);
+                    
+                    
                 default:
                     if (!orden.equals("salir")) {
                         System.out.println("Error de sintaxis.");
@@ -195,20 +207,6 @@ public class AgeOfBrawls {
 
         }
 
-    }
-
-    public static void imprimirCabecera() {
-        System.out.println("Leyenda: Pradera transitable" + Mapa.ANSI_GREEN_BACKGROUND + "   " + Mapa.ANSI_RESET + " Ciudadela:" + Mapa.ANSI_PURPLE_BACKGROUND + " U " + Mapa.ANSI_RESET);
-        System.out.println("Casa:" + Mapa.ANSI_PURPLE_BACKGROUND + " K " + Mapa.ANSI_RESET +"Cuartel:"+Mapa.ANSI_PURPLE_BACKGROUND+" Z "+Mapa.ANSI_RESET+ "Bosque:" + Mapa.ANSI_CYAN_BACKGROUND + " B " + Mapa.ANSI_RESET
-                + "Cantera:" + Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C " + Mapa.ANSI_RESET + "Arbusto:" + Mapa.ANSI_YELLOW_BACKGROUND + " A " + Mapa.ANSI_RESET);
-        System.out.println("En las praderas transitables puede haber personajes, en \n\rcaso lo verás como " + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET);
-        System.out.println("Los nombres de los contenedores de recursos aparecerán al lado de su fila.");
-        System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje] [direccion: norte, sur, este o oeste]");
-        System.out.println("manejar [personaje] (permite manejar el personaje usando ASDF o las flechas de control)");
-        System.out.println("listar [personajes o edificios]");
-        System.out.println("describir [nombre de personaje,edificio o contenedor de recurso]");
-        System.out.println("mirar (fila,columna)");
-        System.out.println();
     }
 
 }

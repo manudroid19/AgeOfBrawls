@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Personaje {
 
     public final static int PAISANO = 1, SOLDADO = 2;
-    private int tipo, salud, armadura, ataque, capRec, cantRecMadera,cantRecPiedra,cantRecComida,cantRecTotal;
+    private int tipo, salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida, cantRecTotal;
     private Posicion posicion;
     private boolean estaMuerto;
     private String nombre;
@@ -68,12 +68,15 @@ public class Personaje {
     public int getCantRecMadera() {
         return cantRecMadera;
     }
+
     public int getCantRecPiedra() {
         return cantRecPiedra;
     }
+
     public int getCantRecComida() {
         return cantRecComida;
     }
+
     public Posicion getPosicion() {
         return posicion;
     }
@@ -93,6 +96,7 @@ public class Personaje {
             System.out.println("Error: capacidad introducida errónea");
         }
     }
+
     public void setCantRecPiedra(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             cantRecPiedra = valor;
@@ -100,6 +104,7 @@ public class Personaje {
             System.out.println("Error: capacidad introducida errónea");
         }
     }
+
     public void setCantRecComida(int valor) {
         if (valor > 0 && this.tipo == Personaje.PAISANO) {
             cantRecComida = valor;
@@ -130,12 +135,13 @@ public class Personaje {
             System.out.println("Nombre: " + nombre);
             System.out.println("Salud :" + salud);
             System.out.println("Capacidad de recolección :" + capRec);
-            System.out.println("Cantidad de Recursos que lleva:" + (cantRecMadera+cantRecComida+cantRecPiedra));
+            System.out.println("Cantidad de Recursos que lleva:" + (cantRecMadera + cantRecComida + cantRecPiedra));
         }
-    
+
     }
-    public int getCantRecTotal(){
-        return (cantRecMadera+cantRecComida+cantRecPiedra);
+
+    public int getCantRecTotal() {
+        return (cantRecMadera + cantRecComida + cantRecPiedra);
     }
 
     private void mover(Mapa mapa, Posicion posicion) {
@@ -144,6 +150,9 @@ public class Personaje {
             this.posicion = posicion;
             mapa.getCelda(posicion).addPersonaje(this);
             mapa.makeAdyVisible(posicion);
+            System.out.println();
+            mapa.imprimirCabecera();
+            mapa.imprimir();
         } else {
             System.out.println("Error: No te puedes mover a esa celda.");
         }
@@ -158,48 +167,46 @@ public class Personaje {
             if (capRec > 0) {
                 if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio() == null) {
                     if (this.getCantRecTotal() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() <= this.getCapRec()) {
-                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()){
+                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()) {
                             case ContenedorRecurso.BOSQUE:
                                 this.setCantRecMadera(this.getCantRecMadera() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
                                 break;
-                                
+
                             case ContenedorRecurso.ARBUSTO:
                                 this.setCantRecComida(this.getCantRecComida() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
                                 break;
-                                
-                            case ContenedorRecurso.CANTERA: 
+
+                            case ContenedorRecurso.CANTERA:
                                 this.setCantRecPiedra(this.getCantRecPiedra() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad());
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(0);
                                 mapa.getCelda(posicion.get(direccion)).getContenedorRec().setTipo(0);
                                 break;
                         }
-             
 
                     } else {
-                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()){
+                        switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()) {
                             case ContenedorRecurso.BOSQUE:
-                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
                                 this.setCantRecMadera(this.getCantRecMadera() + (this.getCapRec() - this.getCantRecTotal()));
                                 break;
-                                
+
                             case ContenedorRecurso.ARBUSTO:
-                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
                                 this.setCantRecComida(this.getCantRecComida() + (this.getCapRec() - this.getCantRecTotal()));
                                 break;
-                                
-                            case ContenedorRecurso.CANTERA: 
-                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad()- (this.getCapRec() - this.getCantRecTotal()));
+
+                            case ContenedorRecurso.CANTERA:
+                                mapa.getCelda(posicion.get(direccion)).getContenedorRec().setCantidad(mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
                                 this.setCantRecPiedra(this.getCantRecPiedra() + (this.getCapRec() - this.getCantRecTotal()));
                                 break;
                         }
-   
+
                     }
-                }
-                else {
+                } else {
                     System.out.println("Error: La celda destino no es un contenedor de recursos.");
                 }
 
@@ -240,35 +247,41 @@ public class Personaje {
                 System.out.println("Error: No se puede contruir en la celda de destino.");
                 return false;
             }
-                switch (tipoC) {
-                    case "casa":
-                        if(mapa.getEdificios().get("ciudadela1").getMadera()<100 || mapa.getEdificios().get("ciudadela1").getPiedra()<100){
-                            System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes "+mapa.getEdificios().get("ciudadela1").getMadera()+" y "+mapa.getEdificios().get("ciudadela1").getPiedra());
-                            return false;
-                        }
-                        mapa.getEdificios().get("ciudadela1").setPiedra(-100,true);
-                        mapa.getEdificios().get("ciudadela1").setMadera(-100,true);
-                        Edificio edif = new Edificio(Edificio.CASA,posConstruir,"casa"+mapa.contarEdificios(Edificio.CASA)+1);
-                        mapa.getCelda(posConstruir).setEdificio(edif);
-                        System.out.println("Casa construida en "+posConstruir);
-                        System.out.println("Coste: 100 de madera, 100 de piedra.");
-                        return true;
-                    case "cuartel":
-                        if(mapa.getEdificios().get("ciudadela1").getMadera()<200 || mapa.getEdificios().get("ciudadela1").getPiedra()<200){
-                            System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes "+mapa.getEdificios().get("ciudadela1").getMadera()+" y "+mapa.getEdificios().get("ciudadela1").getPiedra());
-                            return false;
-                        }
-                        mapa.getEdificios().get("ciudadela1").setPiedra(-200,true);
-                        mapa.getEdificios().get("ciudadela1").setMadera(-200,true);
-                        Edificio cuart = new Edificio(Edificio.CASA,posConstruir,"cuartel"+mapa.contarEdificios(Edificio.CUARTEL)+1);
-                        mapa.getCelda(posConstruir).setEdificio(cuart);
-                        System.out.println("Cuartel construida en "+posConstruir);
-                        System.out.println("Coste: 200 de madera, 200 de piedra.");
-                        return true;
-                    default:
-                        System.out.println("Error: tipos de construccion incorrecta.");
-                }
-            
+            switch (tipoC) {
+                case "casa":
+                    if (mapa.getEdificios().get("ciudadela1").getMadera() < 100 || mapa.getEdificios().get("ciudadela1").getPiedra() < 100) {
+                        System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + mapa.getEdificios().get("ciudadela1").getMadera() + " y " + mapa.getEdificios().get("ciudadela1").getPiedra());
+                        return false;
+                    }
+                    mapa.getEdificios().get("ciudadela1").setPiedra(-100, true);
+                    mapa.getEdificios().get("ciudadela1").setMadera(-100, true);
+                    Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + mapa.contarEdificios(Edificio.CASA) + 1);
+                    mapa.getCelda(posConstruir).setEdificio(edif);
+                    System.out.println();
+                    mapa.imprimirCabecera();
+                    mapa.imprimir();
+                    System.out.println("Casa construida en " + posConstruir);
+                    System.out.println("Coste: 100 de madera, 100 de piedra.");
+                    return true;
+                case "cuartel":
+                    if (mapa.getEdificios().get("ciudadela1").getMadera() < 200 || mapa.getEdificios().get("ciudadela1").getPiedra() < 200) {
+                        System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + mapa.getEdificios().get("ciudadela1").getMadera() + " y " + mapa.getEdificios().get("ciudadela1").getPiedra());
+                        return false;
+                    }
+                    mapa.getEdificios().get("ciudadela1").setPiedra(-200, true);
+                    mapa.getEdificios().get("ciudadela1").setMadera(-200, true);
+                    Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + mapa.contarEdificios(Edificio.CUARTEL) + 1);
+                    mapa.getCelda(posConstruir).setEdificio(cuart);
+                    System.out.println();
+                    mapa.imprimirCabecera();
+                    mapa.imprimir();
+                    System.out.println("Cuartel construida en " + posConstruir);
+                    System.out.println("Coste: 200 de madera, 200 de piedra.");
+                    return true;
+                default:
+                    System.out.println("Error: tipos de construccion incorrecta.");
+            }
+
         } else {
             System.out.println("Error: Un soldado no puede construir edificios");
         }

@@ -57,11 +57,13 @@ public class Posicion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Posicion pos= new Posicion(h,k);
-                if(mapa.getCelda(pos).esCeldaLibre()){
+                if(mapa.getCelda(pos).esCeldaLibre() && mapa.perteneceAMapa(pos)){
                     candidatos.add(pos);
                 }
             }
         }
+        if(candidatos.isEmpty())
+            return this;
         Collections.shuffle(candidatos);
         return candidatos.get(0);
     }
