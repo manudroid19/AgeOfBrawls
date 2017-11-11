@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Personaje {
 
     public final static int PAISANO = 1, SOLDADO = 2;
-    private int tipo, salud, armadura, ataque, capRec, cantRecMadera,cantRecPiedra,cantRecComida;
+    private int tipo, salud, armadura, ataque, capRec, cantRecMadera,cantRecPiedra,cantRecComida,cantRecTotal;
     private Posicion posicion;
     private boolean estaMuerto;
     private String nombre;
@@ -31,13 +31,12 @@ public class Personaje {
                 armadura = 200;
                 ataque = 30;
                 estaMuerto = false;
-                cantRec = -1;
+                cantRecTotal = -1;
                 capRec = -1;
             } else {
                 salud = 50;
                 armadura = 100;
                 ataque = -1;
-                cantRec = 0;
                 capRec = 50;
                 estaMuerto = false;
             }
@@ -273,7 +272,10 @@ public class Personaje {
         hash = 37 * hash + this.armadura;
         hash = 37 * hash + this.ataque;
         hash = 37 * hash + this.capRec;
-        hash = 37 * hash + this.cantRec;
+        hash = 37 * hash + this.cantRecTotal;
+        hash = 37 * hash + this.cantRecMadera;
+        hash = 37 * hash + this.cantRecComida;
+        hash = 37 * hash + this.cantRecPiedra;
         hash = 37 * hash + Objects.hashCode(this.posicion);
         hash = 37 * hash + (this.estaMuerto ? 1 : 0);
         hash = 37 * hash + Objects.hashCode(this.nombre);
@@ -307,7 +309,7 @@ public class Personaje {
         if (this.capRec != other.capRec) {
             return false;
         }
-        if (this.cantRec != other.cantRec) {
+        if (this.cantRecTotal != other.cantRecTotal) {
             return false;
         }
         if (this.estaMuerto != other.estaMuerto) {
