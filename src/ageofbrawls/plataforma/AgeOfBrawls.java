@@ -180,9 +180,21 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    if (personaje.consEdif(tipo, dir, mapa)) { //evaluar expresion=>construir. exito=> imprimo mapa
-
+                    personaje.consEdif(tipo, dir, mapa);
+                    break;
+                case "reparar":
+                    if (comando.length != 3) {
+                        System.out.println("Error de sintaxis.");
+                        break;
                     }
+                    String reparador = comando[1];
+                    dir = comando[2];
+                    personaje = mapa.getPersonajes().get(reparador);
+                    if (personaje == null) {
+                        System.out.println("El personaje no existe");
+                        break;
+                    }
+                    personaje.reparar(personaje.getPosicion().get(dir),mapa);
                     break;
                 case "crear":
                     if (comando.length != 3) {
