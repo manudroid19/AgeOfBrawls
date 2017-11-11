@@ -122,12 +122,12 @@ public class Personaje {
 
     public void describirPersonaje() {
         if (tipo == Personaje.SOLDADO) {
-            System.out.println("Nombre: "+nombre);
+            System.out.println("Nombre: " + nombre);
             System.out.println("Salud :" + salud);
             System.out.println("Armadura :" + armadura);
             System.out.println("Ataque :" + ataque);
         } else {
-            System.out.println("Nombre: "+nombre);
+            System.out.println("Nombre: " + nombre);
             System.out.println("Salud :" + salud);
             System.out.println("Capacidad de recolección :" + capRec);
             System.out.println("Cantidad de Recursos que lleva:" + (cantRecMadera+cantRecComida+cantRecPiedra));
@@ -138,10 +138,10 @@ public class Personaje {
         return (cantRecMadera+cantRecComida+cantRecPiedra);
     }
 
-    private void mover(Mapa mapa, int direccion) {
-        if (mapa.perteneceAMapa(posicion.get(direccion)) && mapa.getCelda(posicion.get(direccion)).esCeldaLibre()) {
-            mapa.getCelda(posicion).removePersonaje(this);
-            posicion = posicion.get(direccion);
+    private void mover(Mapa mapa, Posicion posicion) {
+        if (mapa.perteneceAMapa(posicion) && mapa.getCelda(posicion).esCeldaLibre()) {
+            mapa.getCelda(this.posicion).removePersonaje(this);
+            this.posicion = posicion;
             mapa.getCelda(posicion).addPersonaje(this);
             mapa.makeAdyVisible(posicion);
         } else {
@@ -150,22 +150,7 @@ public class Personaje {
     }
 
     public void mover(Mapa mapa, String direccion) {
-        switch (direccion.toLowerCase()) {
-            case "norte":
-                mover(mapa, Posicion.NORTE);
-                break;
-            case "sur":
-                mover(mapa, Posicion.SUR);
-                break;
-            case "este":
-                mover(mapa, Posicion.ESTE);
-                break;
-            case "oeste":
-                mover(mapa, Posicion.OESTE);
-                break;
-            default:
-                System.out.println("Error: direccion no valida.");
-        }
+        mover(mapa, posicion.get(direccion));
     }
 
     private void recolectar(Mapa mapa, int direccion) {
@@ -248,12 +233,26 @@ public class Personaje {
 
     }
 
-    public void consEdif() {
+    public boolean consEdif(String dir, String tipoC, Mapa mapa) {
         if (tipo == Personaje.PAISANO) {
+            Posicion posConstruir = posicion.get(dir);
+            if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre()) { //direccion no valida
+                System.out.println("Error: No se puede contruir en la celda de destino.");
+                return false;
+            }
+                switch (tipoC) {
+                    case "casa":
+                        //Edificio edif = new Edificio(Edificio.CASA,posConstruir,);
+                        break;
+                    case "cuartel":
+                        break;
 
+                }
+            
         } else {
             System.out.println("Error: Un soldado no puede construir edificios");
         }
+        return false;
     }
 
     public void almacenar() {

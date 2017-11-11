@@ -181,10 +181,11 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
-
-                    System.out.println();
-                    imprimirCabecera();
-                    mapa.imprimir();
+                    if(personaje.consEdif(tipo,dir,mapa)){ //evaluar expresion=>construir. exito=> imprimo mapa
+                        System.out.println();
+                        imprimirCabecera();
+                        mapa.imprimir();
+                    }
                     break;
                 default:
                     if (!orden.equals("salir")) {
