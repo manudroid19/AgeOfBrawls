@@ -92,10 +92,6 @@ public class Mapa {
             String nombre = "ciudadela1";
             Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nombre);
             this.getCelda(posCiudadela).setEdificio(ciud);
-//            int i=1;
-//            while(!edificios.containsKey(nombre)){
-//                nombre = nombre.replace("-"+i, "-"+(++i));
-//            }
             edificios.put(nombre, ciud);
             Posicion posPaisano = edificios.get("ciudadela1").getPosicion().PosicionAdyacenteLibre(this);
             Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1");

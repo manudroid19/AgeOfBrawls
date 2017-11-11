@@ -145,7 +145,7 @@ public class Personaje {
     }
 
     private void mover(Mapa mapa, Posicion posicion) {
-        if (mapa.perteneceAMapa(posicion) && mapa.getCelda(posicion).esCeldaLibre()) {
+        if (mapa.perteneceAMapa(posicion) && mapa.getCelda(posicion).esCeldaLibre(false)) {
             mapa.getCelda(this.posicion).removePersonaje(this);
             this.posicion = posicion;
             mapa.getCelda(posicion).addPersonaje(this);
@@ -165,7 +165,7 @@ public class Personaje {
     private void recolectar(Mapa mapa, int direccion) {
         if (tipo == Personaje.PAISANO) {
             if (capRec > 0) {
-                if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre() && mapa.getCelda(posicion.get(direccion)).getEdificio() == null) {
+                if (!mapa.getCelda(posicion.get(direccion)).esCeldaLibre(false) && mapa.getCelda(posicion.get(direccion)).getEdificio() == null) {
                     if (this.getCantRecTotal() + mapa.getCelda(posicion.get(direccion)).getContenedorRec().getCantidad() <= this.getCapRec()) {
                         switch (mapa.getCelda(posicion.get(direccion)).getContenedorRec().getTipo()) {
                             case ContenedorRecurso.BOSQUE:
@@ -243,7 +243,7 @@ public class Personaje {
     public boolean consEdif(String tipoC, String dir, Mapa mapa) {
         if (tipo == Personaje.PAISANO) {
             Posicion posConstruir = posicion.get(dir);
-            if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre()) { //direccion no valida
+            if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
                 System.out.println("Error: No se puede contruir en la celda de destino.");
                 return false;
             }
@@ -258,6 +258,7 @@ public class Personaje {
                     Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + mapa.contarEdificios(Edificio.CASA) + 1);
                     mapa.getCelda(posConstruir).setEdificio(edif);
                     System.out.println();
+                    mapa.getEdificios().put(edif.getNombre(), edif);
                     mapa.imprimirCabecera();
                     mapa.imprimir();
                     System.out.println("Casa construida en " + posConstruir);
@@ -272,6 +273,7 @@ public class Personaje {
                     mapa.getEdificios().get("ciudadela1").setMadera(-200, true);
                     Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + mapa.contarEdificios(Edificio.CUARTEL) + 1);
                     mapa.getCelda(posConstruir).setEdificio(cuart);
+                    mapa.getEdificios().put(cuart.getNombre(), cuart);
                     System.out.println();
                     mapa.imprimirCabecera();
                     mapa.imprimir();

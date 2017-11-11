@@ -198,9 +198,9 @@ public class AgeOfBrawls {
                     }
                     creador.crearPersonaje(mapa);
                     
-                    
+                    break;
                 default:
-                    if (!orden.equals("salir")) {
+                    if (!orden.equals("salir") && !orden.equals("\n")) {
                         System.out.println("Error de sintaxis.");
                     }
             }

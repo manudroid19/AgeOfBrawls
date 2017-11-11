@@ -32,11 +32,17 @@ public class Celda {
         recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
         personajes = new ArrayList<>();
     }
-    
-    public boolean esCeldaLibre() {
-        return getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && getEdificio() == null;
+
+    public boolean esCeldaLibre(boolean personaje) {
+        if (getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && getEdificio() == null) {
+            if (personaje) {
+                return personajes.isEmpty();
+            }
+            return true;
+        }
+        return false;
     }
-    
+
     public Celda(int edificio, int i, int j, String nombreEdificio) {
         this(ContenedorRecurso.PRADERA, 0, edificio, new Posicion(i, j), nombreEdificio);
     }
@@ -48,7 +54,8 @@ public class Celda {
     public Celda(int i, int j) {
         this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
     }
-    public String getTipo(){
+
+    public String getTipo() {
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.PRADERA:
                 return "pradera";
@@ -75,19 +82,23 @@ public class Celda {
     public Edificio getEdificio() {
         return edificio;
     }
-    public void addPersonaje(Personaje personaje){
-        if(personaje!=null){
+
+    public void addPersonaje(Personaje personaje) {
+        if (personaje != null) {
             personajes.add(personaje);
         }
     }
-    public void removePersonaje(Personaje personaje){
-        if(personaje!=null){
+
+    public void removePersonaje(Personaje personaje) {
+        if (personaje != null) {
             personajes.remove(personaje);
         }
     }
-    public ArrayList<Personaje> getPersonajes(){
+
+    public ArrayList<Personaje> getPersonajes() {
         return personajes;
     }
+
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {
             this.recurso.set(ContenedorRecurso.PRADERA, 0);
@@ -96,17 +107,17 @@ public class Celda {
             System.out.println("Error:edificio es nulo");
         }
     }
-    public void mirar(){
-        if(this.getEdificio()!= null){
+
+    public void mirar() {
+        if (this.getEdificio() != null) {
             this.getEdificio().describirEdificio();//En caso de que en la celda haya un edificio, lo describimos
-        }
-        else if (this.getContenedorRec().getTipo()!= ContenedorRecurso.PRADERA){
+        } else if (this.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
             this.getContenedorRec().describirContenedorRecurso();//En caso de estar en un contenedor de Recursos, imprimimos su descripción
         }
-        if(this.getContenedorRec().getTipo()==ContenedorRecurso.PRADERA && this.getPersonajes() != null){
+        if (this.getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && this.getPersonajes() != null) {
             this.getPersonajes().get(0).describirPersonaje();//enseñamos la info del 0, ya que es el único de momento que se puede alamcenar en la celda
         }
-        
+
     }
 
     public boolean isOculto() {
@@ -126,26 +137,26 @@ public class Celda {
         if (this.oculto) {
             return " ? ";
         }
-        if(!this.personajes.isEmpty()){
-            return Mapa.ANSI_WHITE+Mapa.ANSI_RED_BACKGROUND+" P ";
+        if (!this.personajes.isEmpty()) {
+            return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
         }
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
-                return Mapa.ANSI_CYAN_BACKGROUND+" B ";
+                return Mapa.ANSI_CYAN_BACKGROUND + " B ";
             case ContenedorRecurso.PRADERA:
                 if (this.edificio == null) {
                     return Mapa.ANSI_GREEN_BACKGROUND + "   ";
                 } else if (this.edificio.getTipo() == Edificio.CIUDADELA) {
-                    return Mapa.ANSI_PURPLE_BACKGROUND+" U ";
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " U ";
                 } else if (this.edificio.getTipo() == Edificio.CASA) {
-                    return Mapa.ANSI_PURPLE_BACKGROUND+" K ";
-                }else if (this.edificio.getTipo() == Edificio.CUARTEL) {
-                    return Mapa.ANSI_PURPLE_BACKGROUND+" Z ";
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " K ";
+                } else if (this.edificio.getTipo() == Edificio.CUARTEL) {
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " Z ";
                 }
             case ContenedorRecurso.CANTERA:
-                return Mapa.ANSI_BLUE_BACKGROUND+Mapa.ANSI_WHITE+" C ";
+                return Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C ";
             case ContenedorRecurso.ARBUSTO:
-                return Mapa.ANSI_YELLOW_BACKGROUND+" A ";
+                return Mapa.ANSI_YELLOW_BACKGROUND + " A ";
             default:
                 return " ";
         }

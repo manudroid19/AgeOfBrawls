@@ -29,8 +29,8 @@ public class Posicion {
             this.y = y;
         } else {
             System.out.println("Error:posicion no valida.");
-            this.x=-1;
-            this.y=-1;
+            this.x = -1;
+            this.y = -1;
         }
     }
 
@@ -51,19 +51,27 @@ public class Posicion {
     }
 
     public Posicion PosicionAdyacenteLibre(Mapa mapa) {
-        int i=x;
-        int j=y;
+        int i = x;
+        int j = y;
         ArrayList<Posicion> candidatos = new ArrayList<>();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
-                Posicion pos= new Posicion(h,k);
-                if(mapa.getCelda(pos).esCeldaLibre() && mapa.perteneceAMapa(pos)){
+                Posicion pos = new Posicion(h, k);
+                if (mapa.getCelda(pos).esCeldaLibre(true) && mapa.perteneceAMapa(pos)) {
                     candidatos.add(pos);
                 }
             }
         }
-        if(candidatos.isEmpty())
-            return this;
+        if (candidatos.isEmpty()) {
+            for (int h = i - 1; h < i + 2; h++) {
+                for (int k = j - 1; k < j + 2; k++) {
+                    Posicion pos = new Posicion(h, k);
+                    if (mapa.getCelda(pos).esCeldaLibre(false) && mapa.perteneceAMapa(pos)) {
+                        return pos;
+                    }
+                }
+            }
+        }
         Collections.shuffle(candidatos);
         return candidatos.get(0);
     }
@@ -87,7 +95,8 @@ public class Posicion {
                 return this;
         }
     }
-    public Posicion get(String direccion){
+
+    public Posicion get(String direccion) {
         switch (direccion.toLowerCase()) {
             case "norte":
                 return get(Posicion.NORTE);
@@ -107,7 +116,8 @@ public class Posicion {
     public String toString() {
         return "posicion: " + "fila " + y + ", columna " + x;
     }
-        @Override
+
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 89 * hash + this.x;
