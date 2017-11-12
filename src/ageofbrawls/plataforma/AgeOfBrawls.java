@@ -23,7 +23,6 @@ public class AgeOfBrawls {
 
         Mapa mapa = new Mapa(10, true);
         Scanner sca = new Scanner(System.in);
-        String jugador = "a";
 
         System.out.println("Bienvenido a Age Of Brawls!!");
         System.out.println("Por ahora es un vasto territorio inexplorado que solo habita tu fiel paisano \"paisano1\" desde su bastión \"ciudadela1\".");
