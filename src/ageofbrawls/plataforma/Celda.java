@@ -33,36 +33,9 @@ public class Celda {
         personajes = new ArrayList<>();
     }
 
-    public Celda(int edificio, int i, int j, String nombreEdificio) {
-        this(ContenedorRecurso.PRADERA, 0, edificio, new Posicion(i, j), nombreEdificio);
-    }
-
-    public Celda(int tipo, int cantidadRecurso, int i, int j) {
-        this(tipo, cantidadRecurso, 0, new Posicion(i, j), null);
-    }
-
-    public Celda(int i, int j) {
-        this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
-    }
-
     public Celda(int i, int j, boolean oculto) {
         this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
         this.oculto = oculto;
-    }
-
-    public String getTipo() {
-        switch (this.recurso.getTipo()) {
-            case ContenedorRecurso.PRADERA:
-                return "pradera";
-            case ContenedorRecurso.BOSQUE:
-                return "bosque";
-            case ContenedorRecurso.CANTERA:
-                return "cantera";
-            case ContenedorRecurso.ARBUSTO:
-                return "arbusto";
-            default:
-                return null;
-        }
     }
 
     public ContenedorRecurso getContenedorRec() {
@@ -73,8 +46,20 @@ public class Celda {
         return edificio;
     }
 
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
     public ArrayList<Personaje> getPersonajes() {
         return personajes;
+    }
+
+    public boolean isOculto() {
+        return oculto;
+    }
+
+    public void setOculto(boolean oculto) {
+        this.oculto = oculto;
     }
 
     public void setEdificio(Edificio edificio) {
@@ -86,18 +71,6 @@ public class Celda {
         }
     }
 
-    public boolean isOculto() {
-        return oculto;
-    }
-
-    public void setOculto(boolean oculto) {
-        this.oculto = oculto;
-    }
-
-    public Posicion getPosicion() {
-        return posicion;
-    }
-
     public void addPersonaje(Personaje personaje) {
         if (personaje != null) {
             personajes.add(personaje);
@@ -107,6 +80,21 @@ public class Celda {
     public void removePersonaje(Personaje personaje) {
         if (personaje != null) {
             personajes.remove(personaje);
+        }
+    }
+
+    public String leerTipoCont() {
+        switch (this.recurso.getTipo()) {
+            case ContenedorRecurso.PRADERA:
+                return "pradera";
+            case ContenedorRecurso.BOSQUE:
+                return "bosque";
+            case ContenedorRecurso.CANTERA:
+                return "cantera";
+            case ContenedorRecurso.ARBUSTO:
+                return "arbusto";
+            default:
+                return null;
         }
     }
 

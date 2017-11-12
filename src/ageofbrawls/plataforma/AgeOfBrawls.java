@@ -106,7 +106,7 @@ public class AgeOfBrawls {
                         System.out.println("Esta celda no existe o aun no es visible!");
                         break;
                     }
-                    System.out.println("Celda de tipo " + celda.getTipo());
+                    System.out.println("Celda de tipo " + celda.leerTipoCont());
                     if (celda.getEdificio() != null) {
                         System.out.println("Hay un edificio: ");
                         celda.getEdificio().describirEdificio();

@@ -73,13 +73,13 @@ public class Posicion {
     public Posicion getAdy(String direccion) {
         switch (direccion.toLowerCase()) {
             case "norte":
-                return Posicion.this.getAdy(Posicion.NORTE);
+                return getAdy(Posicion.NORTE);
             case "sur":
-                return Posicion.this.getAdy(Posicion.SUR);
+                return getAdy(Posicion.SUR);
             case "este":
-                return Posicion.this.getAdy(Posicion.ESTE);
+                return getAdy(Posicion.ESTE);
             case "oeste":
-                return Posicion.this.getAdy(Posicion.OESTE);
+                return getAdy(Posicion.OESTE);
             default:
                 System.out.println("Error: direccion no valida.");
                 return this;
@@ -87,6 +87,10 @@ public class Posicion {
     }
     
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
+        if(mapa==null){
+            System.out.println("Error.");
+            return null;
+        }
         int i = x;
         int j = y;
         ArrayList<Posicion> candidatos = new ArrayList<>();
