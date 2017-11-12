@@ -22,7 +22,7 @@ public class Personaje {
     private String nombre;
 
     public Personaje(int tipo, Posicion posicion, String nombre) {
-        if (tipo == 1 || tipo == 2) {
+        if ((tipo == 1 || tipo == 2) && posicion != null) {
             this.tipo = tipo;
             this.posicion = posicion;
             this.nombre = nombre;
@@ -143,7 +143,7 @@ public class Personaje {
     }
 
     private void mover(Mapa mapa, Posicion posicion) {
-        if(mapa==null || posicion==null){
+        if (mapa == null || posicion == null) {
             System.out.println("Error en mover.");
             return;
         }
@@ -165,7 +165,7 @@ public class Personaje {
     }
 
     public void recolectar(Mapa mapa, String direccion) {
-        if(mapa==null){
+        if (mapa == null) {
             System.out.println("Error en recolectar.");
             return;
         }
@@ -208,7 +208,7 @@ public class Personaje {
     }
 
     public void almacenar(Mapa mapa, String direccion) {
-        if(mapa==null){
+        if (mapa == null) {
             System.out.println("Error en almcenar.");
             return;
         }
@@ -244,7 +244,7 @@ public class Personaje {
     }
 
     public void consEdif(String tipoC, String dir, Mapa mapa) {
-        if(mapa==null){
+        if (mapa == null) {
             System.out.println("Error en consEdif.");
             return;
         }
@@ -274,7 +274,7 @@ public class Personaje {
                 case "cuartel":
                     if (mapa.getEdificios().get("ciudadela1").getMadera() < 200 || mapa.getEdificios().get("ciudadela1").getPiedra() < 200) {
                         System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + mapa.getEdificios().get("ciudadela1").getMadera() + " y " + mapa.getEdificios().get("ciudadela1").getPiedra());
-                        return ;
+                        return;
                     }
                     mapa.getEdificios().get("ciudadela1").setPiedra(-200, true);
                     mapa.getEdificios().get("ciudadela1").setMadera(-200, true);
