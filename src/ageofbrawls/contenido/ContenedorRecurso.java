@@ -119,9 +119,6 @@ public class ContenedorRecurso {
     @Override
     public String toString() {
         switch (tipo) {
-
-//            case ContenedorRecurso.PRADERA:
-//                return "pradera";
             case ContenedorRecurso.BOSQUE:
                 return "bosque";
             case ContenedorRecurso.CANTERA:
