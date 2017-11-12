@@ -107,7 +107,8 @@ public class Mapa {
             System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
         }
     }
-    public boolean perteneceAMapa(Posicion posicion){
+
+    public boolean perteneceAMapa(Posicion posicion) {
         return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
@@ -176,22 +177,22 @@ public class Mapa {
     public HashMap<String, Edificio> getEdificios() {
         return edificios;
     }
-    
 
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
     }
-    public int contarEdificios(int tipo){
-        int n=0;
-        if(tipo>0 && tipo<4){
-        Collection<Edificio> edifs= this.getEdificios().values();
-        for(Edificio ed: edifs){
-           if(ed.getTipo()==tipo){
-               n++;
-           }
-        }
-        return n;
-        }else{
+
+    public int contarEdificios(int tipo) {
+        int n = 0;
+        if (tipo > 0 && tipo < 4) {
+            Collection<Edificio> edifs = this.getEdificios().values();
+            for (Edificio ed : edifs) {
+                if (ed.getTipo() == tipo) {
+                    n++;
+                }
+            }
+            return n;
+        } else {
             System.out.println("Error: tipo incorrecto.");
         }
         return -1;
@@ -242,10 +243,11 @@ public class Mapa {
         }
         System.out.println();
     }
+
     public void imprimirCabecera() {
         System.out.println("Leyenda: Pradera transitable" + Mapa.ANSI_GREEN_BACKGROUND + "   " + Mapa.ANSI_RESET + " Ciudadela:" + Mapa.ANSI_PURPLE_BACKGROUND + " U " + Mapa.ANSI_RESET);
         System.out.println("Casa:" + Mapa.ANSI_PURPLE_BACKGROUND + " K " + Mapa.ANSI_RESET + "Cuartel:" + Mapa.ANSI_PURPLE_BACKGROUND + " Z " + Mapa.ANSI_RESET + "Bosque:" + Mapa.ANSI_CYAN_BACKGROUND + " B " + Mapa.ANSI_RESET + "Cantera:" + Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C " + Mapa.ANSI_RESET + "Arbusto:" + Mapa.ANSI_YELLOW_BACKGROUND + " A " + Mapa.ANSI_RESET);
-        System.out.println("En las praderas transitables puede haber paisanos, (" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET+"), soldados("+Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S "+ Mapa.ANSI_RESET+") o varios personajes("+Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*"+ Mapa.ANSI_RESET+").");
+        System.out.println("En las praderas transitables puede haber paisanos, (" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET + "), soldados(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S " + Mapa.ANSI_RESET + ") o varios personajes(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*" + Mapa.ANSI_RESET + ").");
         System.out.println("Los nombres de los contenedores de recursos aparecer\u00e1n al lado de su fila.");
         System.out.println();
         System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje] [direccion: norte, sur, este o oeste]");

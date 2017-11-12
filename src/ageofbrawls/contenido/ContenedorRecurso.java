@@ -18,7 +18,7 @@ public class ContenedorRecurso {
     private int tipo;
     private int cantidad;
     private String nombre;
-    private static int bosques=1, arbustos=1, canteras=1; //contadores
+    private static int bosques = 1, arbustos = 1, canteras = 1; //contadores
 
     public ContenedorRecurso(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
@@ -44,8 +44,9 @@ public class ContenedorRecurso {
     public int getCantidad() {
         return this.cantidad;
     }
-    public int getContador(){
-        switch(tipo){
+
+    public int getContador() {
+        switch (tipo) {
             case ContenedorRecurso.BOSQUE:
                 return bosques++;
             case ContenedorRecurso.CANTERA:
@@ -69,8 +70,8 @@ public class ContenedorRecurso {
     public void setCantidad(int cantidad) {
         if (cantidad >= 0) {
             this.cantidad = cantidad;
-            if(this.cantidad==0){
-                this.tipo=PRADERA;
+            if (this.cantidad == 0) {
+                this.tipo = PRADERA;
             }
         } else {
             System.out.println("Error: Cantidad introducida no es válida");
@@ -91,14 +92,17 @@ public class ContenedorRecurso {
         }
 
     }
-    public String getNombre(){
+
+    public String getNombre() {
         return nombre;
     }
-    public void setNombre(String nombre){
-        if(nombre!=null){
-            this.nombre=nombre;
+
+    public void setNombre(String nombre) {
+        if (nombre != null) {
+            this.nombre = nombre;
         }
     }
+
     public void describirContenedorRecurso() {
         switch (tipo) {
             case ContenedorRecurso.PRADERA:
@@ -113,7 +117,7 @@ public class ContenedorRecurso {
                 break;
             case ContenedorRecurso.ARBUSTO:
                 System.out.println("Contenedor de recurso:");
-                System.out.println("Cantidad de comida: " +cantidad);
+                System.out.println("Cantidad de comida: " + cantidad);
                 break;
         }
 
@@ -121,8 +125,8 @@ public class ContenedorRecurso {
 
     @Override
     public String toString() {
-        switch(tipo){
-            
+        switch (tipo) {
+
             case ContenedorRecurso.PRADERA:
                 return "pradera";
             case ContenedorRecurso.BOSQUE:

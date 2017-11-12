@@ -141,10 +141,10 @@ public class Celda {
             if (this.personajes.size() == 1) {
                 if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
-                }else{
+                } else {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S ";
                 }
-            }else{
+            } else {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
             }
         }

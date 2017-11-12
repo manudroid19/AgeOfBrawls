@@ -8,10 +8,7 @@ package ageofbrawls.plataforma;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personaje;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -34,7 +31,7 @@ public class AgeOfBrawls {
         System.out.println("Construir una casa cuesta 100 de piedra y madera, un cuartel 200 de piedra y madera, crear un paisano 50 de alimentos y crear un soldado 100 de alimentos.");
         System.out.println();
         mapa.imprimirCabecera();
-        
+
         String orden = "";
         mapa.imprimir();
         while (!"salir".equals(orden)) {
@@ -152,7 +149,7 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje.reparar(personaje.getPosicion().get(dir),mapa);
+                    personaje.reparar(personaje.getPosicion().get(dir), mapa);
                     break;
                 case "crear":
                     if (comando.length != 3) {
@@ -162,14 +159,14 @@ public class AgeOfBrawls {
                     String edificio = comando[1];
                     tipo = comando[2];
                     Edificio creador = mapa.getEdificios().get(edificio);
-                    if (creador == null || (creador.getTipo()==Edificio.CUARTEL &&!tipo.equals("soldado")) || (creador.getTipo()==Edificio.CIUDADELA &&!tipo.equals("paisano"))) {
+                    if (creador == null || (creador.getTipo() == Edificio.CUARTEL && !tipo.equals("soldado")) || (creador.getTipo() == Edificio.CIUDADELA && !tipo.equals("paisano"))) {
                         System.out.println("Comando erroneo. No se puede crear.");
                         break;
                     }
                     creador.crearPersonaje(mapa);
-                    
+
                     break;
-                    
+
                 case "recolectar":
                     if (comando.length != 3) {
                         System.out.println("Error de sintaxis.");
@@ -177,14 +174,14 @@ public class AgeOfBrawls {
                     }
                     String persona = comando[1];
                     String direccion = comando[2];
-                    personaje= mapa.getPersonajes().get(persona);
+                    personaje = mapa.getPersonajes().get(persona);
                     if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
                     }
                     personaje.recolectar(mapa, direccion);
                     break;
-                    
+
                 case "almacenar":
                     if (comando.length != 3) {
                         System.out.println("Error de sintaxis.");
@@ -192,7 +189,7 @@ public class AgeOfBrawls {
                     }
                     String personaje4 = comando[1];
                     String direccion2 = comando[2];
-                    Personaje personaje5= mapa.getPersonajes().get(personaje4);
+                    Personaje personaje5 = mapa.getPersonajes().get(personaje4);
                     if (personaje5 == null) {
                         System.out.println("El personaje no existe");
                         break;
@@ -237,7 +234,7 @@ public class AgeOfBrawls {
                                 break;
                         }
                     }
-                    break;                    
+                    break;
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {
                         System.out.println("Error de sintaxis.");

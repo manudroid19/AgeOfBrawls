@@ -55,19 +55,21 @@ public class Edificio {
             System.out.println("Error seteando tipo");
         }
     }
-    public int getMaxVida(){
+
+    public int getMaxVida() {
         switch (tipo) {
-                case Edificio.CASA:
-                    return 200;
-                case Edificio.CUARTEL:
-                    return 500;
-                case Edificio.CIUDADELA:
-                    return 1000;
-            }
+            case Edificio.CASA:
+                return 200;
+            case Edificio.CUARTEL:
+                return 500;
+            case Edificio.CIUDADELA:
+                return 1000;
+        }
         return -1;
     }
-    public void reparar(){
-        ps=getMaxVida();
+
+    public void reparar() {
+        ps = getMaxVida();
     }
 
     public Posicion getPosicion() {
@@ -120,8 +122,8 @@ public class Edificio {
             mapa.imprimirCabecera();
             mapa.imprimir();
             System.out.println("Coste de creacion: 50 unidades de comida");
-            System.out.println("Te quedan "+((mapa.contarEdificios(Edificio.CASA) * CAPALOJ)-mapa.getPersonajes().size())+" unidades de capacidad de alojamiento");
-            System.out.println("Se ha creado "+person.getNombre()+" en la celda de "+pos);
+            System.out.println("Te quedan " + ((mapa.contarEdificios(Edificio.CASA) * CAPALOJ) - mapa.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+            System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
 
         } else if (tipo == Edificio.CUARTEL) {
             if (mapa.getEdificios().get("ciudadela1").getAlimentos() < 100) {
@@ -144,8 +146,8 @@ public class Edificio {
             mapa.imprimirCabecera();
             mapa.imprimir();
             System.out.println("Coste de creacion: 100 unidades de comida");
-            System.out.println("Te quedan "+((mapa.contarEdificios(Edificio.CASA) * CAPALOJ)-mapa.getPersonajes().size())+" unidades de capacidad de alojamiento");
-            System.out.println("Se ha creado "+person.getNombre()+" en la celda de "+pos);
+            System.out.println("Te quedan " + ((mapa.contarEdificios(Edificio.CASA) * CAPALOJ) - mapa.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+            System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
 
         }
 
