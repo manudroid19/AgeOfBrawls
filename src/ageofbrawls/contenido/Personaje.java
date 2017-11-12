@@ -22,7 +22,7 @@ public class Personaje {
     private String nombre;
 
     public Personaje(int tipo, Posicion posicion, String nombre) {
-        if ((tipo == 1 || tipo == 2) && posicion != null) {
+        if ((tipo == 1 || tipo == 2) && posicion != null && nombre != null) {
             this.tipo = tipo;
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
@@ -161,11 +161,11 @@ public class Personaje {
     }
 
     public void mover(Mapa mapa, String direccion) {
-        mover(mapa, posicion.getAdy(direccion));
+        mover(mapa, posicion.getAdy(direccion)); //chequeos de nulo en getAdy y en mover
     }
 
     public void recolectar(Mapa mapa, String direccion) {
-        if (mapa == null) {
+        if (mapa == null || direccion == null) {
             System.out.println("Error en recolectar.");
             return;
         }
@@ -208,7 +208,7 @@ public class Personaje {
     }
 
     public void almacenar(Mapa mapa, String direccion) {
-        if (mapa == null) {
+        if (mapa == null || direccion == null) {
             System.out.println("Error en almcenar.");
             return;
         }
@@ -244,7 +244,7 @@ public class Personaje {
     }
 
     public void consEdif(String tipoC, String dir, Mapa mapa) {
-        if (mapa == null) {
+        if (mapa == null || tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;
         }

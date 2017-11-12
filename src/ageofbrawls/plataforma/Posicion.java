@@ -71,6 +71,10 @@ public class Posicion {
     }
 
     public Posicion getAdy(String direccion) {
+        if (direccion == null) {
+            System.out.println("Error: direccion no valida.");
+            return this;
+        }
         switch (direccion.toLowerCase()) {
             case "norte":
                 return getAdy(Posicion.NORTE);

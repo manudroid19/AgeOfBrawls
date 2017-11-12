@@ -31,7 +31,7 @@ public class Celda {
         if (edificio == 0) {
             this.edificio = null;
         } else {
-            this.edificio = new Edificio(edificio, posicion, nombreEdificio);//valida o edificio
+            this.edificio = new Edificio(edificio, posicion, nombreEdificio);//valida o edificio e o string
         }
         recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
         personajes = new ArrayList<>();
