@@ -104,15 +104,15 @@ public class ContenedorRecurso {
 //                System.out.println("Celda de tipo pradera");
 //                break;
             case ContenedorRecurso.BOSQUE:
-                System.out.println("Contenedor de recurso:");
+                System.out.println("Contenedor de recurso");
                 System.out.println("Cantidad de madera: " + cantidad);
                 break;
             case ContenedorRecurso.CANTERA:
-                System.out.println("Contenedor de recurso:");
+                System.out.println("Contenedor de recurso");
                 System.out.println("Cantidad de piedra: " + cantidad);
                 break;
             case ContenedorRecurso.ARBUSTO:
-                System.out.println("Contenedor de recurso:");
+                System.out.println("Contenedor de recurso");
                 System.out.println("Cantidad de comida: " + cantidad);
                 break;
         }
