@@ -217,14 +217,14 @@ public class AgeOfBrawls {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    String personaje2 = comando[1];
+                    String persona = comando[1];
                     String direccion = comando[2];
-                    Personaje personaje3= mapa.getPersonajes().get(personaje2);
-                    if (personaje3 == null) {
+                    personaje= mapa.getPersonajes().get(persona);
+                    if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje3.recolectar(mapa, direccion);
+                    personaje.recolectar(mapa, direccion);
                     break;
                     
                 case "almacenar":
