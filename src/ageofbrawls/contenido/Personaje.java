@@ -191,7 +191,7 @@ public class Personaje {
             mapa.getCelda(pos).setTipoCont(0);
         }
         contenedor.setCantidad(contenedor.getCantidad() - recolectando);
-        if (contenedor == null) { //si se ha vuelto pradera, imprimo
+        if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir();
         }
         switch (tipoC) {
