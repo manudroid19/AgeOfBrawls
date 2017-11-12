@@ -49,7 +49,6 @@ public class Edificio {
                     piedra = 500;
                     alimentos = 500;
                     break;
-
             }
         } else {
             System.out.println("Error seteando tipo");
@@ -106,7 +105,7 @@ public class Edificio {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
-            Posicion pos = posicion.PosicionAdyacenteLibre(mapa);
+            Posicion pos = posicion.posicionAdyacenteLibre(mapa);
             int i = 1;
             String nombrePers = "paisano1";
             while (mapa.getPersonajes().containsKey(nombrePers)) {
@@ -130,7 +129,7 @@ public class Edificio {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
-            Posicion pos = posicion.PosicionAdyacenteLibre(mapa);
+            Posicion pos = posicion.posicionAdyacenteLibre(mapa);
             int i = 1;
             String nombrePers = "soldado1";
             while (mapa.getPersonajes().containsKey(nombrePers)) {

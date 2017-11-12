@@ -71,7 +71,6 @@ public class Mapa {
 
     public Mapa(int filas, boolean inicializar) { //Inicializo mapa cuadrado con elementos
         this(filas, filas);
-        int columnas = filas;
         if (inicializar) {
             for (int i = 0; i < mapa.size(); i++) { //numero de filas, i recorriendo filas,i=y
                 for (int j = 0; j < mapa.get(0).size(); j++) { //columnas, j j=x
@@ -93,7 +92,7 @@ public class Mapa {
             Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nombre);
             this.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nombre, ciud);
-            Posicion posPaisano = edificios.get("ciudadela1").getPosicion().PosicionAdyacenteLibre(this);
+            Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(this);
             Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1");
             personajes.put("paisano1", paisano1);
             this.getCelda(posPaisano).addPersonaje(paisano1);

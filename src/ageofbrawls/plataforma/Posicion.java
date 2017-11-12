@@ -50,7 +50,7 @@ public class Posicion {
         return y;
     }
 
-    public Posicion PosicionAdyacenteLibre(Mapa mapa) {
+    public Posicion posicionAdyacenteLibre(Mapa mapa) {
         int i = x;
         int j = y;
         ArrayList<Posicion> candidatos = new ArrayList<>();
