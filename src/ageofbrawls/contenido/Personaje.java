@@ -18,7 +18,7 @@ public class Personaje {
     public final static int PAISANO = 1, SOLDADO = 2;
     private int tipo, salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
     private Posicion posicion;
-    private boolean estaMuerto;
+    private boolean muerto;
     private String nombre;
 
     public Personaje(int tipo, Posicion posicion, String nombre) {
@@ -30,14 +30,14 @@ public class Personaje {
                 salud = 100;
                 armadura = 200;
                 ataque = 30;
-                estaMuerto = false;
+                muerto = false;
                 capRec = -1;
             } else {
                 salud = 50;
                 armadura = 100;
                 ataque = -1;
                 capRec = 50;
-                estaMuerto = false;
+                muerto = false;
             }
         } else {
             System.out.println("Error seteando tipo");
@@ -88,8 +88,8 @@ public class Personaje {
         return nombre;
     }
 
-    public boolean getEstaMuerto() {
-        return estaMuerto;
+    public boolean isMuerto() {
+        return muerto;
     }
 
     public void setCantRecMadera(int valor) {
@@ -143,6 +143,10 @@ public class Personaje {
     }
 
     private void mover(Mapa mapa, Posicion posicion) {
+        if(mapa==null || posicion==null){
+            System.out.println("Error en mover.");
+            return;
+        }
         if (mapa.perteneceAMapa(posicion) && mapa.getCelda(posicion).esCeldaLibre(false)) {
             mapa.getCelda(this.posicion).removePersonaje(this);
             this.posicion = posicion;
@@ -161,6 +165,10 @@ public class Personaje {
     }
 
     public void recolectar(Mapa mapa, String direccion) {
+        if(mapa==null){
+            System.out.println("Error en recolectar.");
+            return;
+        }
         Posicion pos = posicion.getAdy(direccion);
         ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
@@ -200,6 +208,10 @@ public class Personaje {
     }
 
     public void almacenar(Mapa mapa, String direccion) {
+        if(mapa==null){
+            System.out.println("Error en almcenar.");
+            return;
+        }
         Posicion pos = posicion.getAdy(direccion);
         if (pos.equals(posicion)) { //error con la posicion
             return;
@@ -231,18 +243,22 @@ public class Personaje {
         }
     }
 
-    public boolean consEdif(String tipoC, String dir, Mapa mapa) {
+    public void consEdif(String tipoC, String dir, Mapa mapa) {
+        if(mapa==null){
+            System.out.println("Error en consEdif.");
+            return;
+        }
         if (tipo == Personaje.PAISANO) {
             Posicion posConstruir = posicion.getAdy(dir);
             if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
                 System.out.println("Error: No se puede contruir en la celda de destino.");
-                return false;
+                return;
             }
             switch (tipoC) {
                 case "casa":
                     if (mapa.getEdificios().get("ciudadela1").getMadera() < 100 || mapa.getEdificios().get("ciudadela1").getPiedra() < 100) {
                         System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + mapa.getEdificios().get("ciudadela1").getMadera() + " y " + mapa.getEdificios().get("ciudadela1").getPiedra());
-                        return false;
+                        return;
                     }
                     mapa.getEdificios().get("ciudadela1").setPiedra(-100, true);
                     mapa.getEdificios().get("ciudadela1").setMadera(-100, true);
@@ -254,11 +270,11 @@ public class Personaje {
                     mapa.imprimir();
                     System.out.println("Casa construida en " + posConstruir);
                     System.out.println("Coste: 100 de madera, 100 de piedra.");
-                    return true;
+                    break;
                 case "cuartel":
                     if (mapa.getEdificios().get("ciudadela1").getMadera() < 200 || mapa.getEdificios().get("ciudadela1").getPiedra() < 200) {
                         System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + mapa.getEdificios().get("ciudadela1").getMadera() + " y " + mapa.getEdificios().get("ciudadela1").getPiedra());
-                        return false;
+                        return ;
                     }
                     mapa.getEdificios().get("ciudadela1").setPiedra(-200, true);
                     mapa.getEdificios().get("ciudadela1").setMadera(-200, true);
@@ -270,7 +286,7 @@ public class Personaje {
                     mapa.imprimir();
                     System.out.println("Cuartel construida en " + posConstruir);
                     System.out.println("Coste: 200 de madera, 200 de piedra.");
-                    return true;
+                    break;
                 default:
                     System.out.println("Error: tipo de construccion incorrecta.");
             }
@@ -278,7 +294,6 @@ public class Personaje {
         } else {
             System.out.println("Error: Un soldado no puede construir edificios");
         }
-        return false;
     }
 
     public void reparar(Posicion pos, Mapa mapa) {
@@ -312,7 +327,7 @@ public class Personaje {
         hash = 37 * hash + this.cantRecComida;
         hash = 37 * hash + this.cantRecPiedra;
         hash = 37 * hash + Objects.hashCode(this.posicion);
-        hash = 37 * hash + (this.estaMuerto ? 1 : 0);
+        hash = 37 * hash + (this.muerto ? 1 : 0);
         hash = 37 * hash + Objects.hashCode(this.nombre);
         return hash;
     }
@@ -353,7 +368,7 @@ public class Personaje {
         if (this.cantRecPiedra != other.cantRecPiedra) {
             return false;
         }
-        if (this.estaMuerto != other.estaMuerto) {
+        if (this.muerto != other.muerto) {
             return false;
         }
         if (!Objects.equals(this.nombre, other.nombre)) {
