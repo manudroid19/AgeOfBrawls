@@ -182,13 +182,16 @@ public class Personaje {
             System.out.println(this.getNombre() + " no puede recolectar más");
             return;
         }
-        if (contenedor.getTipo() == ContenedorRecurso.PRADERA) {
+        if (contenedor == null) {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getCantidad()), tipoC = contenedor.getTipo();
+        if(contenedor.getCantidad() - recolectando==0){
+            mapa.getCelda(pos).setTipoCont(0);
+        }
         contenedor.setCantidad(contenedor.getCantidad() - recolectando);
-        if (contenedor.getTipo() == ContenedorRecurso.PRADERA) { //si se ha vuelto pradera, imprimo
+        if (contenedor == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir();
         }
         switch (tipoC) {

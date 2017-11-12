@@ -117,7 +117,7 @@ public class AgeOfBrawls {
                             per.describirPersonaje();
                         }
                     }
-                    if (celda.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
+                    if (celda.getContenedorRec() != null) {
                         celda.getContenedorRec().describirContenedorRecurso();
                     }
                     break;

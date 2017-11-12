@@ -11,7 +11,6 @@ package ageofbrawls.contenido;
  */
 public class ContenedorRecurso {
 
-    public final static int PRADERA = 0;
     public final static int BOSQUE = 1;
     public final static int CANTERA = 2;
     public final static int ARBUSTO = 3;
@@ -31,10 +30,6 @@ public class ContenedorRecurso {
         } else {
             System.out.println("Error: tipo de CR no valido.");
         }
-    }
-
-    public ContenedorRecurso() {
-        this(ContenedorRecurso.PRADERA, 0);
     }
 
     public int getTipo() {
@@ -74,9 +69,9 @@ public class ContenedorRecurso {
     public void setCantidad(int cantidad) {
         if (cantidad >= 0) {
             this.cantidad = cantidad;
-            if (this.cantidad == 0) {
-                this.tipo = PRADERA;
-            }
+//            if (this.cantidad == 0) {
+//                this.tipo = PRADERA;
+//            }
         } else {
             System.out.println("Error: Cantidad introducida no es válida");
         }
@@ -105,9 +100,9 @@ public class ContenedorRecurso {
 
     public void describirContenedorRecurso() {
         switch (tipo) {
-            case ContenedorRecurso.PRADERA:
-                System.out.println("Celda de tipo pradera");
-                break;
+//            case ContenedorRecurso.PRADERA:
+//                System.out.println("Celda de tipo pradera");
+//                break;
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Contenedor de recurso:");
                 System.out.println("Cantidad de madera: " + cantidad);
@@ -128,8 +123,8 @@ public class ContenedorRecurso {
     public String toString() {
         switch (tipo) {
 
-            case ContenedorRecurso.PRADERA:
-                return "pradera";
+//            case ContenedorRecurso.PRADERA:
+//                return "pradera";
             case ContenedorRecurso.BOSQUE:
                 return "bosque";
             case ContenedorRecurso.CANTERA:

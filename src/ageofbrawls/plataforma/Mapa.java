@@ -76,7 +76,7 @@ public class Mapa {
                 for (int j = 0; j < mapa.get(0).size(); j++) { //columnas, j j=x
                     if (i % 2 == 0 && j % 2 == 0) {
                         if (j > 1 && i % 4 == 0) {
-                            if (getCelda(i, j - 2).getContenedorRec().getTipo() == ContenedorRecurso.PRADERA) {
+                            if (getCelda(i, j - 2).getContenedorRec() == null) {
                                 this.makeBloqueRec(i, j);
                             }
                         } else if (j % 4 == 0 && i % 4 == 2) {
@@ -162,7 +162,7 @@ public class Mapa {
                 Celda c = this.getCelda(h, k);
                 if (c != null && c.isOculto() && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(false);
-                    if (c.getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
+                    if (c.getContenedorRec() != null) {
                         c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(c.getContenedorRec().getContador()));
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
                     }
@@ -190,7 +190,7 @@ public class Mapa {
     private void makeAdyPrad(int i, int j) { //Hacer todas las celdas asyacentes pradera
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
-                this.getCelda(h, k).getContenedorRec().set(ContenedorRecurso.PRADERA, 0);
+                this.getCelda(h, k).setTipoCont(Celda.PRADERA);
             }
         }
     }
@@ -204,10 +204,10 @@ public class Mapa {
         Random rt = new Random();
         int[] cantidad = new int[]{rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1};
         Posicion posicion = new Posicion(i, j);
-        getCelda(posicion).getContenedorRec().set(bloque.get(0), cantidad[0]);
-        getCelda(posicion.getAdy(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
-        getCelda(posicion.getAdy(Posicion.SUR)).getContenedorRec().set(bloque.get(2), cantidad[2]);
-        getCelda(posicion.getAdy(Posicion.SURESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
+        getCelda(posicion).setTipoCont(bloque.get(0), cantidad[0]);
+        getCelda(posicion.getAdy(Posicion.ESTE)).setTipoCont(bloque.get(1), cantidad[1]);
+        getCelda(posicion.getAdy(Posicion.SUR)).setTipoCont(bloque.get(2), cantidad[2]);
+        getCelda(posicion.getAdy(Posicion.SURESTE)).setTipoCont(bloque.get(3), cantidad[3]);
     }
 
     public void imprimir() {
@@ -231,14 +231,14 @@ public class Mapa {
             boolean flagrec = false;
             for (int j = 0; j < columnas; j++) {
                 System.out.print(ANSI_RESET + "│" + mapa.get(i).get(j).toString());
-                if (mapa.get(i).get(j).getContenedorRec().getTipo() != ContenedorRecurso.PRADERA) {
+                if (mapa.get(i).get(j).getContenedorRec() != null) {
                     flagrec = true;
                 }
             }
             System.out.print(ANSI_RESET + "│");//Ultimo separador de fila
             if (flagrec) {
                 for (int j = 0; j < columnas; j++) {
-                    if (mapa.get(i).get(j).getContenedorRec().getTipo() != ContenedorRecurso.PRADERA && !mapa.get(i).get(j).isOculto()) {
+                    if (mapa.get(i).get(j).getContenedorRec() != null && !mapa.get(i).get(j).isOculto()) {
                         System.out.print(mapa.get(i).get(j).getContenedorRec().getNombre() + " ");
                     }
                 }
