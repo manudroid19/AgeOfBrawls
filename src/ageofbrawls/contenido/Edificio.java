@@ -29,7 +29,7 @@ public class Edificio {
     private int madera, piedra, alimentos;
 
     public Edificio(int tipo, Posicion posicion, String nombre) {
-        if (tipo > 0 && tipo < 4 && nombre !=null) {
+        if (tipo > 0 && tipo < 4 && nombre != null) {
             this.tipo = tipo;
             if (posicion != null) {
                 this.posicion = new Posicion(posicion);
