@@ -84,12 +84,12 @@ public class Personaje {
         return posicion;
     }
 
-    public void setCapRec(int valor) {
-        if (valor >= 0 && this.tipo == Personaje.PAISANO) {
-            capRec = valor;
-        } else {
-            System.out.println("Error: capacidad introducida errónea");
-        }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public boolean getEstaMuerto() {
+        return estaMuerto;
     }
 
     public void setCantRecMadera(int valor) {
@@ -122,10 +122,6 @@ public class Personaje {
         } else {
             System.out.println("Error: posicion introducida errónea");
         }
-    }
-
-    public String getNombre() {
-        return nombre;
     }
 
     public void describirPersonaje() {
@@ -346,6 +342,15 @@ public class Personaje {
             return false;
         }
         if (this.capRec != other.capRec) {
+            return false;
+        }
+        if (this.cantRecMadera != other.cantRecMadera) {
+            return false;
+        }
+        if (this.cantRecComida != other.cantRecComida) {
+            return false;
+        }
+        if (this.cantRecPiedra != other.cantRecPiedra) {
             return false;
         }
         if (this.estaMuerto != other.estaMuerto) {

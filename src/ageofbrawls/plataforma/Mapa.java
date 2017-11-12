@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class Mapa {
 
-    private ArrayList<ArrayList<Celda>> mapa; //Este atributo y los 2 siguientes  no tienen getter puerto que, por definicion, solo los metodos de la clase los modifica.
+    private ArrayList<ArrayList<Celda>> mapa; //Este atributo y los 2 siguientes no tienen getter puesto que, por definicion, solo los metodos de la clase los modifica.
     private int filas;
     private int columnas;
     private HashMap<String, Personaje> personajes;
