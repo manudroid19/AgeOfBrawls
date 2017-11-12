@@ -166,6 +166,7 @@ public class Personaje {
 
     public void recolectar(Mapa mapa, String direccion) {
         Posicion pos = posicion.get(direccion);
+        ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
@@ -177,28 +178,25 @@ public class Personaje {
             System.out.println(this.getNombre() + " no puede recolectar más");
             return;
         }
-        if (mapa.getCelda(pos).getContenedorRec().getTipo() == ContenedorRecurso.PRADERA) {
+        if (contenedor.getTipo() == ContenedorRecurso.PRADERA) {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando;
-        switch (mapa.getCelda(pos).getContenedorRec().getTipo()) {
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getCantidad());
+        contenedor.setCantidad(contenedor.getCantidad() - recolectando);
+        if (contenedor.getTipo() == ContenedorRecurso.PRADERA) { //si se ha vuelto pradera, imprimo
+            mapa.imprimir();
+        }
+        switch (contenedor.getTipo()) {
             case ContenedorRecurso.BOSQUE:
-                recolectando = Math.min(getCapRec() - this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
-                mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
                 System.out.println("Has recolectado " + recolectando + " unidades de madera");
                 setCantRecMadera(getCantRecMadera() + recolectando);
                 break;
             case ContenedorRecurso.ARBUSTO:
-                recolectando = Math.min(getCapRec() - this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
-                mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
                 System.out.println("Has recolectado " + recolectando + " unidades de comida");
                 setCantRecComida(getCantRecComida() + recolectando);
                 break;
-
             case ContenedorRecurso.CANTERA:
-                recolectando = Math.min(getCapRec() - this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
-                mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
                 System.out.println("Has recolectado " + recolectando + " unidades de piedra");
                 setCantRecPiedra(getCantRecPiedra() + recolectando);
                 break;
@@ -235,9 +233,9 @@ public class Personaje {
             System.out.println("Almacenadas " + this.cantRecComida + " unidades de alimento en la ciudadela");
             this.setCantRecComida(0);
         }
-}
+    }
 
-public boolean consEdif(String tipoC, String dir, Mapa mapa) {
+    public boolean consEdif(String tipoC, String dir, Mapa mapa) {
         if (tipo == Personaje.PAISANO) {
             Posicion posConstruir = posicion.get(dir);
             if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
@@ -307,7 +305,7 @@ public boolean consEdif(String tipoC, String dir, Mapa mapa) {
     }
 
     @Override
-        public int hashCode() {
+    public int hashCode() {
         int hash = 7;
         hash = 37 * hash + this.tipo;
         hash = 37 * hash + this.salud;
@@ -324,7 +322,7 @@ public boolean consEdif(String tipoC, String dir, Mapa mapa) {
     }
 
     @Override
-        public boolean equals(Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
