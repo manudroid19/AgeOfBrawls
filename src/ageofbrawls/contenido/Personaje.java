@@ -243,11 +243,11 @@ public class Personaje {
                         mapa.getCelda(posicion.get(direccion)).getEdificio().setMadera(this.cantRecMadera, true);
                         System.out.println("Almacenadas " + this.cantRecMadera + " unidades de madera en la ciudadela");
                         this.setCantRecMadera(0);
-                    } else if (this.cantRecPiedra > 0) {
+                    }if (this.cantRecPiedra > 0) {
                         mapa.getCelda(posicion.get(direccion)).getEdificio().setPiedra(this.cantRecPiedra, true);
                         System.out.println("Almacenadas " + this.cantRecPiedra + " unidades de piedra en la ciudadela");
                         this.setCantRecPiedra(0);
-                    } else if (this.cantRecComida > 0) {
+                    }if (this.cantRecComida > 0) {
                         mapa.getCelda(posicion.get(direccion)).getEdificio().setAlimentos(this.cantRecComida, true);
                         System.out.println("Almacenadas " + this.cantRecComida + " unidades de alimento en la ciudadela");
                         this.setCantRecComida(0);
