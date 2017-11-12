@@ -58,6 +58,10 @@ public class ContenedorRecurso {
         }
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public void setTipo(int tipo) {
         if (tipo >= 0 && tipo <= 3) {
             this.tipo = tipo;
@@ -79,6 +83,12 @@ public class ContenedorRecurso {
 
     }
 
+    public void setNombre(String nombre) {
+        if (nombre != null) {
+            this.nombre = nombre;
+        }
+    }
+
     public void set(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
             this.tipo = tipo;
@@ -91,16 +101,6 @@ public class ContenedorRecurso {
             System.out.println("Error: tipo de CR no valido.");
         }
 
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        if (nombre != null) {
-            this.nombre = nombre;
-        }
     }
 
     public void describirContenedorRecurso() {
