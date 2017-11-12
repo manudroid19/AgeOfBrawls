@@ -161,11 +161,11 @@ public class Personaje {
     }
 
     public void mover(Mapa mapa, String direccion) {
-        mover(mapa, posicion.get(direccion));
+        mover(mapa, posicion.getAdy(direccion));
     }
 
     public void recolectar(Mapa mapa, String direccion) {
-        Posicion pos = posicion.get(direccion);
+        Posicion pos = posicion.getAdy(direccion);
         ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             return;
@@ -204,7 +204,7 @@ public class Personaje {
     }
 
     public void almacenar(Mapa mapa, String direccion) {
-        Posicion pos = posicion.get(direccion);
+        Posicion pos = posicion.getAdy(direccion);
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
@@ -237,7 +237,7 @@ public class Personaje {
 
     public boolean consEdif(String tipoC, String dir, Mapa mapa) {
         if (tipo == Personaje.PAISANO) {
-            Posicion posConstruir = posicion.get(dir);
+            Posicion posConstruir = posicion.getAdy(dir);
             if (posConstruir.equals(posicion) || !mapa.perteneceAMapa(posConstruir) || !mapa.getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
                 System.out.println("Error: No se puede contruir en la celda de destino.");
                 return false;

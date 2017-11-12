@@ -148,7 +148,7 @@ public class AgeOfBrawls {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje.reparar(personaje.getPosicion().get(dir), mapa);
+                    personaje.reparar(personaje.getPosicion().getAdy(dir), mapa);
                     break;
                 case "crear":
                     if (comando.length != 3) {

@@ -50,6 +50,42 @@ public class Posicion {
         return y;
     }
 
+    public Posicion getAdy(int pos) {
+        switch (pos) {
+            case Posicion.ESTE:
+                return new Posicion(x + 1, y);
+            case Posicion.OESTE:
+                return new Posicion(x - 1, y);
+            case Posicion.NORTE:
+                return new Posicion(x, y - 1);
+            case Posicion.SUR:
+                return new Posicion(x, y + 1);
+            case Posicion.NORESTE:
+                return new Posicion(x + 1, y - 1);
+            case Posicion.SURESTE:
+                return new Posicion(x + 1, y + 1);
+            default:
+                System.out.println("Error: posicion no valida.");
+                return this;
+        }
+    }
+
+    public Posicion getAdy(String direccion) {
+        switch (direccion.toLowerCase()) {
+            case "norte":
+                return Posicion.this.getAdy(Posicion.NORTE);
+            case "sur":
+                return Posicion.this.getAdy(Posicion.SUR);
+            case "este":
+                return Posicion.this.getAdy(Posicion.ESTE);
+            case "oeste":
+                return Posicion.this.getAdy(Posicion.OESTE);
+            default:
+                System.out.println("Error: direccion no valida.");
+                return this;
+        }
+    }
+    
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
         int i = x;
         int j = y;
@@ -74,42 +110,6 @@ public class Posicion {
         }
         Collections.shuffle(candidatos);
         return candidatos.get(0);
-    }
-
-    public Posicion get(int pos) {
-        switch (pos) {
-            case Posicion.ESTE:
-                return new Posicion(x + 1, y);
-            case Posicion.OESTE:
-                return new Posicion(x - 1, y);
-            case Posicion.NORTE:
-                return new Posicion(x, y - 1);
-            case Posicion.SUR:
-                return new Posicion(x, y + 1);
-            case Posicion.NORESTE:
-                return new Posicion(x + 1, y - 1);
-            case Posicion.SURESTE:
-                return new Posicion(x + 1, y + 1);
-            default:
-                System.out.println("Error: posicion no valida.");
-                return this;
-        }
-    }
-
-    public Posicion get(String direccion) {
-        switch (direccion.toLowerCase()) {
-            case "norte":
-                return get(Posicion.NORTE);
-            case "sur":
-                return get(Posicion.SUR);
-            case "este":
-                return get(Posicion.ESTE);
-            case "oeste":
-                return get(Posicion.OESTE);
-            default:
-                System.out.println("Error: direccion no valida.");
-                return this;
-        }
     }
 
     @Override

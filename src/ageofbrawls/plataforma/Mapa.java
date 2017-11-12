@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class Mapa {
 
-    private ArrayList<ArrayList<Celda>> mapa;
+    private ArrayList<ArrayList<Celda>> mapa; //Este atributo y los 2 siguientes  no tienen getter puerto que, por definicion, solo los metodos de la clase los modifica.
     private int filas;
     private int columnas;
     private HashMap<String, Personaje> personajes;
@@ -100,15 +100,41 @@ public class Mapa {
         }
     }
 
+    public Mapa() {
+        this(10, true);
+    }
+
+    public HashMap<String, Personaje> getPersonajes() {
+        return personajes;
+    }
+
+    public HashMap<String, Edificio> getEdificios() {
+        return edificios;
+    }
+
+    public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
+        return recursosVisibles;
+    }
+
+    public Celda getCelda(int x, int y) {
+        if (x < columnas && y < filas && x > -1 && y > -1) {
+            return mapa.get(y).get(x);
+        }
+        return null;
+    }
+
+    public Celda getCelda(Posicion posicion) {
+        if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
+            return mapa.get(posicion.getY()).get(posicion.getX());
+        }
+        return null;
+    }
+
     public void listarPersonajes() {
         Set<Map.Entry<String, Personaje>> pers = personajes.entrySet();
         for (Map.Entry<String, Personaje> entry : pers) {
             System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
         }
-    }
-
-    public boolean perteneceAMapa(Posicion posicion) {
-        return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
     public void listarEdificios() {
@@ -119,7 +145,17 @@ public class Mapa {
         }
     }
 
+    public boolean perteneceAMapa(Posicion posicion) {
+        if (posicion == null) {
+            return false;
+        }
+        return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
+    }
+
     public void makeAdyVisible(Posicion posicion) {
+        if (posicion == null) {
+            return;
+        }
         int i = posicion.getX(), j = posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
@@ -133,6 +169,22 @@ public class Mapa {
                 }
             }
         }
+    }
+
+    public int contarEdificios(int tipo) {
+        int n = 0;
+        if (tipo > 0 && tipo < 4) {
+            Collection<Edificio> edifs = this.getEdificios().values();
+            for (Edificio ed : edifs) {
+                if (ed.getTipo() == tipo) {
+                    n++;
+                }
+            }
+            return n;
+        } else {
+            System.out.println("Error: tipo incorrecto.");
+        }
+        return -1;
     }
 
     private void makeAdyPrad(int i, int j) { //Hacer todas las celdas asyacentes pradera
@@ -153,55 +205,9 @@ public class Mapa {
         int[] cantidad = new int[]{rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1};
         Posicion posicion = new Posicion(i, j);
         getCelda(posicion).getContenedorRec().set(bloque.get(0), cantidad[0]);
-        getCelda(posicion.get(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
-        getCelda(posicion.get(Posicion.SUR)).getContenedorRec().set(bloque.get(2), cantidad[2]);
-        getCelda(posicion.get(Posicion.SURESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
-    }
-
-    public Mapa() {
-        this(10, true);
-    }
-
-    public Celda getCelda(int x, int y) {
-        if (x < columnas && y < filas && x > -1 && y > -1) {
-            return mapa.get(y).get(x);
-        }
-        return null;
-    }
-
-    public HashMap<String, Personaje> getPersonajes() {
-        return personajes;
-    }
-
-    public HashMap<String, Edificio> getEdificios() {
-        return edificios;
-    }
-
-    public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
-        return recursosVisibles;
-    }
-
-    public int contarEdificios(int tipo) {
-        int n = 0;
-        if (tipo > 0 && tipo < 4) {
-            Collection<Edificio> edifs = this.getEdificios().values();
-            for (Edificio ed : edifs) {
-                if (ed.getTipo() == tipo) {
-                    n++;
-                }
-            }
-            return n;
-        } else {
-            System.out.println("Error: tipo incorrecto.");
-        }
-        return -1;
-    }
-
-    public Celda getCelda(Posicion posicion) {
-        if (posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1) {
-            return mapa.get(posicion.getY()).get(posicion.getX());
-        }
-        return null;
+        getCelda(posicion.getAdy(Posicion.ESTE)).getContenedorRec().set(bloque.get(1), cantidad[1]);
+        getCelda(posicion.getAdy(Posicion.SUR)).getContenedorRec().set(bloque.get(2), cantidad[2]);
+        getCelda(posicion.getAdy(Posicion.SURESTE)).getContenedorRec().set(bloque.get(3), cantidad[3]);
     }
 
     public void imprimir() {

@@ -33,16 +33,6 @@ public class Celda {
         personajes = new ArrayList<>();
     }
 
-    public boolean esCeldaLibre(boolean personaje) {
-        if (getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && getEdificio() == null) {
-            if (personaje) {
-                return personajes.isEmpty();
-            }
-            return true;
-        }
-        return false;
-    }
-
     public Celda(int edificio, int i, int j, String nombreEdificio) {
         this(ContenedorRecurso.PRADERA, 0, edificio, new Posicion(i, j), nombreEdificio);
     }
@@ -53,6 +43,11 @@ public class Celda {
 
     public Celda(int i, int j) {
         this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
+    }
+
+    public Celda(int i, int j, boolean oculto) {
+        this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
+        this.oculto = oculto;
     }
 
     public String getTipo() {
@@ -70,29 +65,12 @@ public class Celda {
         }
     }
 
-    public Celda(int i, int j, boolean oculto) {
-        this(ContenedorRecurso.PRADERA, 0, 0, new Posicion(i, j), null);
-        this.oculto = oculto;
-    }
-
     public ContenedorRecurso getContenedorRec() {
         return recurso;
     }
 
     public Edificio getEdificio() {
         return edificio;
-    }
-
-    public void addPersonaje(Personaje personaje) {
-        if (personaje != null) {
-            personajes.add(personaje);
-        }
-    }
-
-    public void removePersonaje(Personaje personaje) {
-        if (personaje != null) {
-            personajes.remove(personaje);
-        }
     }
 
     public ArrayList<Personaje> getPersonajes() {
@@ -108,6 +86,30 @@ public class Celda {
         }
     }
 
+    public boolean isOculto() {
+        return oculto;
+    }
+
+    public void setOculto(boolean oculto) {
+        this.oculto = oculto;
+    }
+
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
+    public void addPersonaje(Personaje personaje) {
+        if (personaje != null) {
+            personajes.add(personaje);
+        }
+    }
+
+    public void removePersonaje(Personaje personaje) {
+        if (personaje != null) {
+            personajes.remove(personaje);
+        }
+    }
+
     public void mirar() {
         if (this.getEdificio() != null) {
             this.getEdificio().describirEdificio();//En caso de que en la celda haya un edificio, lo describimos
@@ -120,16 +122,14 @@ public class Celda {
 
     }
 
-    public boolean isOculto() {
-        return oculto;
-    }
-
-    public void setOculto(boolean oculto) {
-        this.oculto = oculto;
-    }
-
-    public Posicion getPosicion() {
-        return posicion;
+    public boolean esCeldaLibre(boolean personaje) {
+        if (getContenedorRec().getTipo() == ContenedorRecurso.PRADERA && getEdificio() == null) {
+            if (personaje) {
+                return personajes.isEmpty();
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
