@@ -67,10 +67,6 @@ public class Edificio {
         return -1;
     }
 
-    public void reparar() {
-        ps = getMaxVida();
-    }
-
     public Posicion getPosicion() {
         return new Posicion(posicion);
     }
@@ -85,6 +81,78 @@ public class Edificio {
 
     public int getCapAloj() {
         return capacidadAlojamiento;
+    }
+
+    public int getCapAlmacen() {
+        return capAlmacen;
+    }
+
+    public boolean estaDestruido() {
+        return destruido;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getMadera() {
+        return this.madera;
+    }
+
+    public int getPiedra() {
+        return this.piedra;
+    }
+
+    public int getAlimentos() {
+        return this.alimentos;
+    }
+
+    public void setPiedra(int cant, boolean relative) {
+        if (relative) {
+            if (piedra + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            piedra += cant;
+        } else {
+            if (piedra + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            piedra = cant;
+        }
+    }
+
+    public void setAlimentos(int cant, boolean relative) {
+        if (relative) {
+            if (alimentos + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            alimentos += cant;
+        } else {
+            if (alimentos + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            alimentos = cant;
+        }
+    }
+
+    public void setMadera(int cant, boolean relative) {
+        if (relative) {
+            if (madera + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            madera += cant;
+        } else {
+            if (madera + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            madera = cant;
+        }
     }
 
     public void setTipo(int tipo) {
@@ -152,10 +220,6 @@ public class Edificio {
 
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
     public void describirEdificio() {
         switch (tipo) {
             case Edificio.CIUDADELA:
@@ -180,70 +244,6 @@ public class Edificio {
         }
     }
 
-    public boolean estaDestruido() {
-        return destruido;
-    }
-
-    public int getMadera() {
-        return this.madera;
-    }
-
-    public int getPiedra() {
-        return this.piedra;
-    }
-
-    public int getAlimentos() {
-        return this.alimentos;
-    }
-
-    public void setPiedra(int cant, boolean relative) {
-        if (relative) {
-            if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            piedra += cant;
-        } else {
-            if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            piedra = cant;
-        }
-    }
-
-    public void setAlimentos(int cant, boolean relative) {
-        if (relative) {
-            if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            alimentos += cant;
-        } else {
-            if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            alimentos = cant;
-        }
-    }
-
-    public void setMadera(int cant, boolean relative) {
-        if (relative) {
-            if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            madera += cant;
-        } else {
-            if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            madera = cant;
-        }
-    }
-
     public void danar(int dano) {
         if (dano > 0) {
             if (ps - dano > 0) {
@@ -255,6 +255,10 @@ public class Edificio {
         } else {
             System.out.println("Error dañando edificio.");
         }
+    }
+
+    public void reparar() {
+        ps = getMaxVida();
     }
 
 }
