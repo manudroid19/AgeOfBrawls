@@ -58,6 +58,25 @@ public class Edificio {
         }
     }
 
+    public Edificio(Posicion posicion, String nombre) {
+        if (nombre != null) {
+            this.tipo = CIUDADELA;
+            if (posicion != null) {
+                this.posicion = new Posicion(posicion);
+            } else {
+                this.posicion = new Posicion();
+            }
+            this.nombre = nombre;
+            this.ps = 1000;
+            this.capAlmacen = Edificio.CAPALMACEN;
+            madera = 500;
+            piedra = 500;
+            alimentos = 500;
+        } else {
+            System.out.println("Error seteando tipo");
+        }
+    }
+
     public Posicion getPosicion() {
         return new Posicion(posicion);
     }
