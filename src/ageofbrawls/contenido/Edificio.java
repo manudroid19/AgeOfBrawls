@@ -14,7 +14,6 @@ import ageofbrawls.plataforma.Posicion;
  */
 public class Edificio {
 
-    //public final static int NINGUNO=0;
     public final static int CIUDADELA = 1;
     public final static int CUARTEL = 2;
     public final static int CASA = 3;
@@ -32,7 +31,11 @@ public class Edificio {
     public Edificio(int tipo, Posicion posicion, String nombre) {
         if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
-            this.posicion = posicion;
+            if (posicion != null) {
+                this.posicion = new Posicion(posicion);
+            } else {
+                this.posicion = new Posicion();
+            }
             this.nombre = nombre;
             switch (tipo) {
                 case Edificio.CASA:
@@ -53,18 +56,6 @@ public class Edificio {
         } else {
             System.out.println("Error seteando tipo");
         }
-    }
-
-    public int getMaxVida() {
-        switch (tipo) {
-            case Edificio.CASA:
-                return 200;
-            case Edificio.CUARTEL:
-                return 500;
-            case Edificio.CIUDADELA:
-                return 1000;
-        }
-        return -1;
     }
 
     public Posicion getPosicion() {
@@ -105,6 +96,18 @@ public class Edificio {
 
     public int getAlimentos() {
         return this.alimentos;
+    }
+
+    public int getMaxVida() {
+        switch (tipo) {
+            case Edificio.CASA:
+                return 200;
+            case Edificio.CUARTEL:
+                return 500;
+            case Edificio.CIUDADELA:
+                return 1000;
+        }
+        return -1;
     }
 
     public void setPiedra(int cant, boolean relative) {
@@ -164,6 +167,10 @@ public class Edificio {
     }
 
     public void crearPersonaje(Mapa mapa) {
+        if (mapa == null) {
+            System.out.println("Error.");
+            return;
+        }
         if (mapa.getPersonajes().size() >= mapa.contarEdificios(Edificio.CASA) * CAPALOJ) {
             System.out.println("Error: no hay suficiente espacio para crear.");
             return;

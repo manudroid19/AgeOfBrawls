@@ -24,7 +24,7 @@ public class Personaje {
     public Personaje(int tipo, Posicion posicion, String nombre) {
         if ((tipo == 1 || tipo == 2) && posicion != null) {
             this.tipo = tipo;
-            this.posicion = posicion;
+            this.posicion = new Posicion(posicion);
             this.nombre = nombre;
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
@@ -118,7 +118,7 @@ public class Personaje {
 
     public void setPosicion(Posicion posicion) {
         if (posicion != null) {
-            this.posicion = posicion;
+            this.posicion = new Posicion(posicion);
         } else {
             System.out.println("Error: posicion introducida errónea");
         }

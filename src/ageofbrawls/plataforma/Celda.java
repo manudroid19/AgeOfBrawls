@@ -23,7 +23,11 @@ public class Celda {
     private ArrayList<Personaje> personajes;
 
     public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio) {
-        this.posicion = new Posicion(posicion);//valida a posicion
+        if (posicion != null) {
+            this.posicion = new Posicion(posicion);
+        } else {
+            this.posicion = new Posicion();
+        }
         if (edificio == 0) {
             this.edificio = null;
         } else {

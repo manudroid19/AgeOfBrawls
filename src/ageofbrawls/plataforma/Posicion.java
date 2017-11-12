@@ -85,9 +85,9 @@ public class Posicion {
                 return this;
         }
     }
-    
+
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
-        if(mapa==null){
+        if (mapa == null) {
             System.out.println("Error.");
             return null;
         }
