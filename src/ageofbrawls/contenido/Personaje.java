@@ -182,12 +182,12 @@ public class Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getCantidad());
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getCantidad()),tipoC=contenedor.getTipo();
         contenedor.setCantidad(contenedor.getCantidad() - recolectando);
         if (contenedor.getTipo() == ContenedorRecurso.PRADERA) { //si se ha vuelto pradera, imprimo
             mapa.imprimir();
         }
-        switch (contenedor.getTipo()) {
+        switch (tipoC) {
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Has recolectado " + recolectando + " unidades de madera");
                 setCantRecMadera(getCantRecMadera() + recolectando);
