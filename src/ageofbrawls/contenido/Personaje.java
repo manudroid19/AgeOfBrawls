@@ -180,62 +180,35 @@ public class Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        if (this.getCantRecTotal() + mapa.getCelda(pos).getContenedorRec().getCantidad() <= this.getCapRec()) {
+        int recolectando;
             switch (mapa.getCelda(pos).getContenedorRec().getTipo()) {
                 case ContenedorRecurso.BOSQUE:
-                    this.setCantRecMadera(this.getCantRecMadera() + mapa.getCelda(pos).getContenedorRec().getCantidad());
-                    System.out.println("Has recolectado " + mapa.getCelda(pos).getContenedorRec().getCantidad() + " unidades de madera");
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(0);
-                    mapa.getCelda(pos).getContenedorRec().setTipo(0);
-                    mapa.imprimir();
-
+                    recolectando = Math.min(getCapRec()- this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
+                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
+                    System.out.println("Has recolectado " + recolectando + " unidades de madera");
+                    setCantRecMadera(getCantRecMadera() + recolectando);
                     break;
-
                 case ContenedorRecurso.ARBUSTO:
-                    this.setCantRecComida(this.getCantRecComida() + mapa.getCelda(pos).getContenedorRec().getCantidad());
-                    System.out.println("Has recolectado " + mapa.getCelda(pos).getContenedorRec().getCantidad() + " unidades de comida");
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(0);
-                    mapa.getCelda(pos).getContenedorRec().setTipo(0);
-                    mapa.imprimir();
-
+                    recolectando = Math.min(getCapRec()- this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
+                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
+                    System.out.println("Has recolectado " + recolectando + " unidades de comida");
+                    setCantRecComida(getCantRecComida() + recolectando);
                     break;
 
                 case ContenedorRecurso.CANTERA:
-                    this.setCantRecPiedra(this.getCantRecPiedra() + mapa.getCelda(pos).getContenedorRec().getCantidad());
-                    System.out.println("Has recolectado " + mapa.getCelda(pos).getContenedorRec().getCantidad() + " unidades de piedra");
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(0);
-                    mapa.getCelda(pos).getContenedorRec().setTipo(0);
-                    mapa.imprimir();
-
+                    recolectando = Math.min(getCapRec()- this.getCantRecTotal(), mapa.getCelda(pos).getContenedorRec().getCantidad());
+                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - recolectando);
+                    System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+                    setCantRecPiedra(getCantRecPiedra() + recolectando);
                     break;
             }
-
-        } else {
-            switch (mapa.getCelda(pos).getContenedorRec().getTipo()) {
-                case ContenedorRecurso.BOSQUE:
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
-                    System.out.println("Has recolectado " + (this.getCapRec() - this.getCantRecTotal()) + " unidades de madera");
-                    this.setCantRecMadera(this.getCantRecMadera() + (this.getCapRec() - this.getCantRecTotal()));
-                    break;
-
-                case ContenedorRecurso.ARBUSTO:
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
-                    System.out.println("Has recolectado " + (this.getCapRec() - this.getCantRecTotal()) + " unidades de comida");
-                    this.setCantRecComida(this.getCantRecComida() + (this.getCapRec() - this.getCantRecTotal()));
-                    break;
-
-                case ContenedorRecurso.CANTERA:
-
-                    mapa.getCelda(pos).getContenedorRec().setCantidad(mapa.getCelda(pos).getContenedorRec().getCantidad() - (this.getCapRec() - this.getCantRecTotal()));
-                    System.out.println("Has recolectado " + (this.getCapRec() - this.getCantRecTotal()) + " unidades de piedra");
-                    this.setCantRecPiedra(this.getCantRecPiedra() + (this.getCapRec() - this.getCantRecTotal()));
-                    break;
-            }
-
-        }
     }
 
-    public void almacenar(Mapa mapa, int direccion) {
+    public void almacenar(Mapa mapa, String direccion) {
+        Posicion pos = posicion.get(direccion);
+        if (pos.equals(posicion)) { //error con la posicion
+            return;
+        }
         if (this.tipo == Personaje.PAISANO) {
             if (mapa.getCelda(posicion.get(direccion)).getEdificio() != null && mapa.getCelda(posicion.get(direccion)).getEdificio().getTipo() == Edificio.CIUDADELA) {
                 if (this.getCantRecTotal() > 0) {
@@ -262,27 +235,6 @@ public class Personaje {
             }
         } else {
             System.out.println("Un soldado no puede recolectar");
-        }
-
-    }
-
-    public void almacenar(Mapa mapa, String direccion) {
-
-        switch (direccion.toLowerCase()) {
-            case "norte":
-                almacenar(mapa, Posicion.NORTE);
-                break;
-            case "sur":
-                almacenar(mapa, Posicion.SUR);
-                break;
-            case "este":
-                almacenar(mapa, Posicion.ESTE);
-                break;
-            case "oeste":
-                almacenar(mapa, Posicion.OESTE);
-                break;
-            default:
-                System.out.println("Error: direccion no valida.");
         }
 
     }
