@@ -266,7 +266,7 @@ public class Personaje {
                     }
                     mapa.getEdificios().get("ciudadela1").setPiedra(-200, true);
                     mapa.getEdificios().get("ciudadela1").setMadera(-200, true);
-                    Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + mapa.contarEdificios(Edificio.CUARTEL) + 1);
+                    Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (mapa.contarEdificios(Edificio.CUARTEL) + 1));
                     mapa.getCelda(posConstruir).setEdificio(cuart);
                     mapa.getEdificios().put(cuart.getNombre(), cuart);
                     System.out.println();

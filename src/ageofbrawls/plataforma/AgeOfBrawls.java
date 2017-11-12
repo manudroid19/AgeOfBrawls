@@ -29,15 +29,12 @@ public class AgeOfBrawls {
         String jugador = "a";
 
         System.out.println("Bienvenido a Age Of Brawls!!");
+        System.out.println("Por ahora es un vasto territorio inexplorado que solo habita tu fiel paisano \"paisano1\" desde su bastión \"ciudadela1\".");
         System.out.println("Dispones inicialmente de 500 de piedra, madera y alimentos para levantar tu imperio.");
         System.out.println("Construir una casa cuesta 100 de piedra y madera, un cuartel 200 de piedra y madera, crear un paisano 50 de alimentos y crear un soldado 100 de alimentos.");
         System.out.println();
         mapa.imprimirCabecera();
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ex) {
-            Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         String orden = "";
         mapa.imprimir();
         while (!"salir".equals(orden)) {
@@ -62,45 +59,6 @@ public class AgeOfBrawls {
                         break;
                     }
                     personaje.mover(mapa, donde);
-                    break;
-                case "manejar":
-                    quien = comando[1];
-                    if (comando.length != 2) {
-                        System.out.println("Error de sintaxis.");
-                        break;
-                    }
-                    Personaje person = mapa.getPersonajes().get(quien);
-                    if (person == null) {
-                        System.out.println("El personaje no existe");
-                        break;
-                    }
-                    System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
-                    String tecla = "";
-                    while (!tecla.equals("q")) {
-                        tecla = sca.nextLine();
-                        switch (tecla) {
-                            case "a":
-                                person.mover(mapa, "oeste");
-                                mapa.imprimirCabecera();
-                                mapa.imprimir();
-                                break;
-                            case "s":
-                                person.mover(mapa, "sur");
-                                mapa.imprimirCabecera();
-                                mapa.imprimir();
-                                break;
-                            case "d":
-                                person.mover(mapa, "este");
-                                mapa.imprimirCabecera();
-                                mapa.imprimir();
-                                break;
-                            case "w":
-                                person.mover(mapa, "norte");
-                                mapa.imprimirCabecera();
-                                mapa.imprimir();
-                                break;
-                        }
-                    }
                     break;
                 case "listar":
                     if (comando.length != 2) {
@@ -241,7 +199,45 @@ public class AgeOfBrawls {
                     }
                     personaje5.almacenar(mapa, direccion2);
                     break;
-                    
+                case "manejar":
+                    quien = comando[1];
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    Personaje person = mapa.getPersonajes().get(quien);
+                    if (person == null) {
+                        System.out.println("El personaje no existe");
+                        break;
+                    }
+                    System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
+                    String tecla = "";
+                    while (!tecla.equals("q")) {
+                        tecla = sca.nextLine();
+                        switch (tecla) {
+                            case "a":
+                                person.mover(mapa, "oeste");
+                                mapa.imprimirCabecera();
+                                mapa.imprimir();
+                                break;
+                            case "s":
+                                person.mover(mapa, "sur");
+                                mapa.imprimirCabecera();
+                                mapa.imprimir();
+                                break;
+                            case "d":
+                                person.mover(mapa, "este");
+                                mapa.imprimirCabecera();
+                                mapa.imprimir();
+                                break;
+                            case "w":
+                                person.mover(mapa, "norte");
+                                mapa.imprimirCabecera();
+                                mapa.imprimir();
+                                break;
+                        }
+                    }
+                    break;                    
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {
                         System.out.println("Error de sintaxis.");

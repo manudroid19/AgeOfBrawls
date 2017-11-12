@@ -138,7 +138,15 @@ public class Celda {
             return " ? ";
         }
         if (!this.personajes.isEmpty()) {
-            return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
+            if (this.personajes.size() == 1) {
+                if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {
+                    return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
+                }else{
+                    return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S ";
+                }
+            }else{
+                return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
+            }
         }
         switch (this.recurso.getTipo()) {
             case ContenedorRecurso.BOSQUE:
