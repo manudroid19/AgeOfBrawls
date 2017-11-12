@@ -100,9 +100,6 @@ public class ContenedorRecurso {
 
     public void describirContenedorRecurso() {
         switch (tipo) {
-//            case ContenedorRecurso.PRADERA:
-//                System.out.println("Celda de tipo pradera");
-//                break;
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Contenedor de recurso");
                 System.out.println("Cantidad de madera: " + cantidad);
