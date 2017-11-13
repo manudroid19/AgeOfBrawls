@@ -25,10 +25,7 @@ public class Mapa {
     private ArrayList<ArrayList<Celda>> mapa; //Este atributo y los 2 siguientes no tienen getter puesto que, por definicion, solo los metodos de la clase los modifica.
     private int filas;
     private int columnas;
-    private HashMap<String, Personaje> personajes;
-    private HashMap<String, Edificio> edificios;
-    private HashMap<String, ContenedorRecurso> recursosVisibles;
-
+    private HashMap<String,Civilizacion> civilizaciones;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -51,10 +48,7 @@ public class Mapa {
     public Mapa(int filas, int columnas) {
         if (filas > 0 && columnas > 0) {
             mapa = new ArrayList<>();
-            edificios = new HashMap<>();
-            personajes = new HashMap<>();
-            recursosVisibles = new HashMap<>();
-
+            civilizaciones = new HashMap<>();
             for (int i = 0; i < filas; i++) {
                 ArrayList<Celda> b = new ArrayList<>();
                 for (int j = 0; j < columnas; j++) {
@@ -85,37 +79,21 @@ public class Mapa {
                     }
                 }
             }
+            Civilizacion civilizacion = new Civilizacion(this,"Romana");
+            civilizaciones.put("Romana", civilizacion);
 
-            this.makeAdyPrad((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-            Posicion posCiudadela = new Posicion((mapa.size() - 1) / 2, (mapa.size() - 1) / 2);
-            String nombre = "ciudadela1";
-            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nombre);
-            this.getCelda(posCiudadela).setEdificio(ciud);
-            edificios.put(nombre, ciud);
-            Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(this);
-            Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1");
-            personajes.put("paisano1", paisano1);
-            this.getCelda(posPaisano).addPersonaje(paisano1);
-            this.makeAdyVisible(posPaisano);
         }
     }
 
     public Mapa() {
         this(10, true);
     }
-
-    public HashMap<String, Personaje> getPersonajes() {
-        return personajes;
+    public int getFilas(){
+        return filas;
     }
-
-    public HashMap<String, Edificio> getEdificios() {
-        return edificios;
+    public int getColumnas(){
+        return columnas;
     }
-
-    public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
-        return recursosVisibles;
-    }
-
     public Celda getCelda(int x, int y) {
         if (x < columnas && y < filas && x > -1 && y > -1) {
             return mapa.get(y).get(x);
@@ -130,21 +108,6 @@ public class Mapa {
         return null;
     }
 
-    public void listarPersonajes() {
-        Set<Map.Entry<String, Personaje>> pers = personajes.entrySet();
-        for (Map.Entry<String, Personaje> entry : pers) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
-        }
-    }
-
-    public void listarEdificios() {
-        Set<Map.Entry<String, Edificio>> pers = edificios.entrySet();
-        for (Map.Entry<String, Edificio> entry : pers) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
-
-        }
-    }
-
     public boolean perteneceAMapa(Posicion posicion) {
         if (posicion == null) {
             return false;
@@ -152,42 +115,13 @@ public class Mapa {
         return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
-    public void makeAdyVisible(Posicion posicion) {
-        if (posicion == null) {
+    void makeAdyPrad(Posicion posicion) { //Hacer todas las celdas asyacentes pradera
+        if(posicion==null){
+            System.out.println("Error.");
             return;
         }
-        int i = posicion.getX(), j = posicion.getY();
-        for (int h = i - 1; h < i + 2; h++) {
-            for (int k = j - 1; k < j + 2; k++) {
-                Celda c = this.getCelda(h, k);
-                if (c != null && c.isOculto() && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
-                    c.setOculto(false);
-                    if (c.getContenedorRec() != null) {
-                        c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(c.getContenedorRec().getContador()));
-                        recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
-                    }
-                }
-            }
-        }
-    }
-
-    public int contarEdificios(int tipo) {
-        int n = 0;
-        if (tipo > 0 && tipo < 4) {
-            Collection<Edificio> edifs = this.getEdificios().values();
-            for (Edificio ed : edifs) {
-                if (ed.getTipo() == tipo) {
-                    n++;
-                }
-            }
-            return n;
-        } else {
-            System.out.println("Error: tipo incorrecto.");
-        }
-        return -1;
-    }
-
-    private void makeAdyPrad(int i, int j) { //Hacer todas las celdas asyacentes pradera
+        int i=posicion.getX();
+        int j=posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 this.getCelda(h, k).setTipoCont(Celda.PRADERA);
@@ -211,9 +145,9 @@ public class Mapa {
     }
 
     public void imprimir() {
-        System.out.print("\r  │");
+        System.out.print("\r   │");
         for (int i = 0; i < columnas; i++) {
-            System.out.print("C" + i + " │");
+            System.out.print("C" + i + ((i > 9) ? "" : " ") + "│");
         }
         System.out.println();
         //Primera linea: numeracion de columna
@@ -227,7 +161,7 @@ public class Mapa {
             System.out.println();
             //Linea de separacion entre filas
 
-            System.out.print("F" + i); //Numeracion de fila
+            System.out.print("F" + i + ((i > 9) ? "" : " ")); //Numeracion de fila
             boolean flagrec = false;
             for (int j = 0; j < columnas; j++) {
                 System.out.print(ANSI_RESET + "│" + mapa.get(i).get(j).toString());

@@ -21,7 +21,7 @@ public class AgeOfBrawls {
      */
     public static void main(String[] args) {
 
-        Mapa mapa = new Mapa(10, true);
+        Mapa mapa = new Mapa(20, true);
         Scanner sca = new Scanner(System.in);
 
         System.out.println("Bienvenido a Age Of Brawls!!");
