@@ -41,7 +41,7 @@ public class Civilizacion {
         mapa.getCelda(posPaisano).addPersonaje(paisano1);
         this.makeAdyVisible(posPaisano);
     }
-    
+
     public HashMap<String, Personaje> getPersonajes() {
         return personajes;
     }
@@ -50,9 +50,14 @@ public class Civilizacion {
         return edificios;
     }
 
+    public Mapa getMapa() {
+        return mapa;
+    }
+
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
     }
+
     public void listarPersonajes() {
         Set<Map.Entry<String, Personaje>> pers = personajes.entrySet();
         for (Map.Entry<String, Personaje> entry : pers) {
@@ -67,6 +72,7 @@ public class Civilizacion {
 
         }
     }
+
     public void makeAdyVisible(Posicion posicion) {
         if (posicion == null) {
             return;
@@ -85,6 +91,7 @@ public class Civilizacion {
             }
         }
     }
+
     public int contarEdificios(int tipo) {
         int n = 0;
         if (tipo > 0 && tipo < 4) {

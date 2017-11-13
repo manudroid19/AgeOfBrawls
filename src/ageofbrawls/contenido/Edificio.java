@@ -5,6 +5,7 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 
@@ -185,24 +186,24 @@ public class Edificio {
         }
     }
 
-    public void crearPersonaje(Mapa mapa) {
-        if (mapa == null) {
+    public void crearPersonaje(Civilizacion civilizacion) {
+        if (civilizacion == null) {
             System.out.println("Error.");
             return;
         }
-        if (mapa.getPersonajes().size() >= mapa.contarEdificios(Edificio.CASA) * CAPALOJ) {
+        if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Edificio.CASA) * CAPALOJ) {
             System.out.println("Error: no hay suficiente espacio para crear.");
             return;
         }
         if (tipo == Edificio.CIUDADELA) {
-            if (mapa.getEdificios().get("ciudadela1").getAlimentos() < 50) {
+            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < 50) {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
-            Posicion pos = posicion.posicionAdyacenteLibre(mapa);
+            Posicion pos = posicion.posicionAdyacenteLibre(civilizacion.getMapa());
             int i = 1;
             String nombrePers = "paisano1";
-            while (mapa.getPersonajes().containsKey(nombrePers)) {
+            while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("paisano" + i, "paisano" + (++i));
             }
             Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers);
