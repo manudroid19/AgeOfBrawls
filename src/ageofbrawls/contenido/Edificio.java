@@ -207,40 +207,40 @@ public class Edificio {
                 nombrePers = nombrePers.replace("paisano" + i, "paisano" + (++i));
             }
             Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers);
-            mapa.getCelda(pos).addPersonaje(person);
-            mapa.getPersonajes().put(person.getNombre(), person);
-            mapa.getCelda(pos).setOculto(false);
-            mapa.getEdificios().get("ciudadela1").setAlimentos(-50, true);
-            mapa.makeAdyVisible(pos);
+            civilizacion.getMapa().getCelda(pos).addPersonaje(person);
+            civilizacion.getPersonajes().put(person.getNombre(), person);
+            civilizacion.getMapa().getCelda(pos).setOculto(false);
+            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-50, true);
+            civilizacion.makeAdyVisible(pos);
             System.out.println();
-            mapa.imprimirCabecera();
-            mapa.imprimir();
+            civilizacion.getMapa().imprimirCabecera();
+            civilizacion.getMapa().imprimir();
             System.out.println("Coste de creacion: 50 unidades de comida");
-            System.out.println("Te quedan " + ((mapa.contarEdificios(Edificio.CASA) * CAPALOJ) - mapa.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+            System.out.println("Te quedan " + ((civilizacion.contarEdificios(Edificio.CASA) * CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
             System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
 
         } else if (tipo == Edificio.CUARTEL) {
-            if (mapa.getEdificios().get("ciudadela1").getAlimentos() < 100) {
+            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < 100) {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
-            Posicion pos = posicion.posicionAdyacenteLibre(mapa);
+            Posicion pos = posicion.posicionAdyacenteLibre(civilizacion.getMapa());
             int i = 1;
             String nombrePers = "soldado1";
-            while (mapa.getPersonajes().containsKey(nombrePers)) {
+            while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("soldado" + i, "soldado" + (++i));
             }
             Personaje person = new Personaje(Personaje.SOLDADO, pos, nombrePers);
-            mapa.getCelda(pos).addPersonaje(person);
-            mapa.getPersonajes().put(person.getNombre(), person);
-            mapa.getCelda(pos).setOculto(false);
-            mapa.getEdificios().get("ciudadela1").setAlimentos(-100, true);
-            mapa.makeAdyVisible(pos);
+            civilizacion.getMapa().getCelda(pos).addPersonaje(person);
+            civilizacion.getPersonajes().put(person.getNombre(), person);
+            civilizacion.getMapa().getCelda(pos).setOculto(false);
+            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-100, true);
+            civilizacion.makeAdyVisible(pos);
             System.out.println();
-            mapa.imprimirCabecera();
-            mapa.imprimir();
+            civilizacion.getMapa().imprimirCabecera();
+            civilizacion.getMapa().imprimir();
             System.out.println("Coste de creacion: 100 unidades de comida");
-            System.out.println("Te quedan " + ((mapa.contarEdificios(Edificio.CASA) * CAPALOJ) - mapa.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+            System.out.println("Te quedan " + ((civilizacion.contarEdificios(Edificio.CASA) * CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
             System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
 
         }

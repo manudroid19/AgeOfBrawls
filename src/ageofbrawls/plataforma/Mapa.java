@@ -25,7 +25,7 @@ public class Mapa {
     private ArrayList<ArrayList<Celda>> mapa; //Este atributo y los 2 siguientes no tienen getter puesto que, por definicion, solo los metodos de la clase los modifica.
     private int filas;
     private int columnas;
-    private HashMap<String,Civilizacion> civilizaciones;
+    private HashMap<String, Civilizacion> civilizaciones;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -79,8 +79,6 @@ public class Mapa {
                     }
                 }
             }
-            Civilizacion civilizacion = new Civilizacion(this,"Romana");
-            civilizaciones.put("Romana", civilizacion);
 
         }
     }
@@ -88,12 +86,15 @@ public class Mapa {
     public Mapa() {
         this(10, true);
     }
-    public int getFilas(){
+
+    public int getFilas() {
         return filas;
     }
-    public int getColumnas(){
+
+    public int getColumnas() {
         return columnas;
     }
+
     public Celda getCelda(int x, int y) {
         if (x < columnas && y < filas && x > -1 && y > -1) {
             return mapa.get(y).get(x);
@@ -115,13 +116,21 @@ public class Mapa {
         return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
+    public void addCivilizacion(String nombre, Civilizacion civilizacion) {
+        if(civilizacion==null || civilizaciones.containsKey(nombre)){
+            System.out.println("Error añadiendo civilizacion");
+            return;
+        }
+        civilizaciones.put(nombre, civilizacion);
+    }
+
     void makeAdyPrad(Posicion posicion) { //Hacer todas las celdas asyacentes pradera
-        if(posicion==null){
+        if (posicion == null) {
             System.out.println("Error.");
             return;
         }
-        int i=posicion.getX();
-        int j=posicion.getY();
+        int i = posicion.getX();
+        int j = posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 this.getCelda(h, k).setTipoCont(Celda.PRADERA);

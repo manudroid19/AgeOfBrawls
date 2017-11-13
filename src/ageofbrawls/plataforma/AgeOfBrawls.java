@@ -22,6 +22,8 @@ public class AgeOfBrawls {
     public static void main(String[] args) {
 
         Mapa mapa = new Mapa(20, true);
+        Civilizacion civilizacion = new Civilizacion(mapa,"Romana");
+        mapa.addCivilizacion("Romana", civilizacion);
         Scanner sca = new Scanner(System.in);
 
         System.out.println("Bienvenido a Age Of Brawls!!");
@@ -49,12 +51,12 @@ public class AgeOfBrawls {
                     }
                     String quien = comando[1];
                     String donde = comando[2];
-                    Personaje personaje = mapa.getPersonajes().get(quien);
+                    Personaje personaje = civilizacion.getPersonajes().get(quien);
                     if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje.mover(mapa, donde);
+                    personaje.mover(civilizacion, donde);
                     break;
                 case "listar":
                     if (comando.length != 2) {
@@ -63,10 +65,10 @@ public class AgeOfBrawls {
                     }
                     switch (comando[1].toLowerCase()) {
                         case "personajes":
-                            mapa.listarPersonajes();
+                            civilizacion.listarPersonajes();
                             break;
                         case "edificios":
-                            mapa.listarEdificios();
+                            civilizacion.listarEdificios();
                             break;
                         default:
                             System.out.println("Comando no valido");
@@ -80,22 +82,22 @@ public class AgeOfBrawls {
                         break;
                     }
                     String sujeto = comando[1];
-                    if (mapa.getPersonajes().containsKey(sujeto)) {
-                        Personaje personaje1 = mapa.getPersonajes().get(sujeto);
+                    if (civilizacion.getPersonajes().containsKey(sujeto)) {
+                        Personaje personaje1 = civilizacion.getPersonajes().get(sujeto);
                         personaje1.describirPersonaje();
-                    } else if (mapa.getEdificios().containsKey(sujeto)) {
-                        Edificio edificio = mapa.getEdificios().get(sujeto);
+                    } else if (civilizacion.getEdificios().containsKey(sujeto)) {
+                        Edificio edificio = civilizacion.getEdificios().get(sujeto);
                         edificio.describirEdificio();
-                    } else if (mapa.getContenedoresRecurso().containsKey(sujeto)) {
-                        ContenedorRecurso rec = mapa.getContenedoresRecurso().get(sujeto);
+                    } else if (civilizacion.getContenedoresRecurso().containsKey(sujeto)) {
+                        ContenedorRecurso rec = civilizacion.getContenedoresRecurso().get(sujeto);
                         rec.describirContenedorRecurso();
                     } else {
                         System.out.println("Error: sujeto a describir no encontrado.");
                     }
                     break;
                 case "mirar":
-                    if (comando.length != 2 || comando[1].length() != 5 || comando[1].charAt(0) != '(' || comando[1].charAt(2) != ',' || comando[1].charAt(4) != ')') {
-                        System.out.println("Error de sintaxis.");
+                    if (comando.length != 2 || comando[1].length() >= 5 || comando[1].charAt(0) != '(') {
+                        System.out.println("Error de sintaxis..");
                         break;
                     }
                     String sub3 = comando[1];
@@ -129,12 +131,12 @@ public class AgeOfBrawls {
                     String constructor = comando[1];
                     String tipo = comando[2];
                     String dir = comando[3];
-                    personaje = mapa.getPersonajes().get(constructor);
+                    personaje = civilizacion.getPersonajes().get(constructor);
                     if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje.consEdif(tipo, dir, mapa);
+                    personaje.consEdif(tipo, dir, civilizacion);
                     break;
                 case "reparar":
                     if (comando.length != 3) {
@@ -143,12 +145,12 @@ public class AgeOfBrawls {
                     }
                     String reparador = comando[1];
                     dir = comando[2];
-                    personaje = mapa.getPersonajes().get(reparador);
+                    personaje = civilizacion.getPersonajes().get(reparador);
                     if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
                     }
-                    personaje.reparar(personaje.getPosicion().getAdy(dir), mapa);
+                    personaje.reparar(personaje.getPosicion().getAdy(dir), civilizacion);
                     break;
                 case "crear":
                     if (comando.length != 3) {
@@ -157,12 +159,12 @@ public class AgeOfBrawls {
                     }
                     String edificio = comando[1];
                     tipo = comando[2];
-                    Edificio creador = mapa.getEdificios().get(edificio);
+                    Edificio creador = civilizacion.getEdificios().get(edificio);
                     if (creador == null || (creador.getTipo() == Edificio.CUARTEL && !tipo.equals("soldado")) || (creador.getTipo() == Edificio.CIUDADELA && !tipo.equals("paisano"))) {
                         System.out.println("Comando erroneo. No se puede crear.");
                         break;
                     }
-                    creador.crearPersonaje(mapa);
+                    creador.crearPersonaje(civilizacion);
 
                     break;
 
@@ -173,7 +175,7 @@ public class AgeOfBrawls {
                     }
                     String persona = comando[1];
                     String direccion = comando[2];
-                    personaje = mapa.getPersonajes().get(persona);
+                    personaje = civilizacion.getPersonajes().get(persona);
                     if (personaje == null) {
                         System.out.println("El personaje no existe");
                         break;
@@ -188,7 +190,7 @@ public class AgeOfBrawls {
                     }
                     String personaje4 = comando[1];
                     String direccion2 = comando[2];
-                    Personaje personaje5 = mapa.getPersonajes().get(personaje4);
+                    Personaje personaje5 = civilizacion.getPersonajes().get(personaje4);
                     if (personaje5 == null) {
                         System.out.println("El personaje no existe");
                         break;
@@ -201,7 +203,7 @@ public class AgeOfBrawls {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    Personaje person = mapa.getPersonajes().get(quien);
+                    Personaje person = civilizacion.getPersonajes().get(quien);
                     if (person == null) {
                         System.out.println("El personaje no existe");
                         break;
@@ -212,22 +214,22 @@ public class AgeOfBrawls {
                         tecla = sca.nextLine();
                         switch (tecla) {
                             case "a":
-                                person.mover(mapa, "oeste");
+                                person.mover(civilizacion, "oeste");
                                 mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "s":
-                                person.mover(mapa, "sur");
+                                person.mover(civilizacion, "sur");
                                 mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "d":
-                                person.mover(mapa, "este");
+                                person.mover(civilizacion, "este");
                                 mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;
                             case "w":
-                                person.mover(mapa, "norte");
+                                person.mover(civilizacion, "norte");
                                 mapa.imprimirCabecera();
                                 mapa.imprimir();
                                 break;

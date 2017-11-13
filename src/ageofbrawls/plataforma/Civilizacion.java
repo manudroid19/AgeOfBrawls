@@ -29,6 +29,7 @@ public class Civilizacion {
         edificios = new HashMap<>();
         personajes = new HashMap<>();
         recursosVisibles = new HashMap<>();
+        this.mapa=mapa;
         Posicion posCiudadela = new Posicion((mapa.getFilas() - 1) / 2, (mapa.getFilas() - 1) / 2);
         mapa.makeAdyPrad(posCiudadela);
         String nomCiud = "ciudadela1";
