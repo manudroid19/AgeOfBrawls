@@ -206,15 +206,15 @@ public class Edificio {
             while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("paisano" + i, "paisano" + (++i));
             }
-            Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers);
+            Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers,civilizacion);
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
-            civilizacion.getMapa().getCelda(pos).setOculto(false);
+            civilizacion.getMapa().getCelda(pos).setOculto(civilizacion,false);
             civilizacion.getEdificios().get("ciudadela1").setAlimentos(-50, true);
             civilizacion.makeAdyVisible(pos);
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
-            civilizacion.getMapa().imprimir();
+            civilizacion.getMapa().imprimir(civilizacion);
             System.out.println("Coste de creacion: 50 unidades de comida");
             System.out.println("Te quedan " + ((civilizacion.contarEdificios(Edificio.CASA) * CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
             System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
@@ -230,15 +230,15 @@ public class Edificio {
             while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("soldado" + i, "soldado" + (++i));
             }
-            Personaje person = new Personaje(Personaje.SOLDADO, pos, nombrePers);
+            Personaje person = new Personaje(Personaje.SOLDADO, pos, nombrePers,civilizacion);
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
-            civilizacion.getMapa().getCelda(pos).setOculto(false);
+            civilizacion.getMapa().getCelda(pos).setOculto(civilizacion,false);
             civilizacion.getEdificios().get("ciudadela1").setAlimentos(-100, true);
             civilizacion.makeAdyVisible(pos);
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
-            civilizacion.getMapa().imprimir();
+            civilizacion.getMapa().imprimir(civilizacion);
             System.out.println("Coste de creacion: 100 unidades de comida");
             System.out.println("Te quedan " + ((civilizacion.contarEdificios(Edificio.CASA) * CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
             System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);

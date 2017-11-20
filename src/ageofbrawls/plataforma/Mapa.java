@@ -52,7 +52,7 @@ public class Mapa {
             for (int i = 0; i < filas; i++) {
                 ArrayList<Celda> b = new ArrayList<>();
                 for (int j = 0; j < columnas; j++) {
-                    b.add(j, new Celda(i, j, true));
+                    b.add(j, new Celda(i, j));
                 }
                 mapa.add(i, b);
             }
@@ -109,6 +109,10 @@ public class Mapa {
         return null;
     }
 
+    public HashMap<String, Civilizacion> getCivilizaciones() {
+        return civilizaciones;
+    }
+
     public boolean perteneceAMapa(Posicion posicion) {
         if (posicion == null) {
             return false;
@@ -117,7 +121,7 @@ public class Mapa {
     }
 
     public void addCivilizacion(String nombre, Civilizacion civilizacion) {
-        if(civilizacion==null || civilizaciones.containsKey(nombre)){
+        if (civilizacion == null || civilizaciones.containsKey(nombre)) {
             System.out.println("Error añadiendo civilizacion");
             return;
         }
@@ -133,8 +137,17 @@ public class Mapa {
         int j = posicion.getY();
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
-                this.getCelda(h, k).setTipoCont(Celda.PRADERA);
+                if (this.getCelda(h, k) != null) {
+                    this.getCelda(h, k).setTipoCont(Celda.PRADERA);
+                }
             }
+        }
+    }
+
+    public void listarCivilizaciones() {
+        Set<String> civs = civilizaciones.keySet();
+        for (String civ : civs) {
+            System.out.println(civ);
         }
     }
 
@@ -153,7 +166,7 @@ public class Mapa {
         getCelda(posicion.getAdy(Posicion.SURESTE)).setTipoCont(bloque.get(3), cantidad[3]);
     }
 
-    public void imprimir() {
+    public void imprimir(Civilizacion activa) {
         System.out.print("\r   │");
         for (int i = 0; i < columnas; i++) {
             System.out.print("C" + i + ((i > 9) ? "" : " ") + "│");
@@ -173,7 +186,13 @@ public class Mapa {
             System.out.print("F" + i + ((i > 9) ? "" : " ")); //Numeracion de fila
             boolean flagrec = false;
             for (int j = 0; j < columnas; j++) {
-                System.out.print(ANSI_RESET + "│" + mapa.get(i).get(j).toString());
+                String celda;
+                if (activa.isOculto(mapa.get(i).get(j).getPosicion())) {
+                    celda = " ? ";
+                } else {
+                    celda = mapa.get(i).get(j).toString();
+                }
+                System.out.print(ANSI_RESET + "│" + celda);
                 if (mapa.get(i).get(j).getContenedorRec() != null) {
                     flagrec = true;
                 }
@@ -181,7 +200,7 @@ public class Mapa {
             System.out.print(ANSI_RESET + "│");//Ultimo separador de fila
             if (flagrec) {
                 for (int j = 0; j < columnas; j++) {
-                    if (mapa.get(i).get(j).getContenedorRec() != null && !mapa.get(i).get(j).isOculto()) {
+                    if (mapa.get(i).get(j).getContenedorRec() != null && !mapa.get(i).get(j).isOculto(activa)) {
                         System.out.print(mapa.get(i).get(j).getContenedorRec().getNombre() + " ");
                     }
                 }
@@ -200,7 +219,7 @@ public class Mapa {
         System.out.println();
         System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje] [direccion: norte, sur, este o oeste]");
         System.out.println("manejar [personaje] (permite manejar el personaje usando ASDW)");
-        System.out.println("listar [personajes o edificios]");
+        System.out.println("listar [personajes, edificios o civilizaciones]");
         System.out.println("describir [nombre de personaje,edificio o contenedor de recurso]");
         System.out.println("mirar (fila,columna)");
         System.out.println("construir [paisano] [casa o cuartel] [direccion: norte, sur, este o oeste]");
@@ -208,6 +227,7 @@ public class Mapa {
         System.out.println("reparar [paisano] [direccion edificio]");
         System.out.println("recolectar [paisano] [direccion Contenedor Recursos]");
         System.out.println("almacenar [paisano] [direccion Ciudadela]");
+        System.out.println("cambiar [civilizacion]");
         System.out.println("salir");
         System.out.println();
     }

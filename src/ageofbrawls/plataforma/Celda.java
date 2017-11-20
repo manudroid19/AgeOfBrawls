@@ -18,7 +18,6 @@ public class Celda {
 
     public static final int PRADERA = 0;
     private Edificio edificio;
-    private boolean oculto;
     private ContenedorRecurso recurso;
     private Posicion posicion;
     private ArrayList<Personaje> personajes;
@@ -42,9 +41,8 @@ public class Celda {
         personajes = new ArrayList<>();
     }
 
-    public Celda(int i, int j, boolean oculto) {
+    public Celda(int i, int j) {
         this(PRADERA, 0, 0, new Posicion(i, j), null);
-        this.oculto = oculto;
     }
 
     public ContenedorRecurso getContenedorRec() {
@@ -63,12 +61,12 @@ public class Celda {
         return personajes;
     }
 
-    public boolean isOculto() {
-        return oculto;
+    public boolean isOculto(Civilizacion civilizacion) {
+        return civilizacion.isOculto(posicion);
     }
 
-    public void setOculto(boolean oculto) {
-        this.oculto = oculto;
+    public void setOculto(Civilizacion civilizacion, boolean oculto) {
+        civilizacion.setOculto(posicion,oculto);
     }
 
     public void setTipoCont(int tipo) {
@@ -156,9 +154,6 @@ public class Celda {
 
     @Override
     public String toString() {
-        if (this.oculto) {
-            return " ? ";
-        }
         if (!this.personajes.isEmpty()) {
             if (this.personajes.size() == 1) {
                 if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {

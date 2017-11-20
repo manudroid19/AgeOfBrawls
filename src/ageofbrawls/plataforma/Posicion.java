@@ -28,7 +28,6 @@ public class Posicion {
             this.x = x;
             this.y = y;
         } else {
-            System.out.println("Error:posicion no valida.");
             this.x = -1;
             this.y = -1;
         }
@@ -101,7 +100,7 @@ public class Posicion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Posicion pos = new Posicion(h, k);
-                if (mapa.getCelda(pos).esCeldaLibre(true) && mapa.perteneceAMapa(pos)) {
+                if (mapa.getCelda(pos) != null && mapa.getCelda(pos).esCeldaLibre(true) && mapa.perteneceAMapa(pos)) {
                     candidatos.add(pos);
                 }
             }

@@ -20,13 +20,15 @@ public class Personaje {
     private int tipo, salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
     private Posicion posicion;
     private boolean muerto;
+    private Civilizacion civilizacion;
     private String nombre;
 
-    public Personaje(int tipo, Posicion posicion, String nombre) {
+    public Personaje(int tipo, Posicion posicion, String nombre,Civilizacion civilizacion) {
         if ((tipo == 1 || tipo == 2) && posicion != null && nombre != null) {
             this.tipo = tipo;
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
+            this.civilizacion = civilizacion;
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
                 armadura = 200;
@@ -143,7 +145,7 @@ public class Personaje {
 
     }
 
-    private void mover(Civilizacion civilizacion, Posicion posicion) {
+    private void mover(Posicion posicion) {
         if (civilizacion.getMapa() == null || posicion == null) {
             System.out.println("Error en mover.");
             return;
@@ -155,14 +157,14 @@ public class Personaje {
             civilizacion.makeAdyVisible(posicion);
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
-            civilizacion.getMapa().imprimir();
+            civilizacion.getMapa().imprimir(civilizacion);
         } else {
             System.out.println("Error: No te puedes mover a esa celda.");
         }
     }
 
-    public void mover(Civilizacion civilizacion, String direccion) {
-        mover(civilizacion, posicion.getAdy(direccion)); //chequeos de nulo en getAdy y en mover
+    public void mover(String direccion) {
+        mover(posicion.getAdy(direccion)); //chequeos de nulo en getAdy y en mover
     }
 
     public void recolectar(Mapa mapa, String direccion) {
@@ -193,7 +195,7 @@ public class Personaje {
         }
         contenedor.setCantidad(contenedor.getCantidad() - recolectando);
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
-            mapa.imprimir();
+            mapa.imprimir(civilizacion);
         }
         switch (tipoC) {
             case ContenedorRecurso.BOSQUE:
@@ -271,7 +273,7 @@ public class Personaje {
                     System.out.println();
                     civilizacion.getEdificios().put(edif.getNombre(), edif);
                     civilizacion.getMapa().imprimirCabecera();
-                    civilizacion.getMapa().imprimir();
+                    civilizacion.getMapa().imprimir(civilizacion);
                     System.out.println("Casa construida en " + posConstruir);
                     System.out.println("Coste: 100 de madera, 100 de piedra.");
                     break;
@@ -287,8 +289,8 @@ public class Personaje {
                     civilizacion.getEdificios().put(cuart.getNombre(), cuart);
                     System.out.println();
                     civilizacion.getMapa().imprimirCabecera();
-                    civilizacion.getMapa().imprimir();
-                    System.out.println("Cuartel construida en " + posConstruir);
+                    civilizacion.getMapa().imprimir(civilizacion);
+                    System.out.println("Cuartel construido en " + posConstruir);
                     System.out.println("Coste: 200 de madera, 200 de piedra.");
                     break;
                 default:
@@ -300,7 +302,7 @@ public class Personaje {
         }
     }
 
-    public void reparar(Posicion pos, Civilizacion civilizacion) {
+    public void reparar(Posicion pos) {
         if (pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getPs() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
             System.out.println("Nada que reparar.");
             return;
