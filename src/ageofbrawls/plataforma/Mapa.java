@@ -5,14 +5,9 @@
  */
 package ageofbrawls.plataforma;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
-import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -217,17 +212,20 @@ public class Mapa {
         System.out.println("En las praderas transitables puede haber paisanos, (" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET + "), soldados(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S " + Mapa.ANSI_RESET + ") o varios personajes(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*" + Mapa.ANSI_RESET + ").");
         System.out.println("Los nombres de los contenedores de recursos aparecer\u00e1n al lado de su fila.");
         System.out.println();
-        System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje] [direccion: norte, sur, este o oeste]");
+        System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje o nombre grupo] [direccion: norte, sur, este o oeste]");
         System.out.println("manejar [personaje] (permite manejar el personaje usando ASDW)");
-        System.out.println("listar [personajes, edificios o civilizaciones]");
-        System.out.println("describir [nombre de personaje,edificio o contenedor de recurso]");
+        System.out.println("listar [personajes,edificios,edificios o civilizaciones]");
+        System.out.println("describir [nombre de personaje,edificio,contenedor de recurso o grupo]");
         System.out.println("mirar (fila,columna)");
-        System.out.println("construir [paisano] [casa o cuartel] [direccion: norte, sur, este o oeste]");
+        System.out.println("construir [paisano o grupo] [casa o cuartel] [direccion: norte, sur, este o oeste]");
         System.out.println("crear [cuartel o ciudadela] [soldado o paisano]");
-        System.out.println("reparar [paisano] [direccion edificio]");
-        System.out.println("recolectar [paisano] [direccion Contenedor Recursos]");
-        System.out.println("almacenar [paisano] [direccion Ciudadela]");
+        System.out.println("reparar [paisano o grupo] [direccion edificio]");
+        System.out.println("recolectar [paisano o grupo] [direccion Contenedor Recursos]");
+        System.out.println("almacenar [paisano o grupo] [direccion Ciudadela]");
         System.out.println("cambiar [civilizacion]");
+        System.out.println("civilizacion");
+        System.out.println("imprimir [mapa]");
+        System.out.println("agrupar (fila,columna)");
         System.out.println("salir");
         System.out.println();
     }

@@ -7,6 +7,7 @@ package ageofbrawls.plataforma;
 
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.Grupo;
 import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +24,7 @@ public class Civilizacion {
     private HashMap<String, Personaje> personajes;
     private HashMap<String, Edificio> edificios;
     private HashMap<String, ContenedorRecurso> recursosVisibles;
+    private HashMap<String, Grupo> grupos;
     private ArrayList<ArrayList<Boolean>> oculto;
     private String nombre;
     private Mapa mapa;
@@ -31,6 +33,7 @@ public class Civilizacion {
         edificios = new HashMap<>();
         personajes = new HashMap<>();
         recursosVisibles = new HashMap<>();
+        grupos=new HashMap<>();
         oculto = new ArrayList<>();
         for(int i=0;i<mapa.getFilas();i++){
             ArrayList<Boolean> fila = new ArrayList<>();
@@ -72,6 +75,11 @@ public class Civilizacion {
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
     }
+    
+    public HashMap<String, Grupo> getGrupo() {
+        return grupos;
+    }
+    
     public boolean isOculto(Posicion posicion){
         if(posicion==null){
             return false;
@@ -93,13 +101,20 @@ public class Civilizacion {
     }
 
     public void listarEdificios() {
-        Set<Map.Entry<String, Edificio>> pers = edificios.entrySet();
-        for (Map.Entry<String, Edificio> entry : pers) {
+        Set<Map.Entry<String, Edificio>> edif = edificios.entrySet();
+        for (Map.Entry<String, Edificio> entry : edif) {
             System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
 
         }
     }
+    
+    public void listarGrupos() {
+        Set<Map.Entry<String, Grupo>> group = grupos.entrySet();
+        for (Map.Entry<String, Grupo> entry : group) {
+            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
 
+        }
+    }
     public void makeAdyVisible(Posicion posicion) {
         if (posicion == null) {
             return;
@@ -134,4 +149,5 @@ public class Civilizacion {
         }
         return -1;
     }
+
 }

@@ -7,6 +7,7 @@ package ageofbrawls.plataforma;
 
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.Grupo;
 import ageofbrawls.contenido.Personaje;
 import java.util.ArrayList;
 
@@ -20,7 +21,9 @@ public class Celda {
     private Edificio edificio;
     private ContenedorRecurso recurso;
     private Posicion posicion;
+    private boolean haygrupo;
     private ArrayList<Personaje> personajes;
+    private ArrayList<Grupo> grupos;
 
     public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio) {
         if (posicion != null) {
@@ -39,6 +42,8 @@ public class Celda {
             recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
         }
         personajes = new ArrayList<>();
+        grupos = new ArrayList<>();
+        haygrupo = false;
     }
 
     public Celda(int i, int j) {
@@ -61,34 +66,42 @@ public class Celda {
         return personajes;
     }
 
+    public ArrayList<Grupo> getGrupos() {
+        return grupos;
+    }
+
     public boolean isOculto(Civilizacion civilizacion) {
         return civilizacion.isOculto(posicion);
     }
 
+    public boolean isHayGrupo() {
+        return haygrupo;
+    }
+
     public void setOculto(Civilizacion civilizacion, boolean oculto) {
-        civilizacion.setOculto(posicion,oculto);
+        civilizacion.setOculto(posicion, oculto);
     }
 
     public void setTipoCont(int tipo) {
         if (tipo == PRADERA) {
             recurso = null;
         } else {
-            if(recurso==null){
+            if (recurso == null) {
                 recurso = new ContenedorRecurso(tipo, 0);
-            }else{
+            } else {
                 recurso.setTipo(tipo);
             }
         }
     }
-    
+
     public void setTipoCont(int tipo, int cantidad) {
         if (tipo == PRADERA) {
             recurso = null;
         } else {
-            if(recurso==null){
+            if (recurso == null) {
                 recurso = new ContenedorRecurso(tipo, cantidad);
-            }else{
-                recurso.set(tipo,cantidad);
+            } else {
+                recurso.set(tipo, cantidad);
             }
         }
     }
@@ -108,9 +121,27 @@ public class Celda {
         }
     }
 
+    public void addGrupo(Grupo grupo) {
+        if (grupo != null) {
+            grupos.add(grupo);
+            if (this.getGrupos().size() == 1) {
+                this.haygrupo = true;
+            }
+        }
+    }
+
     public void removePersonaje(Personaje personaje) {
         if (personaje != null) {
             personajes.remove(personaje);
+        }
+    }
+
+    public void removeGrupo(Grupo grupo) {
+        if (grupo != null) {
+            grupos.remove(grupo);
+            if (grupos.isEmpty()) {
+                this.haygrupo = false;
+            }
         }
     }
 
@@ -137,9 +168,42 @@ public class Celda {
             this.getContenedorRec().describirContenedorRecurso();//En caso de estar en un contenedor de Recursos, imprimimos su descripción
         }
         if (this.getContenedorRec() != null && this.getPersonajes() != null) {
-            this.getPersonajes().get(0).describirPersonaje();//enseñamos la info del 0, ya que es el único de momento que se puede alamcenar en la celda
+            for (int i = 0; i < this.getPersonajes().size(); i++) {
+                this.getPersonajes().get(i).describirPersonaje();//enseñamos la info de todos 
+            }
+        }
+        if(this.getContenedorRec() !=null && this.isHayGrupo()){
+            for(int i=0; i<this.getGrupos().size();i++){
+                this.getGrupos().get(i).describirGrupo();
+            }
         }
 
+    }
+
+    public void agrupar(Civilizacion civilizacion) {
+        if (this.getPersonajes().size() > 1) {
+            if (!this.haygrupo) {
+                int i = 1;
+                String nombreGrupo = "Grupo1";
+                while (civilizacion.getGrupo().containsKey(nombreGrupo)) {
+                    nombreGrupo = nombreGrupo.replace("grupo" + i, "grupo" + (++i));
+                }
+                Grupo group = new Grupo(this.getPersonajes(), this.getPosicion(), nombreGrupo, civilizacion);
+                this.haygrupo = true;
+                System.out.println("Se ha creado el" + group.getNombre() + "con los personajes: ");
+                for (int j = 0; j < this.getPersonajes().size(); j++) {
+                    System.out.println(this.getPersonajes().get(j).getNombre());
+                }
+                this.personajes.clear();
+
+            } else {
+                System.out.println("No se puede agrupar un grupo");
+            }
+
+        } else {
+            System.out.println("No se puede crear un grupo con 1 o ningún personaje");
+
+        }
     }
 
     public boolean esCeldaLibre(boolean personaje) {
