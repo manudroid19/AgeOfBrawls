@@ -57,13 +57,13 @@ public class AgeOfBrawls {
                     String donde = comando[2];
                     Personaje personaje = activa.getPersonajes().get(quien);
                     if (personaje == null) {
-                        System.out.println("El personaje no existe");
                         Grupo grupo = activa.getGrupo().get(quien);
                         if (grupo == null) {
-                            System.out.println("El grupo no existe");
+                            System.out.println("El personaje o grupo no existe");
                             break;
                         }
                         grupo.mover(donde);
+                        
                     }
                     personaje.mover(donde);
                     break;

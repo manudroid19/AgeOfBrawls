@@ -214,7 +214,7 @@ public class Mapa {
         System.out.println();
         System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje o nombre grupo] [direccion: norte, sur, este o oeste]");
         System.out.println("manejar [personaje] (permite manejar el personaje usando ASDW)");
-        System.out.println("listar [personajes,edificios,edificios o civilizaciones]");
+        System.out.println("listar [personajes,edificios,grupos o civilizaciones]");
         System.out.println("describir [nombre de personaje,edificio,contenedor de recurso o grupo]");
         System.out.println("mirar (fila,columna)");
         System.out.println("construir [paisano o grupo] [casa o cuartel] [direccion: norte, sur, este o oeste]");
