@@ -24,7 +24,7 @@ public class Grupo {
 
     public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) {
 
-        if (posicion != null && nombre != null && personajes != null) {
+        if (posicion != null && nombre != null && personajes != null && civilizacion != null) {
             this.personajes = new ArrayList<>(personajes);
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
