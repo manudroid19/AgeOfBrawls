@@ -184,7 +184,7 @@ public class Celda {
         if (this.getPersonajes().size() > 1) {
             if (!this.haygrupo) {
                 int i = 1;
-                String nombreGrupo = "Grupo1";
+                String nombreGrupo = "grupo1";
                 while (civilizacion.getGrupo().containsKey(nombreGrupo)) {
                     nombreGrupo = nombreGrupo.replace("grupo" + i, "grupo" + (++i));
                 }

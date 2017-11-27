@@ -25,7 +25,7 @@ public class Grupo {
     public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) {
 
         if (posicion != null && nombre != null && personajes != null) {
-            this.personajes = personajes;
+            this.personajes = new ArrayList<>(personajes);
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
             this.civilizacion = civilizacion;
@@ -148,6 +148,7 @@ public class Grupo {
         if (personaje != null) {
             if (this.getPersonajes().contains(personaje)) {
                 this.getPersonajes().remove(personaje);
+                civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
             } else {
                 System.out.println("El personaje no pertenece al grupo seleccionado");
             }
@@ -157,19 +158,11 @@ public class Grupo {
     }
 
     public void desagrupar() {
-        this.getPersonajes().clear();
-
-        this.armadura = 0;
-        this.ataque = 0;
-        this.cantRecComida = 0;
-        this.cantRecMadera = 0;
-        this.cantRecPiedra = 0;
-        this.capRec = 0;
-        this.salud = 0;
-        this.civilizacion = null;
-        this.nombre = null;
-        this.personajes = null;
-        this.posicion = null;
+        for(Personaje p : personajes){
+            civilizacion.getMapa().getCelda(posicion).getPersonajes().add(p);
+        }
+        civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
+        getPersonajes().clear();
     }
 
     public void describirGrupo() {
@@ -216,6 +209,7 @@ public class Grupo {
         for (int i = 0; i < this.personajes.size(); i++) {
             if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                 System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
+                return;
             }
         }
         Posicion pos = posicion.getAdy(direccion);
@@ -263,7 +257,7 @@ public class Grupo {
         }
         for (int i = 0; i < this.personajes.size(); i++) {
             if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
-                System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
+                System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
             }
         }
         Posicion pos = posicion.getAdy(direccion);

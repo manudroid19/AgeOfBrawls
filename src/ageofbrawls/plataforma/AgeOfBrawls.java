@@ -116,7 +116,7 @@ public class AgeOfBrawls {
                     break;
                 case "mirar":
                     if (comando.length != 2 || comando[1].length() >= 7 || comando[1].charAt(0) != '(' || (comando[1].charAt(2) != ',' && comando[1].charAt(3) != ',') || (comando[1].charAt(4) != ')' && comando[1].charAt(5) != ')' && comando[1].charAt(6) != ')')) {
-                        System.out.println("Error de sintaxis..");
+                        System.out.println("Error de sintaxis.");
                         break;
                     }
                     String sub3 = comando[1];
@@ -300,7 +300,7 @@ public class AgeOfBrawls {
                     break;
                 case "agrupar":
                     if (comando.length != 2 || comando[1].length() >= 7 || comando[1].charAt(0) != '(' || (comando[1].charAt(2) != ',' && comando[1].charAt(3) != ',') || (comando[1].charAt(4) != ')' && comando[1].charAt(5) != ')' && comando[1].charAt(6) != ')')) {
-                        System.out.println("Error de sintaxis..");
+                        System.out.println("Error de sintaxis.");
                         break;
                     }
                     String sub4 = comando[1];
