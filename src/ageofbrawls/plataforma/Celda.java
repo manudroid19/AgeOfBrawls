@@ -195,6 +195,7 @@ public class Celda {
                     System.out.println(this.getPersonajes().get(j).getNombre());
                 }
                 this.personajes.clear();
+                this.addGrupo(group);
 
             } else {
                 System.out.println("No se puede agrupar un grupo");
