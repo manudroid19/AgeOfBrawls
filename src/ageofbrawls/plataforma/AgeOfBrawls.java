@@ -63,9 +63,10 @@ public class AgeOfBrawls {
                             break;
                         }
                         grupo.mover(donde);
-                        
                     }
+                    else{
                     personaje.mover(donde);
+                    }
                     break;
 
                 case "listar":

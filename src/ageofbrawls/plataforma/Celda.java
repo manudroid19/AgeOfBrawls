@@ -172,8 +172,8 @@ public class Celda {
                 this.getPersonajes().get(i).describirPersonaje();//enseñamos la info de todos 
             }
         }
-        if(this.getContenedorRec() !=null && this.isHayGrupo()){
-            for(int i=0; i<this.getGrupos().size();i++){
+        if (this.getContenedorRec() != null && this.isHayGrupo()) {
+            for (int i = 0; i < this.getGrupos().size(); i++) {
                 this.getGrupos().get(i).describirGrupo();
             }
         }
@@ -190,12 +190,16 @@ public class Celda {
                 }
                 Grupo group = new Grupo(this.getPersonajes(), this.getPosicion(), nombreGrupo, civilizacion);
                 this.haygrupo = true;
-                System.out.println("Se ha creado el" + group.getNombre() + "con los personajes: ");
+                System.out.println("Se ha creado el " + group.getNombre() + " con los personajes: ");
                 for (int j = 0; j < this.getPersonajes().size(); j++) {
                     System.out.println(this.getPersonajes().get(j).getNombre());
                 }
                 this.personajes.clear();
                 this.addGrupo(group);
+                civilizacion.getGrupo().put(nombreGrupo, group);
+                System.out.println();
+                civilizacion.getMapa().imprimirCabecera();
+                civilizacion.getMapa().imprimir(civilizacion);
 
             } else {
                 System.out.println("No se puede agrupar un grupo");
@@ -228,6 +232,13 @@ public class Celda {
                 }
             } else {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
+            }
+        }
+        if (this.haygrupo) {
+            if (this.grupos.size() == 1) {
+                return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G ";
+            } else {
+                return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G*";
             }
         }
         if (this.recurso == null) {

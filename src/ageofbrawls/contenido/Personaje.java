@@ -153,6 +153,7 @@ public class Personaje {
         for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
             if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
                 System.out.println("El personaje no puede moverse por si solo ya que pertenece a un grupo");
+                return;
             }
         }
         if (civilizacion.getMapa().perteneceAMapa(posicion) && civilizacion.getMapa().getCelda(posicion).esCeldaLibre(false)) {
@@ -180,6 +181,7 @@ public class Personaje {
         for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
             if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
                 System.out.println("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
+                return;
             }
         }
         Posicion pos = posicion.getAdy(direccion);
@@ -231,6 +233,7 @@ public class Personaje {
         for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
             if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
                 System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
+                return;
             }
         }
         Posicion pos = posicion.getAdy(direccion);
@@ -272,6 +275,7 @@ public class Personaje {
         for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
             if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
                 System.out.println("El personaje no puede moverse por si solo ya que pertenece a un grupo");
+                return;
             }
         }
         if (tipo == Personaje.PAISANO) {
@@ -330,6 +334,7 @@ public class Personaje {
         for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
             if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
                 System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
+                return;
             }
         }
         if (tipo == Personaje.PAISANO) {

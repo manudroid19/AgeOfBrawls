@@ -68,7 +68,7 @@ public class Posicion {
                 return this;
         }
     }
-
+     
     public Posicion getAdy(String direccion) {
         if (direccion == null) {
             System.out.println("Error: direccion no valida.");
@@ -88,7 +88,7 @@ public class Posicion {
                 return this;
         }
     }
-
+    
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
         if (mapa == null) {
             System.out.println("Error.");

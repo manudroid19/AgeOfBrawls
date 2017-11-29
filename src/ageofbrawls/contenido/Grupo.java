@@ -149,6 +149,10 @@ public class Grupo {
             if (this.getPersonajes().contains(personaje)) {
                 this.getPersonajes().remove(personaje);
                 civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
+                if(this.getPersonajes().isEmpty()){
+                civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
+                civilizacion.getGrupo().remove(this);
+                }
             } else {
                 System.out.println("El personaje no pertenece al grupo seleccionado");
             }
@@ -163,6 +167,7 @@ public class Grupo {
         }
         civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
         getPersonajes().clear();
+        civilizacion.getGrupo().remove(this);
     }
 
     public void describirGrupo() {
@@ -258,6 +263,7 @@ public class Grupo {
         for (int i = 0; i < this.personajes.size(); i++) {
             if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                 System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
+                return;
             }
         }
         Posicion pos = posicion.getAdy(direccion);
@@ -296,6 +302,7 @@ public class Grupo {
         for (int i = 0; i < this.personajes.size(); i++) {
             if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                 System.out.println("Como hay un soldado en el grupo, este grupo no puede construir edificios");
+                return;
             }
         }
         Posicion posConstruir = posicion.getAdy(dir);
@@ -349,6 +356,7 @@ public class Grupo {
         for (int i = 0; i < this.personajes.size(); i++) {
             if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                 System.out.println("Como hay un soldado en el grupo, este grupo no puede reparar");
+                return;
             }
         }
         int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
