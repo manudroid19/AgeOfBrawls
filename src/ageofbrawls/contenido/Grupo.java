@@ -139,6 +139,7 @@ public class Grupo {
     public void setPosicion(Posicion posicion) {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
+            actualizarPosiciones();
         } else {
             System.out.println("Error: posicion introducida errónea");
         }
@@ -155,7 +156,6 @@ public class Grupo {
         }
         this.getPersonajes().remove(personaje);
         civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
-        personaje.setPosicion(posicion);
         if (this.getPersonajes().isEmpty()) {
             civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
             civilizacion.getGrupos().remove(this.nombre);
@@ -167,7 +167,6 @@ public class Grupo {
 
     public void desagrupar() {
         for (Personaje p : personajes) {
-            p.setPosicion(posicion);
             civilizacion.getMapa().getCelda(posicion).getPersonajes().add(p);
         }
         civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
@@ -200,6 +199,7 @@ public class Grupo {
         if (civilizacion.getMapa().perteneceAMapa(posicion) && civilizacion.getMapa().getCelda(posicion).esCeldaLibre(false)) {
             civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
             this.posicion = posicion;
+            actualizarPosiciones();
             civilizacion.getMapa().getCelda(posicion).addGrupo(this);
             civilizacion.makeAdyVisible(posicion);
             System.out.println();
@@ -379,5 +379,10 @@ public class Grupo {
         civilizacion.getMapa().getCelda(pos).getEdificio().reparar();
         System.out.println("Reparación completada.");
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
+    }
+    private void actualizarPosiciones(){
+        for(Personaje p : personajes){
+            p.setPosicion(posicion);
+        }
     }
 }
