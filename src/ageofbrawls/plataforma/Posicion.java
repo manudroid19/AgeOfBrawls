@@ -7,6 +7,7 @@ package ageofbrawls.plataforma;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -30,6 +31,24 @@ public class Posicion {
         } else {
             this.x = -1;
             this.y = -1;
+        }
+    }
+
+    public Posicion(String pos) {
+        Pattern pat = Pattern.compile("\\((\\d+?,\\d+?)\\)", Pattern.DOTALL);
+        if (!pat.matcher(pos).matches()) {
+            this.x = -1;
+            this.y = -1;
+        } else {
+            int y = Integer.parseInt(pos.substring(1, pos.indexOf(",")));
+            int x = Integer.parseInt(pos.substring(pos.indexOf(",") + 1, pos.length() - 1));
+            if (x > -1 && y > -1) {
+                this.x = x;
+                this.y = y;
+            } else {
+                this.x = -1;
+                this.y = -1;
+            }
         }
     }
 
@@ -68,7 +87,7 @@ public class Posicion {
                 return this;
         }
     }
-     
+
     public Posicion getAdy(String direccion) {
         if (direccion == null) {
             System.out.println("Error: direccion no valida.");
@@ -88,7 +107,7 @@ public class Posicion {
                 return this;
         }
     }
-    
+
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
         if (mapa == null) {
             System.out.println("Error.");

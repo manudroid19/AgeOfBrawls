@@ -17,8 +17,7 @@ public class ContenedorRecurso {
     private int tipo;
     private int cantidad;
     private String nombre;
-    private static int bosques = 1, arbustos = 1, canteras = 1; //contadores
-
+    
     public ContenedorRecurso(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
             this.tipo = tipo;
@@ -40,18 +39,7 @@ public class ContenedorRecurso {
         return this.cantidad;
     }
 
-    public int getContador() {
-        switch (tipo) {
-            case ContenedorRecurso.BOSQUE:
-                return bosques++;
-            case ContenedorRecurso.CANTERA:
-                return canteras++;
-            case ContenedorRecurso.ARBUSTO:
-                return arbustos++;
-            default:
-                return -1;
-        }
-    }
+    
 
     public String getNombre() {
         return nombre;

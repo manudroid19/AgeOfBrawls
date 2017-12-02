@@ -28,6 +28,20 @@ public class Civilizacion {
     private ArrayList<ArrayList<Boolean>> oculto;
     private String nombre;
     private Mapa mapa;
+    private int bosques = 1, arbustos = 1, canteras = 1; //contadores
+
+    public int getContador(int tipo) {
+        switch (tipo) {
+            case ContenedorRecurso.BOSQUE:
+                return bosques++;
+            case ContenedorRecurso.CANTERA:
+                return canteras++;
+            case ContenedorRecurso.ARBUSTO:
+                return arbustos++;
+            default:
+                return -1;
+        }
+    }
 
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
         edificios = new HashMap<>();
@@ -126,7 +140,7 @@ public class Civilizacion {
                 if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(this,false);
                     if (c.getContenedorRec() != null) {
-                        c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(c.getContenedorRec().getContador()));
+                        c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(getContador(c.getContenedorRec().getTipo())));
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
                     }
                 }

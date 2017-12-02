@@ -10,6 +10,7 @@ import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Grupo;
 import ageofbrawls.contenido.Personaje;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -116,14 +117,16 @@ public class AgeOfBrawls {
                     }
                     break;
                 case "mirar":
-                    if (comando.length != 2 || comando[1].length() >= 7 || comando[1].charAt(0) != '(' || (comando[1].charAt(2) != ',' && comando[1].charAt(3) != ',') || (comando[1].charAt(4) != ')' && comando[1].charAt(5) != ')' && comando[1].charAt(6) != ')')) {
+                    if (comando.length != 2 ) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    String sub3 = comando[1];
-                    int x = Integer.parseInt(sub3.substring(1, sub3.indexOf(",")));
-                    int y = Integer.parseInt(sub3.substring(sub3.indexOf(",") + 1, sub3.length() - 1));
-                    Celda celda = mapa.getCelda(new Posicion(y, x));
+                    Posicion posMirar = new Posicion(comando[1]);
+                    if(posMirar.getX()==-1){
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    Celda celda = mapa.getCelda(posMirar);
                     if (celda == null || celda.isOculto(activa)) {
                         System.out.println("Esta celda no existe o aun no es visible!");
                         break;
@@ -285,8 +288,10 @@ public class AgeOfBrawls {
                         break;
                     }
                     activa = civ;
+                    mapa.imprimirCabecera();
+                    mapa.imprimir(activa);
                     System.out.println("Has cambiado a la civilización " + activa.getNombre());
-
+                    
                     break;
                 case "civilizacion":
                     System.out.println("La civilización activa es: " + activa.getNombre());
@@ -300,14 +305,16 @@ public class AgeOfBrawls {
                     mapa.imprimir(activa);
                     break;
                 case "agrupar":
-                    if (comando.length != 2 || comando[1].length() >= 7 || comando[1].charAt(0) != '(' || (comando[1].charAt(2) != ',' && comando[1].charAt(3) != ',') || (comando[1].charAt(4) != ')' && comando[1].charAt(5) != ')' && comando[1].charAt(6) != ')')) {
+                    if (comando.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    String sub4 = comando[1];
-                    int x1 = Integer.parseInt(sub4.substring(1, sub4.indexOf(",")));
-                    int y1 = Integer.parseInt(sub4.substring(sub4.indexOf(",") + 1, sub4.length() - 1));
-                    Celda celda1 = mapa.getCelda(new Posicion(y1, x1));
+                    Posicion posAgrupar = new Posicion(comando[1]);
+                    if(posAgrupar.getX()==-1){
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    Celda celda1 = mapa.getCelda(posAgrupar);
                     if (celda1 == null || celda1.isOculto(activa)) {
                         System.out.println("Esta celda no existe o aun no es visible!");
                         break;
