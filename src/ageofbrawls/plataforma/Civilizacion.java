@@ -90,7 +90,7 @@ public class Civilizacion {
         return recursosVisibles;
     }
     
-    public HashMap<String, Grupo> getGrupo() {
+    public HashMap<String, Grupo> getGrupos() {
         return grupos;
     }
     

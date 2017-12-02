@@ -181,33 +181,29 @@ public class Celda {
     }
 
     public void agrupar(Civilizacion civilizacion) {
-        if (this.getPersonajes().size() > 1) {
-            if (!this.haygrupo) {
-                int i = 1;
-                String nombreGrupo = "grupo1";
-                while (civilizacion.getGrupo().containsKey(nombreGrupo)) {
-                    nombreGrupo = nombreGrupo.replace("grupo" + i, "grupo" + (++i));
-                }
-                Grupo group = new Grupo(this.getPersonajes(), this.getPosicion(), nombreGrupo, civilizacion);
-                this.haygrupo = true;
-                System.out.println("Se ha creado el " + group.getNombre() + " con los personajes: ");
-                for (int j = 0; j < this.getPersonajes().size(); j++) {
-                    System.out.println(this.getPersonajes().get(j).getNombre());
-                }
-                this.personajes.clear();
-                this.addGrupo(group);
-                civilizacion.getGrupo().put(nombreGrupo, group);
-                System.out.println();
-                civilizacion.getMapa().imprimirCabecera();
-                civilizacion.getMapa().imprimir(civilizacion);
-
-            } else {
-                System.out.println("No se puede agrupar un grupo");
-            }
-
-        } else {
+        if (this.getPersonajes().size() <= 1) {
             System.out.println("No se puede crear un grupo con 1 o ningún personaje");
-
+            return;
+        }
+        if (this.haygrupo) {
+            System.out.println("No se puede agrupar un grupo");
+            return;
+        }
+        int i = 1;
+        String nombreGrupo = "grupo1";
+        while (civilizacion.getGrupos().containsKey(nombreGrupo)) {
+            nombreGrupo = nombreGrupo.replace("grupo" + i, "grupo" + (++i));
+        }
+        Grupo group = new Grupo(this.getPersonajes(), this.getPosicion().inversa(), nombreGrupo, civilizacion);
+        this.haygrupo = true;
+        this.personajes.clear();
+        this.addGrupo(group);
+        civilizacion.getGrupos().put(nombreGrupo, group);
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+        System.out.println("Se ha creado el " + group.getNombre() + " con los personajes: ");
+        for (Personaje person : group.getPersonajes()) {
+            System.out.println(person.getNombre());
         }
     }
 

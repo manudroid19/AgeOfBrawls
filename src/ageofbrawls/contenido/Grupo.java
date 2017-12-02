@@ -145,33 +145,41 @@ public class Grupo {
     }
 
     public void desligar(Personaje personaje) {
-        if (personaje != null) {
-            if (this.getPersonajes().contains(personaje)) {
-                this.getPersonajes().remove(personaje);
-                civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
-                if(this.getPersonajes().isEmpty()){
-                civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
-                civilizacion.getGrupo().remove(this);
-                }
-            } else {
-                System.out.println("El personaje no pertenece al grupo seleccionado");
-            }
-        } else {
+        if (personaje == null) {
             System.out.println("El personaje no existe");
+            return;
         }
+        if (!this.getPersonajes().contains(personaje)) {
+            System.out.println("El personaje no pertenece al grupo seleccionado");
+            return;
+        }
+        this.getPersonajes().remove(personaje);
+        civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
+        personaje.setPosicion(posicion);
+        if (this.getPersonajes().isEmpty()) {
+            civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
+            civilizacion.getGrupos().remove(this.nombre);
+        }
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+        System.out.println(personaje.getNombre()+" desligado de "+nombre);
     }
 
     public void desagrupar() {
-        for(Personaje p : personajes){
+        for (Personaje p : personajes) {
+            p.setPosicion(posicion);
             civilizacion.getMapa().getCelda(posicion).getPersonajes().add(p);
         }
         civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
         getPersonajes().clear();
-        civilizacion.getGrupo().remove(this);
+        civilizacion.getGrupos().remove(this.nombre);
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+        System.out.println(nombre+" desagrupado.");
     }
 
     public void describirGrupo() {
-        
+
         System.out.println("Nombre:" + nombre);
         System.out.println("Salud :" + salud);
         System.out.println("Armadura :" + armadura);

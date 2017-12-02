@@ -58,15 +58,14 @@ public class AgeOfBrawls {
                     String donde = comando[2];
                     Personaje personaje = activa.getPersonajes().get(quien);
                     if (personaje == null) {
-                        Grupo grupo = activa.getGrupo().get(quien);
+                        Grupo grupo = activa.getGrupos().get(quien);
                         if (grupo == null) {
                             System.out.println("El personaje o grupo no existe");
                             break;
                         }
                         grupo.mover(donde);
-                    }
-                    else{
-                    personaje.mover(donde);
+                    } else {
+                        personaje.mover(donde);
                     }
                     break;
 
@@ -109,20 +108,20 @@ public class AgeOfBrawls {
                     } else if (activa.getContenedoresRecurso().containsKey(sujeto)) {
                         ContenedorRecurso rec = activa.getContenedoresRecurso().get(sujeto);
                         rec.describirContenedorRecurso();
-                    } else if (activa.getGrupo().containsKey(sujeto)) {
-                        Grupo grupo1 = activa.getGrupo().get(sujeto);
+                    } else if (activa.getGrupos().containsKey(sujeto)) {
+                        Grupo grupo1 = activa.getGrupos().get(sujeto);
                         grupo1.describirGrupo();
                     } else {
                         System.out.println("Error: sujeto a describir no encontrado.");
                     }
                     break;
                 case "mirar":
-                    if (comando.length != 2 ) {
+                    if (comando.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
                     Posicion posMirar = new Posicion(comando[1]);
-                    if(posMirar.getX()==-1){
+                    if (posMirar.getX() == -1) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
@@ -162,8 +161,8 @@ public class AgeOfBrawls {
                     if (activa.getPersonajes().containsKey(constructor)) {
                         Personaje personaje1 = activa.getPersonajes().get(constructor);
                         personaje1.consEdif(tipo, dir, activa);
-                    } else if (activa.getGrupo().containsKey(constructor)) {
-                        Grupo grupo1 = activa.getGrupo().get(constructor);
+                    } else if (activa.getGrupos().containsKey(constructor)) {
+                        Grupo grupo1 = activa.getGrupos().get(constructor);
                         grupo1.consEdif(tipo, dir, activa);
                     } else {
                         System.out.println("Error: constructor no encontrado.");
@@ -179,8 +178,8 @@ public class AgeOfBrawls {
                     if (activa.getPersonajes().containsKey(reparador)) {
                         Personaje personaje2 = activa.getPersonajes().get(reparador);
                         personaje2.reparar(personaje2.getPosicion().getAdy(dir));
-                    } else if (activa.getGrupo().containsKey(reparador)) {
-                        Grupo grupo1 = activa.getGrupo().get(reparador);
+                    } else if (activa.getGrupos().containsKey(reparador)) {
+                        Grupo grupo1 = activa.getGrupos().get(reparador);
                         grupo1.reparar(grupo1.getPosicion().getAdy(dir));
                     } else {
                         System.out.println("Error: reparador no encontrado.");
@@ -213,8 +212,8 @@ public class AgeOfBrawls {
                     if (activa.getPersonajes().containsKey(persona)) {
                         Personaje personaje2 = activa.getPersonajes().get(persona);
                         personaje2.recolectar(mapa, direccion);
-                    } else if (activa.getGrupo().containsKey(persona)) {
-                        Grupo grupo1 = activa.getGrupo().get(persona);
+                    } else if (activa.getGrupos().containsKey(persona)) {
+                        Grupo grupo1 = activa.getGrupos().get(persona);
                         grupo1.recolectar(mapa, direccion);
                     } else {
                         System.out.println("Error: sujeto a moverse no encontrado.");
@@ -231,8 +230,8 @@ public class AgeOfBrawls {
                     if (activa.getPersonajes().containsKey(almacenador)) {
                         Personaje personaje2 = activa.getPersonajes().get(almacenador);
                         personaje2.almacenar(mapa, direccion2);
-                    } else if (activa.getGrupo().containsKey(almacenador)) {
-                        Grupo grupo1 = activa.getGrupo().get(almacenador);
+                    } else if (activa.getGrupos().containsKey(almacenador)) {
+                        Grupo grupo1 = activa.getGrupos().get(almacenador);
                         grupo1.almacenar(mapa, direccion2);
                     } else {
                         System.out.println("Error: almacenador no encontrado.");
@@ -291,7 +290,7 @@ public class AgeOfBrawls {
                     mapa.imprimirCabecera();
                     mapa.imprimir(activa);
                     System.out.println("Has cambiado a la civilización " + activa.getNombre());
-                    
+
                     break;
                 case "civilizacion":
                     System.out.println("La civilización activa es: " + activa.getNombre());
@@ -310,7 +309,7 @@ public class AgeOfBrawls {
                         break;
                     }
                     Posicion posAgrupar = new Posicion(comando[1]);
-                    if(posAgrupar.getX()==-1){
+                    if (posAgrupar.getX() == -1) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
@@ -331,38 +330,35 @@ public class AgeOfBrawls {
                     String desligado = comando[1];
                     String grupo = comando[2];
                     int j = 0;
-                    if (desligado != null && grupo != null) {
-                        if (activa.getGrupo().containsKey(grupo)) {
-                            if (activa.getPersonajes().containsKey(desligado)) {
-                                Personaje pers = activa.getPersonajes().get(desligado);
-                                if (activa.getGrupo().get(grupo).getPersonajes().contains(pers)) {
-                                    activa.getGrupo().get(grupo).desligar(pers);
-                                }
-                                else{
-                                    System.out.println("El personaje no pertenece a este grupo"); 
-                                }
-                                
-                            } else {
-                                System.out.println("El personaje no existe");
-                            }
-
-                        } else {
-                            System.out.println("El grupo no está creado");
-                        }
+                    if (desligado == null || grupo == null) {
+                        break;
                     }
+                    if (!activa.getGrupos().containsKey(grupo)) {
+                        System.out.println("El grupo no existe");
+                        break;
+                    }
+                    if (!activa.getPersonajes().containsKey(desligado)) {
+                        System.out.println("El personaje no existe");
+                        break;
+                    }
+                    Personaje pers = activa.getPersonajes().get(desligado);
+                    if (!activa.getGrupos().get(grupo).getPersonajes().contains(pers)) {
+                        System.out.println("El personaje no pertenece a este grupo");
+                        break;
+                    }
+                    activa.getGrupos().get(grupo).desligar(pers);
                     break;
 
                 case "desagrupar":
                     if (comando.length != 2) {
                         System.out.println("Error de sintaxis");
                     }
-                    String grupo3= comando[1];
-                    if(activa.getGrupo().containsKey(grupo3)){
-                        activa.getGrupo().get(grupo3).desagrupar();
-                    }
-                    else{
+                    String grupo3 = comando[1];
+                    if (!activa.getGrupos().containsKey(grupo3)) {
                         System.out.println("El grupo no existe");
+                        break;
                     }
+                    activa.getGrupos().get(grupo3).desagrupar();
                     break;
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {

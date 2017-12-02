@@ -107,7 +107,11 @@ public class Posicion {
                 return this;
         }
     }
-
+    
+    public Posicion inversa() {
+        return new Posicion(y,x);
+    }
+    
     public Posicion posicionAdyacenteLibre(Mapa mapa) {
         if (mapa == null) {
             System.out.println("Error.");
