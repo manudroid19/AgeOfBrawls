@@ -6,6 +6,7 @@
 package ageofbrawls.plataforma;
 
 import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Grupo;
 import ageofbrawls.contenido.Personaje;
 import java.io.File;
@@ -82,7 +83,31 @@ public class Loader {
     }
 
     private void cargarEdificios(File file) {
+        ArrayList<String[]> datos = leer(file);
+        for (String[] linea : datos) {
+            Posicion pos = new Posicion("(" + linea[0] + ")");
+            if (linea.length == 10) {
+                switch (linea[1]) {
+                    case "Casa":
+                        crearEdificio(pos, Edificio.CASA, linea[2], linea[4]);
+                        break;
+                    case "Cuartel":
+                        crearEdificio(pos, Edificio.CUARTEL, linea[2], linea[4]);
+                        break;
+                }
+            }
 
+        }
+    }
+    
+    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) {
+        if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
+            mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
+        }
+        Civilizacion current = mapa.getCivilizaciones().get(civilizacion);
+        Edificio edificio = new Edificio(tipo,pos,nombre,current);
+        mapa.getCelda(pos).setEdificio(edificio);
+        current.getEdificios().put(nombre, edificio);
     }
 
     private void crearPersonaje(Posicion pos, int tipo, String nombre, String civilizacion, int ataque, int defensa, int salud, int capacidad,  String grupo) {
