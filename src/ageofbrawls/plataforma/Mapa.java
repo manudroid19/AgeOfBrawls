@@ -138,7 +138,15 @@ public class Mapa {
             }
         }
     }
-
+    public ArrayList<Celda> getCeldas(){
+        ArrayList<Celda> celdas = new ArrayList<>();
+        for(ArrayList<Celda> ar : mapa){
+            for(Celda celda : ar){
+                celdas.add(celda);
+            }
+        }
+        return celdas;
+    }
     public void listarCivilizaciones() {
         Set<String> civs = civilizaciones.keySet();
         for (String civ : civs) {

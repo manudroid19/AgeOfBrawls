@@ -176,7 +176,8 @@ public class Grupo {
 
     public void describirGrupo() {
 
-        System.out.println("Nombre:" + nombre);
+        System.out.println("Nombre del grupo: " + nombre);
+        System.out.println("Civilizacion: "+civilizacion.getNombre());
         System.out.println("Salud :" + salud);
         System.out.println("Armadura :" + armadura);
         System.out.println("Ataque :" + ataque);

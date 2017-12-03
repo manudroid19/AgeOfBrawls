@@ -37,6 +37,20 @@ public class Loader {
         cargarPersonajes(files[1]);
         cargarEdificios(files[2]);
     }
+    public Loader (Mapa mapa, String dir, boolean save) throws FileNotFoundException{
+        this.mapa = mapa;
+        String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
+        File files[] = new File[3];
+        for (int i = 0; i < 3; i++) {
+            files[i] = new File(dir + File.separator + aLeer[i] + ".csv");
+            if (!files[i].exists() || !files[i].canWrite()) {
+                throw new FileNotFoundException("No directorio especificado non están todos os arquivos");
+            }
+        }
+        for(Celda celda : mapa.getCeldas()){
+            
+        }
+    }
 
     private void cargarMapa(File file) {
         ArrayList<String[]> datos = leer(file);
@@ -86,7 +100,10 @@ public class Loader {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
-            if (linea.length == 10) {
+            if (linea.length == 5) {
+                if(mapa.getCelda(pos).getEdificio()!=null){
+                    System.out.println("Sobreescribiendo edificio: "+mapa.getCelda(pos).getEdificio().getNombre());
+                }
                 switch (linea[1]) {
                     case "Casa":
                         crearEdificio(pos, Edificio.CASA, linea[2], linea[4]);
