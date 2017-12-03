@@ -25,7 +25,7 @@ public class Celda {
     private ArrayList<Personaje> personajes;
     private ArrayList<Grupo> grupos;
 
-    public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio) {
+    public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
         } else {
@@ -34,7 +34,7 @@ public class Celda {
         if (edificio == 0) {
             this.edificio = null;
         } else {
-            this.edificio = new Edificio(edificio, posicion, nombreEdificio);//valida o edificio e o string
+            this.edificio = new Edificio(edificio, posicion, nombreEdificio,civilizacion);//valida o edificio e o string
         }
         if (tipo == PRADERA) {
             recurso = null;
@@ -47,7 +47,7 @@ public class Celda {
     }
 
     public Celda(int i, int j) {
-        this(PRADERA, 0, 0, new Posicion(i, j), null);
+        this(PRADERA, 0, 0, new Posicion(i, j), null,null);
     }
 
     public ContenedorRecurso getContenedorRec() {

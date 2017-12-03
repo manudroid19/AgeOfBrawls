@@ -21,6 +21,7 @@ public class Edificio {
     public final static int CAPALMACEN = 100000;
     public final static int CAPALOJ = 10;
     private Posicion posicion;
+    private Civilizacion civilizacion;
     private int tipo;
     private int capacidadAlojamiento;
     private int capAloj;
@@ -32,9 +33,10 @@ public class Edificio {
     private String nombre;
     private int madera, piedra, alimentos;
 
-    public Edificio(int tipo, Posicion posicion, String nombre) {
-        if (tipo > 0 && tipo < 4 && nombre != null) {
+    public Edificio(int tipo, Posicion posicion, String nombre,Civilizacion civilizacion) {
+        if (tipo > 0 && tipo < 4 && nombre != null && civilizacion!=null) {
             this.tipo = tipo;
+            this.civilizacion = civilizacion;
             if (posicion != null) {
                 this.posicion = new Posicion(posicion);
             } else {
@@ -330,6 +332,7 @@ public class Edificio {
                 System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Recursos: " + madera + " de madera, " + piedra + " de piedra y " + alimentos + " de alimentos");
                 System.out.println("Nombre: " + nombre);
+                System.out.println("Civilizacion: "+civilizacion.getNombre());
                 break;
 
             case Edificio.CUARTEL:
@@ -339,6 +342,7 @@ public class Edificio {
                 System.out.println("Capacidad de ataque: " +ataque);
                 System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Nombre: " + nombre);
+                System.out.println("Civilizacion: "+civilizacion.getNombre());
                 break;
 
             case Edificio.CASA:
@@ -348,6 +352,7 @@ public class Edificio {
                 System.out.println("Capacidad de ataque: " +ataque);
                 System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Nombre: " + nombre);
+                System.out.println("Civilizacion: "+civilizacion.getNombre());
                 break;
 
         }

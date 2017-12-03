@@ -323,7 +323,7 @@ public class Grupo {
                 }
                 civilizacion.getEdificios().get("ciudadela1").setPiedra(-100, true);
                 civilizacion.getEdificios().get("ciudadela1").setMadera(-100, true);
-                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1));
+                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1),civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                 System.out.println();
                 civilizacion.getEdificios().put(edif.getNombre(), edif);
@@ -339,7 +339,7 @@ public class Grupo {
                 }
                 civilizacion.getEdificios().get("ciudadela1").setPiedra(-200, true);
                 civilizacion.getEdificios().get("ciudadela1").setMadera(-200, true);
-                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1));
+                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1),civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                 civilizacion.getEdificios().put(cuart.getNombre(), cuart);
                 System.out.println();

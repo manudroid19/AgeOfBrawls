@@ -49,7 +49,7 @@ public class Civilizacion {
         if (posCiudadela != null) {
             mapa.makeAdyPrad(posCiudadela);
             String nomCiud = "ciudadela1";
-            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud);
+            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud,this);
             mapa.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nomCiud, ciud);
             Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
