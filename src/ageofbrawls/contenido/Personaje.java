@@ -32,13 +32,13 @@ public class Personaje {
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
                 defensa = 200;
-                ataque = 30;
+                ataque = 70;
                 muerto = false;
                 capRec = -1;
             } else {
                 salud = 50;
                 defensa = 100;
-                ataque = -1;
+                ataque = 0;
                 capRec = 50;
                 muerto = false;
             }
@@ -49,10 +49,10 @@ public class Personaje {
 
     public Personaje(int tipo, Posicion posicion, String nombre, Civilizacion civilizacion, int ataque, int defensa, int capacidad, int salud) {
         this(tipo, posicion, nombre, civilizacion);
-        this.ataque=ataque;
-        this.defensa=defensa;
-        this.capRec=capacidad;
-        this.salud=salud;
+        this.ataque = ataque;
+        this.defensa = defensa;
+        this.capRec = capacidad;
+        this.salud = salud;
     }
 
     public int getTipo() {
@@ -325,6 +325,22 @@ public class Personaje {
                     System.out.println("Cuartel construido en " + posConstruir);
                     System.out.println("Coste: 200 de madera, 200 de piedra.");
                     break;
+                case "ciudadela":
+                    if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 500 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 500) {
+                        System.out.println("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                        return;
+                    }
+                    civilizacion.getEdificios().get("ciudadela1").setPiedra(-500, true);
+                    civilizacion.getEdificios().get("ciudadela1").setMadera(-500, true);
+                    Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1));
+                    civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
+                    civilizacion.getEdificios().put(ciud.getNombre(), ciud);
+                    System.out.println();
+                    civilizacion.getMapa().imprimirCabecera();
+                    civilizacion.getMapa().imprimir(civilizacion);
+                    System.out.println("Ciudadela construida en " + posConstruir);
+                    System.out.println("Coste: 500 de madera, 500 de piedra.");
+                    break;
                 default:
                     System.out.println("Error: tipo de construccion incorrecta.");
             }
@@ -332,6 +348,38 @@ public class Personaje {
         } else {
             System.out.println("Error: Un soldado no puede construir edificios");
         }
+    }
+
+    public void defender(String direccion) {
+        Posicion pos = posicion.getAdy(direccion);
+        if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
+            System.out.println("No hay edificio en la posición indicada.");
+            return;
+        }
+        for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
+            if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
+                System.out.println("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
+                return;
+            }
+        }
+        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() == 0) {
+            System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
+        }
+        
+        
+        civilizacion.getMapa().getCelda(this.posicion).removePersonaje(this);
+        civilizacion.getMapa().getCelda(pos).addPersonaje(this);
+        
+        civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
+        civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getDefensa(), true);
+        civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-1, true);
+        this.recuperarVida();
+        System.out.println("El "+this.getNombre()+ " ha entrado en " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " (capacidad restante " +civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()+ ").");
+        civilizacion.makeAdyVisible(pos);
+        System.out.println();
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+
     }
 
     public void reparar(Posicion pos) {
@@ -361,6 +409,14 @@ public class Personaje {
             System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
         } else {
             System.out.println("Un soldado no puede reparar edificios");
+        }
+    }
+
+    public void recuperarVida() {
+        if (this.getTipo() == Personaje.PAISANO) {
+            salud = 50;
+        } else {
+            salud = 100;
         }
     }
 
