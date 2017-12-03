@@ -9,7 +9,10 @@ import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Grupo;
 import ageofbrawls.contenido.Personaje;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -380,6 +383,19 @@ public class AgeOfBrawls {
                     }
                     break;
                     
+                case "cargar":
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis");
+                    }
+                    String ruta = comando[1];
+
+                    try {
+                        Loader loader = new Loader(mapa, ruta);
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {
                         System.out.println("Error de sintaxis.");
