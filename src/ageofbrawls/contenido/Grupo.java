@@ -35,11 +35,11 @@ public class Grupo {
                     this.setCantRecComida(0);
                     this.setCantRecMadera(0);
                     this.setCantRecPiedra(0);
-                    armadura += this.personajes.get(i).getArmadura();
+                    armadura += this.personajes.get(i).getDefensa();
                     ataque += this.personajes.get(i).getAtaque();
 
                 } else {
-                    armadura += this.personajes.get(i).getArmadura();
+                    armadura += this.personajes.get(i).getDefensa();
                     capRec += this.personajes.get(i).getCapRec();
                     cantRecMadera += this.personajes.get(i).getCantRecMadera();
                     cantRecPiedra += this.personajes.get(i).getCantRecPiedra();
@@ -156,13 +156,10 @@ public class Grupo {
         }
         this.getPersonajes().remove(personaje);
         civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
-        if (this.getPersonajes().isEmpty()) {
-            civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
-            civilizacion.getGrupos().remove(this.nombre);
-        }
+        revisarVacio();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println(personaje.getNombre()+" desligado de "+nombre);
+        System.out.println(personaje.getNombre() + " desligado de " + nombre);
     }
 
     public void desagrupar() {
@@ -174,7 +171,7 @@ public class Grupo {
         civilizacion.getGrupos().remove(this.nombre);
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println(nombre+" desagrupado.");
+        System.out.println(nombre + " desagrupado.");
     }
 
     public void describirGrupo() {
@@ -380,9 +377,17 @@ public class Grupo {
         System.out.println("Reparación completada.");
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
     }
-    private void actualizarPosiciones(){
-        for(Personaje p : personajes){
+
+    private void actualizarPosiciones() {
+        for (Personaje p : personajes) {
             p.setPosicion(posicion);
+        }
+    }
+
+    public void revisarVacio() {
+        if (this.getPersonajes().isEmpty()) {
+            civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
+            civilizacion.getGrupos().remove(this.nombre);
         }
     }
 }

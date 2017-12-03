@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Personaje {
 
     public final static int PAISANO = 1, SOLDADO = 2;
-    private int tipo, salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
+    private int tipo, salud, defensa, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
     private Posicion posicion;
     private boolean muerto;
     private Civilizacion civilizacion;
@@ -31,13 +31,13 @@ public class Personaje {
             this.civilizacion = civilizacion;
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
-                armadura = 200;
+                defensa = 200;
                 ataque = 30;
                 muerto = false;
                 capRec = -1;
             } else {
                 salud = 50;
-                armadura = 100;
+                defensa = 100;
                 ataque = -1;
                 capRec = 50;
                 muerto = false;
@@ -45,6 +45,14 @@ public class Personaje {
         } else {
             System.out.println("Error seteando tipo");
         }
+    }
+
+    public Personaje(int tipo, Posicion posicion, String nombre, Civilizacion civilizacion, int ataque, int defensa, int capacidad, int salud) {
+        this(tipo, posicion, nombre, civilizacion);
+        this.ataque=ataque;
+        this.defensa=defensa;
+        this.capRec=capacidad;
+        this.salud=salud;
     }
 
     public int getTipo() {
@@ -55,8 +63,8 @@ public class Personaje {
         return salud;
     }
 
-    public int getArmadura() {
-        return armadura;
+    public int getDefensa() {
+        return defensa;
     }
 
     public int getAtaque() {
@@ -131,7 +139,7 @@ public class Personaje {
         if (tipo == Personaje.SOLDADO) {
             System.out.println("Nombre: " + nombre);
             System.out.println("Salud :" + salud);
-            System.out.println("Armadura :" + armadura);
+            System.out.println("Armadura :" + defensa);
             System.out.println("Ataque :" + ataque);
         } else {
             System.out.println("Nombre: " + nombre);
@@ -361,7 +369,7 @@ public class Personaje {
         int hash = 7;
         hash = 37 * hash + this.tipo;
         hash = 37 * hash + this.salud;
-        hash = 37 * hash + this.armadura;
+        hash = 37 * hash + this.defensa;
         hash = 37 * hash + this.ataque;
         hash = 37 * hash + this.capRec;
         hash = 37 * hash + this.cantRecMadera;
@@ -391,7 +399,7 @@ public class Personaje {
         if (this.salud != other.salud) {
             return false;
         }
-        if (this.armadura != other.armadura) {
+        if (this.defensa != other.defensa) {
             return false;
         }
         if (this.ataque != other.ataque) {

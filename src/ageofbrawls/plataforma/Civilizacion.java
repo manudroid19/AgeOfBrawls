@@ -30,45 +30,38 @@ public class Civilizacion {
     private Mapa mapa;
     private int bosques = 1, arbustos = 1, canteras = 1; //contadores
 
-    public int getContador(int tipo) {
-        switch (tipo) {
-            case ContenedorRecurso.BOSQUE:
-                return bosques++;
-            case ContenedorRecurso.CANTERA:
-                return canteras++;
-            case ContenedorRecurso.ARBUSTO:
-                return arbustos++;
-            default:
-                return -1;
-        }
-    }
-
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
         edificios = new HashMap<>();
         personajes = new HashMap<>();
         recursosVisibles = new HashMap<>();
-        grupos=new HashMap<>();
+        grupos = new HashMap<>();
         oculto = new ArrayList<>();
-        for(int i=0;i<mapa.getFilas();i++){
+        for (int i = 0; i < mapa.getFilas(); i++) {
             ArrayList<Boolean> fila = new ArrayList<>();
-            for(int j=0;j<mapa.getColumnas();j++){
+            for (int j = 0; j < mapa.getColumnas(); j++) {
                 fila.add(true);
             }
             oculto.add(fila);
-            
+
         }
         this.nombre = nombre;
-        this.mapa=mapa;
-        mapa.makeAdyPrad(posCiudadela);
-        String nomCiud = "ciudadela1";
-        Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud);
-        mapa.getCelda(posCiudadela).setEdificio(ciud);
-        edificios.put(nomCiud, ciud);
-        Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
-        Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1",this);
-        personajes.put(paisano1.getNombre(), paisano1);
-        mapa.getCelda(posPaisano).addPersonaje(paisano1);
-        this.makeAdyVisible(posPaisano);
+        this.mapa = mapa;
+        if (posCiudadela != null) {
+            mapa.makeAdyPrad(posCiudadela);
+            String nomCiud = "ciudadela1";
+            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud);
+            mapa.getCelda(posCiudadela).setEdificio(ciud);
+            edificios.put(nomCiud, ciud);
+            Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
+            Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1", this);
+            personajes.put(paisano1.getNombre(), paisano1);
+            mapa.getCelda(posPaisano).addPersonaje(paisano1);
+            this.makeAdyVisible(posPaisano);
+        }
+    }
+
+    public Civilizacion(Mapa mapa, String nombre) {
+        this(mapa, nombre, null);
     }
 
     public HashMap<String, Personaje> getPersonajes() {
@@ -82,26 +75,40 @@ public class Civilizacion {
     public Mapa getMapa() {
         return mapa;
     }
-    public String getNombre(){
+
+    public String getNombre() {
         return nombre;
+    }
+
+    public int getContador(int tipo) {
+        switch (tipo) {
+            case ContenedorRecurso.BOSQUE:
+                return bosques++;
+            case ContenedorRecurso.CANTERA:
+                return canteras++;
+            case ContenedorRecurso.ARBUSTO:
+                return arbustos++;
+            default:
+                return -1;
+        }
     }
 
     public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
         return recursosVisibles;
     }
-    
+
     public HashMap<String, Grupo> getGrupos() {
         return grupos;
     }
-    
-    public boolean isOculto(Posicion posicion){
-        if(posicion==null){
+
+    public boolean isOculto(Posicion posicion) {
+        if (posicion == null) {
             return false;
         }
         return oculto.get(posicion.getY()).get(posicion.getX());
     }
-    
-    public void setOculto(Posicion pos, boolean oculto){
+
+    public void setOculto(Posicion pos, boolean oculto) {
         ArrayList fila = this.oculto.get(pos.getY());
         fila.set(pos.getX(), oculto);
         this.oculto.set(pos.getY(), fila);
@@ -121,7 +128,7 @@ public class Civilizacion {
 
         }
     }
-    
+
     public void listarGrupos() {
         Set<Map.Entry<String, Grupo>> group = grupos.entrySet();
         for (Map.Entry<String, Grupo> entry : group) {
@@ -129,6 +136,7 @@ public class Civilizacion {
 
         }
     }
+
     public void makeAdyVisible(Posicion posicion) {
         if (posicion == null) {
             return;
@@ -138,7 +146,7 @@ public class Civilizacion {
             for (int k = j - 1; k < j + 2; k++) {
                 Celda c = mapa.getCelda(h, k);
                 if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
-                    c.setOculto(this,false);
+                    c.setOculto(this, false);
                     if (c.getContenedorRec() != null) {
                         c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(getContador(c.getContenedorRec().getTipo())));
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
