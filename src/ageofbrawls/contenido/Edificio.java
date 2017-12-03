@@ -24,6 +24,9 @@ public class Edificio {
     private Civilizacion civilizacion;
     private int tipo;
     private int capacidadAlojamiento;
+    private int capAloj;
+    private int ataque;
+    private int defensa;
     private int capAlmacen;
     private int ps;
     private boolean destruido;
@@ -44,13 +47,22 @@ public class Edificio {
                 case Edificio.CASA:
                     this.ps = 200;
                     this.capacidadAlojamiento = Edificio.CAPALOJ;
+                    this.capAloj = 7;
+                    this.ataque = 0;
+                    this.defensa = 25;
                     break;
                 case Edificio.CUARTEL:
                     this.ps = 500;
+                    this.capAloj=5;
+                    this.ataque = 0;
+                    this.defensa = 50;
                     break;
                 case Edificio.CIUDADELA:
                     this.ps = 1000;
                     this.capAlmacen = Edificio.CAPALMACEN;
+                    this.capAloj=10;
+                    this.ataque = 0;
+                    this.defensa = 100;
                     madera = 500;
                     piedra = 500;
                     alimentos = 500;
@@ -95,6 +107,18 @@ public class Edificio {
     public int getCapAloj() {
         return capacidadAlojamiento;
     }
+    
+    public int getCapAloj1() {
+        return capAloj;
+    }
+    
+    public int getAtaque() {
+        return ataque;
+    }
+    
+    public int getDefensa() {
+        return defensa;
+    }
 
     public int getCapAlmacen() {
         return capAlmacen;
@@ -131,7 +155,56 @@ public class Edificio {
         }
         return -1;
     }
+    
+    public void setCapAloj (int aloj, boolean relative) {
+       if (relative) {
+            if (capAloj + aloj < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            capAloj += aloj;
+        } else {
+            if (capAloj + aloj < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            capAloj = aloj;
+        } 
+    }
+    
+    public void setAtaque(int atack, boolean relative) {
+        if (relative) {
+            if (ataque + atack < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            ataque += atack;
+        } else {
+            if (ataque + atack < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            ataque = atack;
+        }
+    }
+    
 
+    public void setDefensa(int defense, boolean relative) {
+        if (relative) {
+            if (defensa + defense < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            defensa += defense;
+        } else {
+            if (defensa + defense < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            defensa = defense;
+        }
+    }
+    
     public void setPiedra(int cant, boolean relative) {
         if (relative) {
             if (piedra + cant < 0) {
@@ -254,6 +327,9 @@ public class Edificio {
             case Edificio.CIUDADELA:
                 System.out.println("Tipo: CIUDADELA");
                 System.out.println("Salud: " + ps);
+                System.out.println("Capacidad de Alojamiento para defenderlo " +capAloj);
+                System.out.println("Capacidad de ataque: " +ataque);
+                System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Recursos: " + madera + " de madera, " + piedra + " de piedra y " + alimentos + " de alimentos");
                 System.out.println("Nombre: " + nombre);
                 System.out.println("Civilizacion: "+civilizacion.getNombre());
@@ -262,6 +338,9 @@ public class Edificio {
             case Edificio.CUARTEL:
                 System.out.println("Tipo: CUARTEL");
                 System.out.println("Salud: " + ps);
+                System.out.println("Capacidad de Alojamiento para defenderlo " +capAloj);
+                System.out.println("Capacidad de ataque: " +ataque);
+                System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Nombre: " + nombre);
                 System.out.println("Civilizacion: "+civilizacion.getNombre());
                 break;
@@ -269,6 +348,9 @@ public class Edificio {
             case Edificio.CASA:
                 System.out.println("Tipo: CASA");
                 System.out.println("Salud: " + ps);
+                System.out.println("Capacidad de Alojamiento para defenderlo " +capAloj);
+                System.out.println("Capacidad de ataque: " +ataque);
+                System.out.println("Capacidad de defensa: " +defensa);
                 System.out.println("Nombre: " + nombre);
                 System.out.println("Civilizacion: "+civilizacion.getNombre());
                 break;

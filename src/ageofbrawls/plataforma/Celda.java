@@ -220,21 +220,44 @@ public class Celda {
     @Override
     public String toString() {
         if (!this.personajes.isEmpty()) {
-            if (this.personajes.size() == 1) {
+            if (this.personajes.size() == 1 && this.edificio == null) {
                 if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
                 } else {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S ";
                 }
-            } else {
+            } else if (this.personajes.size() > 1 && this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
+            } else if (this.edificio != null) {
+                switch (this.edificio.getTipo()) {
+                    case Edificio.CIUDADELA:
+                        return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+                    case Edificio.CASA:
+                        return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+                    case Edificio.CUARTEL:
+                        return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
+                    default:
+                        break;
+                }
             }
         }
-        if (this.haygrupo) {
+        if (this.haygrupo && this.edificio == null) {
             if (this.grupos.size() == 1) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G ";
-            } else {
+            } else if (this.grupos.size() > 1 && this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G*";
+            }
+        }
+        if (this.haygrupo && this.edificio != null) {
+            switch (this.edificio.getTipo()) {
+                case Edificio.CIUDADELA:
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+                case Edificio.CASA:
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+                case Edificio.CUARTEL:
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
+                default:
+                    break;
             }
         }
         if (this.recurso == null) {

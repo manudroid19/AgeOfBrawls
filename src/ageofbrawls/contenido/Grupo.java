@@ -378,6 +378,34 @@ public class Grupo {
         System.out.println("Reparación completada.");
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
     }
+    
+    public void defender(String direccion) {
+        Posicion pos = posicion.getAdy(direccion);
+        if (direccion == null || pos==null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
+            System.out.println("No hay edificio en la posición indicada.");
+            return;
+        }
+        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()< this.getPersonajes().size()) {
+            System.out.println("No se puede mover el grupo. El número "+ this.getPersonajes().size() + "de componentes del grupo ("+ this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ") de " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
+        }
+        
+        civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
+        
+        civilizacion.getMapa().getCelda(pos).addGrupo(this);
+        
+        civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
+        civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getArmadura(), true);
+        civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
+        System.out.println("El "+this.getNombre()+ " ha entrado en " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " (capacidad restante " +civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()+ ").");
+        for(int i=0; i<this.getPersonajes().size(); i++){
+            this.getPersonajes().get(i).recuperarVida();
+        }
+        civilizacion.makeAdyVisible(pos);
+        System.out.println();
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+
+    }
 
     private void actualizarPosiciones() {
         for (Personaje p : personajes) {

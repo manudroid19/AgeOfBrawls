@@ -363,6 +363,26 @@ public class AgeOfBrawls {
                     }
                     activa.getGrupos().get(grupo3).desagrupar();
                     break;
+                    
+                case "defender":
+                    if (comando.length != 3) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    String defensor = comando[1];
+                    String direcc = comando[2];
+                     
+                    if (activa.getPersonajes().containsKey(defensor)) {
+                        Personaje personaje2 = activa.getPersonajes().get(defensor);
+                        personaje2.defender(direcc);
+                    } else if (activa.getGrupos().containsKey(defensor)) {
+                        Grupo grupo1 = activa.getGrupos().get(defensor);
+                        grupo1.defender(direcc);
+                    } else {
+                        System.out.println("Error: sujeto a defender no encontrado.");
+                    }
+                    break;
+                    
                 case "cargar":
                     if (comando.length != 2) {
                         System.out.println("Error de sintaxis");
