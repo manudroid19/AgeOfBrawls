@@ -22,6 +22,7 @@ public class Personaje {
     private boolean muerto;
     private Civilizacion civilizacion;
     private String nombre;
+    private Grupo grupo;
 
     public Personaje(int tipo, Posicion posicion, String nombre, Civilizacion civilizacion) {
         if ((tipo == 1 || tipo == 2) && posicion != null && nombre != null) {
@@ -29,6 +30,7 @@ public class Personaje {
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
             this.civilizacion = civilizacion;
+            this.grupo = null;
             if (tipo == Personaje.SOLDADO) {
                 salud = 100;
                 defensa = 200;
@@ -99,8 +101,16 @@ public class Personaje {
         return nombre;
     }
 
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
     public boolean isMuerto() {
         return muerto;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     public void setCantRecMadera(int valor) {
@@ -151,6 +161,14 @@ public class Personaje {
             System.out.println("Cantidad de Recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
         }
 
+    }
+
+    public String leerTipo() {
+        if (tipo == Personaje.SOLDADO) {
+            return "soldado";
+        } else {
+            return "paisano";
+        }
     }
 
     private void mover(Posicion posicion) {
@@ -300,7 +318,7 @@ public class Personaje {
                     }
                     civilizacion.getEdificios().get("ciudadela1").setPiedra(-100, true);
                     civilizacion.getEdificios().get("ciudadela1").setMadera(-100, true);
-                    Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1),civilizacion);
+                    Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
                     civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                     System.out.println();
                     civilizacion.getEdificios().put(edif.getNombre(), edif);
@@ -316,7 +334,7 @@ public class Personaje {
                     }
                     civilizacion.getEdificios().get("ciudadela1").setPiedra(-200, true);
                     civilizacion.getEdificios().get("ciudadela1").setMadera(-200, true);
-                    Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1),civilizacion);
+                    Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
                     civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                     civilizacion.getEdificios().put(cuart.getNombre(), cuart);
                     System.out.println();
@@ -332,9 +350,9 @@ public class Personaje {
                     }
                     civilizacion.getEdificios().get("ciudadela1").setPiedra(-500, true);
                     civilizacion.getEdificios().get("ciudadela1").setMadera(-500, true);
-                   // Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1));
-                   // civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
-                   // civilizacion.getEdificios().put(ciud.getNombre(), ciud);
+                    // Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1));
+                    // civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
+                    // civilizacion.getEdificios().put(ciud.getNombre(), ciud);
                     System.out.println();
                     civilizacion.getMapa().imprimirCabecera();
                     civilizacion.getMapa().imprimir(civilizacion);
@@ -365,16 +383,15 @@ public class Personaje {
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() == 0) {
             System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
         }
-        
-        
+
         civilizacion.getMapa().getCelda(this.posicion).removePersonaje(this);
         civilizacion.getMapa().getCelda(pos).addPersonaje(this);
-        
+
         civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getDefensa(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-1, true);
         this.recuperarVida();
-        System.out.println("El "+this.getNombre()+ " ha entrado en " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " (capacidad restante " +civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()+ ").");
+        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");
         civilizacion.makeAdyVisible(pos);
         System.out.println();
         civilizacion.getMapa().imprimirCabecera();

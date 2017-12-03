@@ -15,21 +15,22 @@ import java.util.ArrayList;
  * @author Santiago
  */
 public class Grupo {
-
+    
     private ArrayList<Personaje> personajes;
     private int salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
     private Posicion posicion;
     private Civilizacion civilizacion;
     private String nombre;
-
+    
     public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) {
-
+        
         if (posicion != null && nombre != null && personajes != null && civilizacion != null) {
             this.personajes = new ArrayList<>(personajes);
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
             this.civilizacion = civilizacion;
             for (int i = 0; i < (this.personajes.size()); i++) {
+                this.personajes.get(i).setGrupo(this);
                 if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                     this.setCapRec(0);
                     this.setCantRecComida(0);
@@ -37,7 +38,6 @@ public class Grupo {
                     this.setCantRecPiedra(0);
                     armadura += this.personajes.get(i).getDefensa();
                     ataque += this.personajes.get(i).getAtaque();
-
                 } else {
                     armadura += this.personajes.get(i).getDefensa();
                     capRec += this.personajes.get(i).getCapRec();
@@ -47,62 +47,62 @@ public class Grupo {
                 }
             }
         } else {
-            System.out.println("Error creandgo grupo");
+            System.out.println("Error creando grupo");
         }
     }
-
+    
     public int getSalud() {
         return salud;
     }
-
+    
     public int getArmadura() {
         return armadura;
     }
-
+    
     public int getAtaque() {
         return ataque;
     }
-
+    
     public int getCapRec() {
         return capRec;
     }
-
+    
     public int getCantRecMadera() {
         return cantRecMadera;
     }
-
+    
     public int getCantRecPiedra() {
         return cantRecPiedra;
     }
-
+    
     public int getCantRecComida() {
         return cantRecComida;
     }
-
+    
     public int getCantRecTotal() {
         return cantRecComida + cantRecMadera + cantRecPiedra;
     }
-
+    
     public Posicion getPosicion() {
         return posicion;
     }
-
+    
     public Civilizacion getCivilizacion() {
         return civilizacion;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
-
+    
     public ArrayList<Personaje> getPersonajes() {
         return personajes;
     }
-
+    
     public void setSalud(int salud) {
         this.salud = salud;
     }
-
+    
     public void setCapRec(int capRec) {
         if (capRec >= 0) {
             this.capRec = capRec;
@@ -110,16 +110,16 @@ public class Grupo {
             System.out.println("Error seteando la capacidad");
         }
     }
-
+    
     public void setCantRecMadera(int cantRecMadera) {
         if (cantRecMadera >= 0) {
             this.cantRecMadera = cantRecMadera;
         } else {
             System.out.println("Error seteando la cantidad de madera recolectada");
         }
-
+        
     }
-
+    
     public void setCantRecPiedra(int cantRecPiedra) {
         if (cantRecPiedra >= 0) {
             this.cantRecPiedra = cantRecPiedra;
@@ -127,7 +127,7 @@ public class Grupo {
             System.out.println("Error seteando la cantidad de piedra recolectada");
         }
     }
-
+    
     public void setCantRecComida(int cantRecComida) {
         if (cantRecComida >= 0) {
             this.cantRecComida = cantRecComida;
@@ -135,7 +135,7 @@ public class Grupo {
             System.out.println("Error seteando la cantidad de comida recolectada");
         }
     }
-
+    
     public void setPosicion(Posicion posicion) {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
@@ -144,7 +144,7 @@ public class Grupo {
             System.out.println("Error: posicion introducida errónea");
         }
     }
-
+    
     public void desligar(Personaje personaje) {
         if (personaje == null) {
             System.out.println("El personaje no existe");
@@ -155,16 +155,18 @@ public class Grupo {
             return;
         }
         this.getPersonajes().remove(personaje);
+        personaje.setGrupo(null);
         civilizacion.getMapa().getCelda(posicion).getPersonajes().add(personaje);
         revisarVacio();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
         System.out.println(personaje.getNombre() + " desligado de " + nombre);
     }
-
+    
     public void desagrupar() {
         for (Personaje p : personajes) {
             civilizacion.getMapa().getCelda(posicion).getPersonajes().add(p);
+            p.setGrupo(null);
         }
         civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
         getPersonajes().clear();
@@ -173,11 +175,11 @@ public class Grupo {
         civilizacion.getMapa().imprimir(civilizacion);
         System.out.println(nombre + " desagrupado.");
     }
-
+    
     public void describirGrupo() {
-
+        
         System.out.println("Nombre del grupo: " + nombre);
-        System.out.println("Civilizacion: "+civilizacion.getNombre());
+        System.out.println("Civilizacion: " + civilizacion.getNombre());
         System.out.println("Salud :" + salud);
         System.out.println("Armadura :" + armadura);
         System.out.println("Ataque :" + ataque);
@@ -186,9 +188,9 @@ public class Grupo {
         System.out.println("Cantidad de comida que transporta: " + cantRecComida);
         System.out.println("Cantidad de piedra que transporta: " + cantRecPiedra);
         System.out.println("Cantidad de recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
-
+        
     }
-
+    
     private void mover(Posicion posicion) {
         if (civilizacion.getMapa() == null || posicion == null) {
             System.out.println("Error en mover.");
@@ -207,11 +209,11 @@ public class Grupo {
             System.out.println("Error: No te puedes mover a esa celda.");
         }
     }
-
+    
     public void mover(String direccion) {
         mover(posicion.getAdy(direccion)); //chequeos de nulo en getAdy y en mover
     }
-
+    
     public void recolectar(Mapa mapa, String direccion) {
         if (mapa == null || direccion == null) {
             System.out.println("Error en recolectar.");
@@ -228,7 +230,7 @@ public class Grupo {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
-
+        
         if (this.getCantRecTotal() == this.capRec) {
             System.out.println(this.getNombre() + " no puede recolectar más");
             return;
@@ -260,7 +262,7 @@ public class Grupo {
                 break;
         }
     }
-
+    
     public void almacenar(Mapa mapa, String direccion) {
         if (mapa == null || direccion == null) {
             System.out.println("Error en almcenar.");
@@ -276,7 +278,7 @@ public class Grupo {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
-
+        
         if (mapa.getCelda(pos).getEdificio() == null || mapa.getCelda(pos).getEdificio().getTipo() != Edificio.CIUDADELA) {
             System.out.println("No se puede almacenar recursos en esa celda");
         }
@@ -299,7 +301,7 @@ public class Grupo {
             this.setCantRecComida(0);
         }
     }
-
+    
     public void consEdif(String tipoC, String dir, Civilizacion civilizacion) {
         if (civilizacion.getMapa() == null || tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
@@ -324,7 +326,7 @@ public class Grupo {
                 }
                 civilizacion.getEdificios().get("ciudadela1").setPiedra(-100, true);
                 civilizacion.getEdificios().get("ciudadela1").setMadera(-100, true);
-                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1),civilizacion);
+                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                 System.out.println();
                 civilizacion.getEdificios().put(edif.getNombre(), edif);
@@ -340,7 +342,7 @@ public class Grupo {
                 }
                 civilizacion.getEdificios().get("ciudadela1").setPiedra(-200, true);
                 civilizacion.getEdificios().get("ciudadela1").setMadera(-200, true);
-                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1),civilizacion);
+                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                 civilizacion.getEdificios().put(cuart.getNombre(), cuart);
                 System.out.println();
@@ -353,7 +355,7 @@ public class Grupo {
                 System.out.println("Error: tipo de construccion incorrecta.");
         }
     }
-
+    
     public void reparar(Posicion pos) {
         if (pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getPs() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
             System.out.println("Nada que reparar.");
@@ -381,12 +383,12 @@ public class Grupo {
     
     public void defender(String direccion) {
         Posicion pos = posicion.getAdy(direccion);
-        if (direccion == null || pos==null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
+        if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()< this.getPersonajes().size()) {
-            System.out.println("No se puede mover el grupo. El número "+ this.getPersonajes().size() + "de componentes del grupo ("+ this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ") de " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
+        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() < this.getPersonajes().size()) {
+            System.out.println("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
         }
         
         civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
@@ -396,23 +398,23 @@ public class Grupo {
         civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getArmadura(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
-        System.out.println("El "+this.getNombre()+ " ha entrado en " +civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " (capacidad restante " +civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1()+ ").");
-        for(int i=0; i<this.getPersonajes().size(); i++){
+        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");
+        for (int i = 0; i < this.getPersonajes().size(); i++) {
             this.getPersonajes().get(i).recuperarVida();
         }
         civilizacion.makeAdyVisible(pos);
         System.out.println();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-
+        
     }
-
+    
     private void actualizarPosiciones() {
         for (Personaje p : personajes) {
             p.setPosicion(posicion);
         }
     }
-
+    
     public void revisarVacio() {
         if (this.getPersonajes().isEmpty()) {
             civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
