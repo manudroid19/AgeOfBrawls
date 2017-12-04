@@ -188,17 +188,11 @@ public class Grupo {
 
         System.out.println("Nombre del grupo: " + nombre);
         System.out.println("Civilizacion: " + civilizacion.getNombre());
-        System.out.println("Salud :" + salud);
-        System.out.println("Armadura :" + defensa);
+        System.out.println("Armadura :" + armadura);
+        if(this.haySoldado){
         System.out.println("Ataque :" + ataque);
-        System.out.println("Capacidad de recoleccion del grupo:" + capRec);
-        System.out.println("Cantidad de madera que transporta: " + cantRecMadera);
-        System.out.println("Cantidad de comida que transporta: " + cantRecComida);
-        System.out.println("Cantidad de piedra que transporta: " + cantRecPiedra);
-        System.out.println("Cantidad de recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
-        System.out.println("Armadura :" + defensa);
+        }
         if (!this.haySoldado) {
-            System.out.println("Ataque :" + ataque);
             System.out.println("Capacidad de recoleccion del grupo:" + capRec);
             System.out.println("Cantidad de madera que transporta: " + cantRecMadera);
             System.out.println("Cantidad de comida que transporta: " + cantRecComida);
