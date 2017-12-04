@@ -8,6 +8,7 @@ package ageofbrawls.contenido;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -482,6 +483,68 @@ public class Personaje {
         }
         else
             salud=100;
+    }
+    
+    public void atacar(String direccion){
+       Posicion pos = posicion.getAdy(direccion);
+       if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
+            System.out.println("No hay edificio en la posición indicada.");
+            return;
+        }
+       if(this.grupo!=null){
+           System.out.println("El personaje no puede atacar que no pertenece a un grupo");
+       }
+       if(this.tipo==Personaje.PAISANO){
+           System.out.println("Un paisano no puede atacar");
+       }
+       if(civilizacion.getMapa().getCelda(pos).getEdificio()==null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()){
+           System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
+       }
+       if((civilizacion.getMapa().getCelda(pos).isHayGrupo() || !civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) &&this.civilizacion != civilizacion.getMapa().getCelda(pos).getGrupos().get(0).getCivilizacion() && this.civilizacion != civilizacion.getMapa().getCelda(pos).getPersonajes().get(0).getCivilizacion()){
+        int PuntosAQuitar=this.getAtaque();
+        
+        ArrayList<Personaje> pers = new ArrayList<>();
+        if(!civilizacion.getMapa().getCelda(pos).getGrupos().isEmpty()){
+        for (int i = 0; i < civilizacion.getMapa().getCelda(pos).getGrupos().size(); i++) {
+            for (int j = 0; j < civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().size(); j++) {
+                pers.add(civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().get(j));
+            }
+        }
+        
+        }
+        for (int i = 0; i < civilizacion.getMapa().getCelda(pos).getPersonajes().size(); i++) {
+            pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
+        }
+        int PuntosAQuitarACadaUno= (int)(PuntosAQuitar/pers.size());
+        for(int i=0;i<pers.size();i++){
+           if(pers.get(i).getTipo()==Personaje.PAISANO){
+               this.salud=this.salud-(PuntosAQuitarACadaUno*2);
+               if(this.salud<=0){
+                   System.out.println("El personaje: " + this.getNombre() + " ha muerto");
+                   if(this.grupo!= null){
+                       this.grupo.desligar(this);
+                   }
+                   civilizacion.getMapa().getCelda(pos).getPersonajes().remove(this);
+                   civilizacion.getPersonajes().remove(this);
+               }
+               
+           } else{
+               this.salud=this.salud-(PuntosAQuitarACadaUno);
+               if(this.salud<=0){
+                   System.out.println("El personaje: " + this.getNombre() + " ha muerto");
+                   if(this.grupo!= null){
+                       this.grupo.desligar(this);
+                   }
+                   civilizacion.getMapa().getCelda(pos).getPersonajes().remove(this);
+                   civilizacion.getPersonajes().remove(this);
+           }
+           }       
+       }
+       }
+       if((!civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty() && civilizacion.getMapa().getCelda(pos).getEdificio()!=null) && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
+           
+       }
+       
     }
 
     @Override
