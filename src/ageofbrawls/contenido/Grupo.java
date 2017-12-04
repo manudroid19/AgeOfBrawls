@@ -188,7 +188,7 @@ public class Grupo {
 
         System.out.println("Nombre del grupo: " + nombre);
         System.out.println("Civilizacion: " + civilizacion.getNombre());
-        System.out.println("Armadura :" + armadura);
+        System.out.println("Armadura :" + defensa);
         if(this.haySoldado){
         System.out.println("Ataque :" + ataque);
         }
