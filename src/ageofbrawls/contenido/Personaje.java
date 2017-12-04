@@ -152,13 +152,15 @@ public class Personaje {
 
     public void describirPersonaje() {
         if (tipo == Personaje.SOLDADO) {
-            System.out.println("Nombre: " + nombre);
+            System.out.println("Nombre del soldado: " + nombre);
             System.out.println("Salud :" + salud);
+            System.out.println("Civilizacion: "+this.civilizacion.getNombre());
             System.out.println("Armadura :" + defensa);
             System.out.println("Ataque :" + ataque);
         } else {
-            System.out.println("Nombre: " + nombre);
+            System.out.println("Nombre del paisano: " + nombre);
             System.out.println("Salud :" + salud);
+            System.out.println("Civilizacion: "+this.civilizacion.getNombre());
             System.out.println("Capacidad de recolección: " + capRec);
             System.out.println("Cantidad de madera que transporta: " + cantRecMadera);
             System.out.println("Cantidad de comida que transporta: " + cantRecComida);
