@@ -167,6 +167,7 @@ public class Grupo {
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
         System.out.println(personaje.getNombre() + " desligado de " + nombre);
+        
     }
 
     public void desagrupar() {
@@ -468,7 +469,9 @@ public class Grupo {
     }
 
     public void revisarVacio() {
-        if (this.getPersonajes().isEmpty()) {
+        if(getPersonajes().size()==1){
+            desligar(personajes.get(0));
+        }else if (this.getPersonajes().isEmpty()) {
             civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
             civilizacion.getGrupos().remove(this.nombre);
         }

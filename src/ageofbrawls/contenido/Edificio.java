@@ -49,20 +49,20 @@ public class Edificio {
                     this.capacidadAlojamiento = Edificio.CAPALOJ;
                     this.capAloj = 7;
                     this.ataque = 0;
-                    this.defensa = 25;
+                    this.defensa = 0;
                     break;
                 case Edificio.CUARTEL:
                     this.ps = 500;
                     this.capAloj = 5;
                     this.ataque = 0;
-                    this.defensa = 50;
+                    this.defensa = 0;
                     break;
                 case Edificio.CIUDADELA:
                     this.ps = 1000;
                     this.capAlmacen = Edificio.CAPALMACEN;
                     this.capAloj = 10;
                     this.ataque = 0;
-                    this.defensa = 100;
+                    this.defensa = 0;
                     madera = 500;
                     piedra = 500;
                     alimentos = 500;

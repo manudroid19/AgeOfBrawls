@@ -175,10 +175,11 @@ public class Personaje {
             return "paisano";
         }
     }
-    public String leerGrupo(){
-        if(grupo==null){
+
+    public String leerGrupo() {
+        if (grupo == null) {
             return "";
-        }else{
+        } else {
             return grupo.getNombre();
         }
     }
@@ -442,17 +443,17 @@ public class Personaje {
     }
 
     public void recuperarVida() {
-        
+
         if (this.getTipo() == Personaje.PAISANO) {
-            int puntosARecuperar = 50-this.getSalud();
-            if(puntosARecuperar==0){
+            int puntosARecuperar = 50 - this.getSalud();
+            if (puntosARecuperar == 0) {
                 System.out.println("El personaje tiene toda la vida");
                 return;
             }
             int costeAlimento = (int) (puntosARecuperar * 0.8);
             if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
-                int puntosRecuperados = (int)(civilizacion.getEdificios().get("ciudadela1").getAlimentos() /0.8);
-                this.salud=(this.getSalud() + puntosRecuperados);
+                int puntosRecuperados = (int) (civilizacion.getEdificios().get("ciudadela1").getAlimentos() / 0.8);
+                this.salud = (this.getSalud() + puntosRecuperados);
                 civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
                 return;
             }
@@ -460,16 +461,16 @@ public class Personaje {
             this.recuperar();
             System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         } else {
-            int puntosARecuperar = 100-this.getSalud();
-            if(puntosARecuperar==0){
+            int puntosARecuperar = 100 - this.getSalud();
+            if (puntosARecuperar == 0) {
                 System.out.println("El personaje tiene toda la vida");
                 return;
             }
             int costeAlimento = (int) (puntosARecuperar * 0.8);
             if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
-               int puntosRecuperados = (int)(civilizacion.getEdificios().get("ciudadela1").getAlimentos() /0.8);
-               this.salud=(this.getSalud() + puntosRecuperados);
-               civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
+                int puntosRecuperados = (int) (civilizacion.getEdificios().get("ciudadela1").getAlimentos() / 0.8);
+                this.salud = (this.getSalud() + puntosRecuperados);
+                civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
                 return;
             }
             civilizacion.getEdificios().get("ciudadela1").setAlimentos(-costeAlimento, true);
@@ -477,74 +478,78 @@ public class Personaje {
             System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         }
     }
-    public void recuperar(){
-        if(this.getTipo()==Personaje.PAISANO){
-            salud=50;
+
+    public void recuperar() {
+        if (this.getTipo() == Personaje.PAISANO) {
+            salud = 50;
+        } else {
+            salud = 100;
         }
-        else
-            salud=100;
     }
-    
-    public void atacar(String direccion){
-       Posicion pos = posicion.getAdy(direccion);
-       if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
+
+    public void atacar(String direccion) {
+        Posicion pos = posicion.getAdy(direccion);
+        if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-       if(this.grupo!=null){
-           System.out.println("El personaje no puede atacar que no pertenece a un grupo");
-       }
-       if(this.tipo==Personaje.PAISANO){
-           System.out.println("Un paisano no puede atacar");
-       }
-       if(civilizacion.getMapa().getCelda(pos).getEdificio()==null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()){
-           System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
-       }
-       if((civilizacion.getMapa().getCelda(pos).isHayGrupo() || !civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) &&this.civilizacion != civilizacion.getMapa().getCelda(pos).getGrupos().get(0).getCivilizacion() && this.civilizacion != civilizacion.getMapa().getCelda(pos).getPersonajes().get(0).getCivilizacion()){
-        int PuntosAQuitar=this.getAtaque();
-        
-        ArrayList<Personaje> pers = new ArrayList<>();
-        if(!civilizacion.getMapa().getCelda(pos).getGrupos().isEmpty()){
-        for (int i = 0; i < civilizacion.getMapa().getCelda(pos).getGrupos().size(); i++) {
-            for (int j = 0; j < civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().size(); j++) {
-                pers.add(civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().get(j));
-            }
+        if (this.grupo != null) {
+            System.out.println("El personaje no puede atacar ya que pertenece a un grupo");
+            return;
         }
-        
+        if (this.tipo == Personaje.PAISANO) {
+            System.out.println("Un paisano no puede atacar");
+            return;
+        }
+        if (civilizacion.getMapa().getCelda(pos).getEdificio() == null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) {
+            System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
+            return;
+        }
+        int PuntosAQuitar = this.getAtaque();
+
+        ArrayList<Personaje> pers = new ArrayList<>();
+        if (!civilizacion.getMapa().getCelda(pos).getGrupos().isEmpty()) {
+            for (int i = 0; i < civilizacion.getMapa().getCelda(pos).getGrupos().size(); i++) {
+                for (int j = 0; j < civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().size(); j++) {
+                    if (civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().get(j).getCivilizacion() != civilizacion) {
+                        pers.add(civilizacion.getMapa().getCelda(pos).getGrupos().get(i).getPersonajes().get(j));
+                    }
+                }
+            }
+
         }
         for (int i = 0; i < civilizacion.getMapa().getCelda(pos).getPersonajes().size(); i++) {
-            pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
+            if (civilizacion.getMapa().getCelda(pos).getPersonajes().get(i).getCivilizacion() != civilizacion) {
+                pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
+            }
         }
-        int PuntosAQuitarACadaUno= (int)(PuntosAQuitar/pers.size());
-        for(int i=0;i<pers.size();i++){
-           if(pers.get(i).getTipo()==Personaje.PAISANO){
-               this.salud=this.salud-(PuntosAQuitarACadaUno*2);
-               if(this.salud<=0){
-                   System.out.println("El personaje: " + this.getNombre() + " ha muerto");
-                   if(this.grupo!= null){
-                       this.grupo.desligar(this);
-                   }
-                   civilizacion.getMapa().getCelda(pos).getPersonajes().remove(this);
-                   civilizacion.getPersonajes().remove(this);
-               }
-               
-           } else{
-               this.salud=this.salud-(PuntosAQuitarACadaUno);
-               if(this.salud<=0){
-                   System.out.println("El personaje: " + this.getNombre() + " ha muerto");
-                   if(this.grupo!= null){
-                       this.grupo.desligar(this);
-                   }
-                   civilizacion.getMapa().getCelda(pos).getPersonajes().remove(this);
-                   civilizacion.getPersonajes().remove(this);
-           }
-           }       
-       }
-       }
-       if((!civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty() && civilizacion.getMapa().getCelda(pos).getEdificio()!=null) && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
-           
-       }
-       
+        int PuntosAQuitarACadaUno;
+        if (pers.isEmpty()) {
+            PuntosAQuitarACadaUno = 0;
+        } else {
+            PuntosAQuitarACadaUno = (int) (PuntosAQuitar / pers.size());
+        }
+        for (int i = 0; i < pers.size(); i++) {
+            Personaje atacado = pers.get(i);
+            if (pers.get(i).getTipo() == Personaje.PAISANO) {
+                atacado.salud = atacado.salud - (PuntosAQuitarACadaUno);
+            } else {
+                atacado.salud = atacado.salud - (int) ((double) PuntosAQuitarACadaUno * 0.5);
+            }
+            if (atacado.salud <= 0) {
+                System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
+                if (atacado.grupo != null) {
+                    atacado.grupo.desligar(atacado);
+                }
+                civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
+                civilizacion.getPersonajes().remove(atacado.getNombre());
+            }
+        }
+
+        if (PuntosAQuitarACadaUno==0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
+            
+        }
+
     }
 
     @Override
