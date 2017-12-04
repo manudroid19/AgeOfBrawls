@@ -358,6 +358,12 @@ public class Edificio {
             } else {
                 ps = 0;
                 destruido = true;
+                System.out.println("El edificio " + this.getNombre() + " ha sido destruido");
+                civilizacion.getEdificios().remove(this.getNombre());
+                civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
+                System.out.println();
+                civilizacion.getMapa().imprimirCabecera();
+                civilizacion.getMapa().imprimir(civilizacion);
             }
         } else {
             System.out.println("Error dañando edificio.");
