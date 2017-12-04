@@ -63,7 +63,7 @@ public class Loader {
                 } else {
                     a = celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getCantidad();
                 }
-                lineas.add(celda.getPosicion().getY() + "," + celda.getPosicion().getX() + ";" + celda.leerTipoCont() + ";" + a);
+                lineas.add(celda.getPosicion().getX() + "," + celda.getPosicion().getY() + ";" + celda.leerTipoCont() + ";" + a);
             }
             Files.write(files[0].toPath(), lineas);
             lineas.clear();

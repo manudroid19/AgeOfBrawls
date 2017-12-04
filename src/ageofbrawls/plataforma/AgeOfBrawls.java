@@ -391,7 +391,7 @@ public class AgeOfBrawls {
 
                     try {
                         Loader loader = new Loader(mapa, ruta);
-                        activa= mapa.getCivilizaciones().get(mapa.getCivilizaciones().entrySet().toArray()[0]);
+                        activa= mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);
                         mapa.imprimirCabecera();
                         mapa.imprimir(activa);
                         System.out.println("Archivos cargados.");

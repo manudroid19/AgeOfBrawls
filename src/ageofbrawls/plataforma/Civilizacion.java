@@ -49,7 +49,7 @@ public class Civilizacion {
         if (posCiudadela != null) {
             mapa.makeAdyPrad(posCiudadela);
             String nomCiud = "ciudadela1";
-            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud,this);
+            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud, this);
             mapa.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nomCiud, ciud);
             Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
@@ -145,10 +145,15 @@ public class Civilizacion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Celda c = mapa.getCelda(h, k);
-                if (c != null && c.isOculto(this) && (h == i || j == k || h==k ||(c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                if (c != null && c.isOculto(this) && (h == i || j == k || h == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(this, false);
                     if (c.getContenedorRec() != null) {
-                        c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(getContador(c.getContenedorRec().getTipo())));
+                        if (c.getContenedorRec().getNombre() == null || "".equals(c.getContenedorRec().getNombre())) {
+                            int n = getContador(c.getContenedorRec().getTipo());
+                            while (recursosVisibles.containsKey(c.getContenedorRec().toString() + n))
+                                n=getContador(c.getContenedorRec().getTipo());
+                            c.getContenedorRec().setNombre(c.getContenedorRec().toString() + n);
+                        }
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
                     }
                 }
