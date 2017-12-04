@@ -388,9 +388,9 @@ public class Personaje {
                     }
                     civilizacion.getEdificios().get("ciudadela1").setPiedra(-500, true);
                     civilizacion.getEdificios().get("ciudadela1").setMadera(-500, true);
-                    // Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1));
-                    // civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
-                    // civilizacion.getEdificios().put(ciud.getNombre(), ciud);
+                    Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1), this.civilizacion);
+                    civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
+                    civilizacion.getEdificios().put(ciud.getNombre(), ciud);
                     System.out.println();
                     civilizacion.getMapa().imprimirCabecera();
                     civilizacion.getMapa().imprimir(civilizacion);

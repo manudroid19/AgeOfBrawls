@@ -36,6 +36,7 @@ public class Grupo {
                     this.haySoldado = true;
                     defensa += this.personajes.get(i).getDefensa();
                     ataque += this.personajes.get(i).getAtaque();
+
                 } else {
                     defensa += this.personajes.get(i).getDefensa();
                     capRec += this.personajes.get(i).getCapRec();
@@ -167,7 +168,7 @@ public class Grupo {
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
         System.out.println(personaje.getNombre() + " desligado de " + nombre);
-        
+
     }
 
     public void desagrupar() {
@@ -195,7 +196,16 @@ public class Grupo {
         System.out.println("Cantidad de comida que transporta: " + cantRecComida);
         System.out.println("Cantidad de piedra que transporta: " + cantRecPiedra);
         System.out.println("Cantidad de recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
+        System.out.println("Armadura :" + defensa);
+        if (!this.haySoldado) {
+            System.out.println("Ataque :" + ataque);
+            System.out.println("Capacidad de recoleccion del grupo:" + capRec);
+            System.out.println("Cantidad de madera que transporta: " + cantRecMadera);
+            System.out.println("Cantidad de comida que transporta: " + cantRecComida);
+            System.out.println("Cantidad de piedra que transporta: " + cantRecPiedra);
+            System.out.println("Cantidad de recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
 
+        }
     }
 
     private void mover(Posicion posicion) {
@@ -268,6 +278,7 @@ public class Grupo {
         switch (tipoC) {
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Has recolectado " + recolectando + " unidades de madera");
+                this.setCantRecMadera(this.getCantRecMadera() + recolectando);
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (recolectando == 0) {
                         return;
@@ -288,6 +299,7 @@ public class Grupo {
                 break;
             case ContenedorRecurso.ARBUSTO:
                 System.out.println("Has recolectado " + recolectando + " unidades de comida");
+                this.setCantRecComida(this.getCantRecComida() + recolectando);
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (recolectando == 0) {
                         return;
@@ -308,6 +320,7 @@ public class Grupo {
                 break;
             case ContenedorRecurso.CANTERA:
                 System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+                this.setCantRecPiedra(this.getCantRecPiedra() + recolectando);
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (recolectando == 0) {
                         return;
@@ -426,12 +439,12 @@ public class Grupo {
             System.out.println("Nada que reparar.");
             return;
         }
-        
+
         if (this.haySoldado) {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
             return;
         }
-        
+
         int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
         int costeMadera = (int) (puntosAReparar * 0.4);
         int costePiedra = (int) (puntosAReparar * 0.5);
@@ -445,7 +458,7 @@ public class Grupo {
         System.out.println("Reparación completada.");
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
     }
-    
+
     public void defender(String direccion) {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
@@ -473,13 +486,14 @@ public class Grupo {
         civilizacion.getMapa().imprimir(civilizacion);
 
     }
+
     public void atacar(String direccion) {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-       
+
         if (!this.haySoldado) {
             System.out.println("El grupo no tiene soldados y no puede atacar");
             return;
@@ -506,7 +520,7 @@ public class Grupo {
                 pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
             }
         }
-        System.out.println("Has inflingido " +PuntosAQuitar+ " a los miembros de la civilización (" +pers.get(0).getCivilizacion()+ ").");
+        System.out.println("Has inflingido " + PuntosAQuitar + " a los miembros de la civilización (" + pers.get(0).getCivilizacion() + ").");
         int PuntosAQuitarACadaUno;
         if (pers.isEmpty()) {
             PuntosAQuitarACadaUno = 0;
@@ -516,9 +530,9 @@ public class Grupo {
         for (int i = 0; i < pers.size(); i++) {
             Personaje atacado = pers.get(i);
             if (pers.get(i).getTipo() == Personaje.PAISANO) {
-                atacado.setSalud(-(PuntosAQuitarACadaUno),true);
+                atacado.setSalud(-(PuntosAQuitarACadaUno), true);
             } else {
-                atacado.setSalud(- (int) ((double) PuntosAQuitarACadaUno * 0.5),true);
+                atacado.setSalud(-(int) ((double) PuntosAQuitarACadaUno * 0.5), true);
             }
             if (atacado.getSalud() <= 0) {
                 System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
@@ -530,8 +544,8 @@ public class Grupo {
             }
         }
 
-        if (PuntosAQuitarACadaUno==0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            System.out.println("Has inflingido " +PuntosAQuitar+ " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " de la civilizacion (" +civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()+ ").");
+        if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
+            System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion() + ").");
             civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
         }
 
@@ -544,9 +558,9 @@ public class Grupo {
     }
 
     public void revisarVacio() {
-        if(getPersonajes().size()==1){
+        if (getPersonajes().size() == 1) {
             desligar(personajes.get(0));
-        }else if (this.getPersonajes().isEmpty()) {
+        } else if (this.getPersonajes().isEmpty()) {
             civilizacion.getMapa().getCelda(posicion).getGrupos().remove(this);
             civilizacion.getGrupos().remove(this.nombre);
         }
