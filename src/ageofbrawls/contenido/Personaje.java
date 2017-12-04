@@ -109,10 +109,6 @@ public class Personaje {
         return grupo;
     }
 
-    public Civilizacion getCivilizacion() {
-        return civilizacion;
-    }
-
     public boolean isMuerto() {
         return muerto;
     }
