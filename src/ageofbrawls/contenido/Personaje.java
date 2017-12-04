@@ -109,6 +109,10 @@ public class Personaje {
         return grupo;
     }
 
+    public Civilizacion getCivilizacion() {
+        return civilizacion;
+    }
+
     public boolean isMuerto() {
         return muerto;
     }
@@ -441,11 +445,47 @@ public class Personaje {
     }
 
     public void recuperarVida() {
+        
         if (this.getTipo() == Personaje.PAISANO) {
-            salud = 50;
+            int puntosARecuperar = 50-this.getSalud();
+            if(puntosARecuperar==0){
+                System.out.println("El personaje tiene toda la vida");
+                return;
+            }
+            int costeAlimento = (int) (puntosARecuperar * 0.8);
+            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
+                int puntosRecuperados = (int)(civilizacion.getEdificios().get("ciudadela1").getAlimentos() /0.8);
+                this.salud=(this.getSalud() + puntosRecuperados);
+                civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
+                return;
+            }
+            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-costeAlimento, true);
+            this.recuperar();
+            System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         } else {
-            salud = 100;
+            int puntosARecuperar = 100-this.getSalud();
+            if(puntosARecuperar==0){
+                System.out.println("El personaje tiene toda la vida");
+                return;
+            }
+            int costeAlimento = (int) (puntosARecuperar * 0.8);
+            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
+               int puntosRecuperados = (int)(civilizacion.getEdificios().get("ciudadela1").getAlimentos() /0.8);
+               this.salud=(this.getSalud() + puntosRecuperados);
+               civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
+                return;
+            }
+            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-costeAlimento, true);
+            this.recuperar();
+            System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         }
+    }
+    public void recuperar(){
+        if(this.getTipo()==Personaje.PAISANO){
+            salud=50;
+        }
+        else
+            salud=100;
     }
 
     @Override

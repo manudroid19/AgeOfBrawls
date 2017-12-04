@@ -34,7 +34,7 @@ public class Celda {
         if (edificio == 0) {
             this.edificio = null;
         } else {
-            this.edificio = new Edificio(edificio, posicion, nombreEdificio,civilizacion);//valida o edificio e o string
+            this.edificio = new Edificio(edificio, posicion, nombreEdificio, civilizacion);//valida o edificio e o string
         }
         if (tipo == PRADERA) {
             recurso = null;
@@ -47,7 +47,7 @@ public class Celda {
     }
 
     public Celda(int i, int j) {
-        this(PRADERA, 0, 0, new Posicion(i, j), null,null);
+        this(PRADERA, 0, 0, new Posicion(i, j), null, null);
     }
 
     public ContenedorRecurso getContenedorRec() {
@@ -185,22 +185,32 @@ public class Celda {
     }
 
     public void agrupar(Civilizacion civilizacion) {
-        if (this.getPersonajes().size() <= 1) {
-            System.out.println("No se puede crear un grupo con 1 o ningún personaje");
+        if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
+            System.out.println("No se puede crear un grupo en esta situación");
             return;
         }
-        if (this.haygrupo) {
-            System.out.println("No se puede agrupar un grupo");
-            return;
+        ArrayList<Personaje> pers = new ArrayList<>();
+        if(haygrupo){
+        for (int i = 0; i < this.getGrupos().size(); i++) {
+            for (int j = 0; j < this.getGrupos().get(i).getPersonajes().size(); j++) {
+                pers.add(this.getGrupos().get(i).getPersonajes().get(j));
+            }
         }
-        int i = 1;
+        
+        }
+        for (int i = 0; i < this.getPersonajes().size(); i++) {
+            pers.add(this.getPersonajes().get(i));
+        }
+        int k = 1;
         String nombreGrupo = "grupo1";
         while (civilizacion.getGrupos().containsKey(nombreGrupo)) {
-            nombreGrupo = nombreGrupo.replace("grupo" + i, "grupo" + (++i));
+            nombreGrupo = nombreGrupo.replace("grupo" + k, "grupo" + (++k));
         }
-        Grupo group = new Grupo(this.getPersonajes(), this.getPosicion().inversa(), nombreGrupo, civilizacion);
-        this.haygrupo = true;
+
+        Grupo group = new Grupo(pers, this.getPosicion().inversa(), nombreGrupo, civilizacion);
+        this.haygrupo=true;
         this.personajes.clear();
+        this.grupos.clear();
         this.addGrupo(group);
         civilizacion.getGrupos().put(nombreGrupo, group);
         civilizacion.getMapa().imprimirCabecera();
@@ -224,13 +234,13 @@ public class Celda {
     @Override
     public String toString() {
         if (!this.personajes.isEmpty()) {
-            if (this.personajes.size() == 1 && this.edificio == null) {
+            if ((this.personajes.size() == 1 && !this.haygrupo) && this.edificio == null) {
                 if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
                 } else {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S ";
                 }
-            } else if (this.personajes.size() > 1 && this.edificio == null) {
+            } else if ((this.personajes.size() > 1 && !this.haygrupo) && this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
             } else if (this.edificio != null) {
                 switch (this.edificio.getTipo()) {
@@ -248,7 +258,7 @@ public class Celda {
         if (this.haygrupo && this.edificio == null) {
             if (this.grupos.size() == 1) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G ";
-            } else if (this.grupos.size() > 1 && this.edificio == null) {
+            } else if (((this.getPersonajes().size()>=1 && this.grupos.size()>=1)||this.grupos.size() > 1 )&& this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G*";
             }
         }
