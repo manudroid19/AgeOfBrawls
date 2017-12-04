@@ -409,6 +409,7 @@ public class AgeOfBrawls {
                     }
                     String ruta = comando[1];
 
+                    
                     try {
                         Loader loader = new Loader(mapa, ruta);
                         activa= mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);

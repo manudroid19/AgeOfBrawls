@@ -250,6 +250,8 @@ public class Mapa {
         System.out.println("desligar [personaje] [grupo]");
         System.out.println("defender [personaje o grupo] [direccion: norte, sur, este o oeste]");
         System.out.println("atacar [personaje o grupo] [direccion: norte, sur, este o oeste]");
+        System.out.println("cargar [directorio]");
+        System.out.println("guardar [directorio]");
         System.out.println("salir");
         System.out.println();
     }
