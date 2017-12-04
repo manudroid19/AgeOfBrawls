@@ -73,6 +73,10 @@ public class Personaje {
         return ataque;
     }
 
+    public Civilizacion getCivilizacion() {
+        return civilizacion;
+    }
+
     public int getCapRec() {
         return capRec;
     }
@@ -168,6 +172,13 @@ public class Personaje {
             return "soldado";
         } else {
             return "paisano";
+        }
+    }
+    public String leerGrupo(){
+        if(grupo==null){
+            return "";
+        }else{
+            return grupo.getNombre();
         }
     }
 

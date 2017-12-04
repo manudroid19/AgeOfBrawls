@@ -82,6 +82,10 @@ public class Celda {
         civilizacion.setOculto(posicion, oculto);
     }
 
+    public void setHaygrupo(boolean haygrupo) {
+        this.haygrupo = haygrupo;
+    }
+
     public void setTipoCont(int tipo) {
         if (tipo == PRADERA) {
             recurso = null;
@@ -111,7 +115,7 @@ public class Celda {
             recurso = null;
             this.edificio = edificio;
         } else {
-            System.out.println("Error:edificio es nulo");
+            this.edificio =null;
         }
     }
 

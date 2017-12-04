@@ -29,6 +29,7 @@ public class Loader {
 
     public Loader(Mapa mapa, String dir) throws FileNotFoundException {
         this.mapa = mapa;
+        this.mapa.clear();
         String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
         File files[] = new File[3];
         for (int i = 0; i < 3; i++) {
@@ -49,21 +50,33 @@ public class Loader {
             File files[] = new File[3];
             for (int i = 0; i < 3; i++) {
                 files[i] = new File(dir + File.separator + aLeer[i] + ".csv");
-                if (!files[i].exists() || !files[i].canWrite()) {
-                    throw new FileNotFoundException("No directorio especificado non están todos os arquivos");
+                files[i].createNewFile();
+                if (!files[i].canWrite()) {
+                    throw new FileNotFoundException("No se puede guardar " + files[i].getPath());
                 }
             }
-            ArrayList<String> lineas = new ArrayList<>();
+            ArrayList<String> lineas = new ArrayList<>(), edificios = new ArrayList<>();
             for (Celda celda : mapa.getCeldas()) {
-                lineas.add(celda.getPosicion().getY() + "," + celda.getPosicion().getX() + ";" + celda.leerTipoCont() + ";" + celda.getContenedorRec() == null ? "" : (celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getCantidad()));
+                String a;
+                if (celda.getContenedorRec() == null) {
+                    a = "";
+                } else {
+                    a = celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getCantidad();
+                }
+                lineas.add(celda.getPosicion().getY() + "," + celda.getPosicion().getX() + ";" + celda.leerTipoCont() + ";" + a);
             }
             Files.write(files[0].toPath(), lineas);
             lineas.clear();
             for (Civilizacion civ : mapa.getCivilizaciones().values()) {
                 for (Personaje p : civ.getPersonajes().values()) {
-                    lineas.add(p.getPosicion().getY() + "," + p.getPosicion().getX() + ";" + p.leerTipo() + ";" + p.getAtaque() + ";" + p.getDefensa() + ";" + p.getSalud() + ";" + p.getCapRec() + ";");
+                    lineas.add(p.getPosicion().getY() + "," + p.getPosicion().getX() + ";" + p.leerTipo() + ";" + p.getNombre() + ";" + p.getAtaque() + ";" + p.getDefensa() + ";" + p.getSalud() + ";" + p.getCapRec() + ";" + p.leerGrupo() + ";" + p.getCivilizacion().getNombre());
+                }
+                for (Edificio e : civ.getEdificios().values()) {
+                    edificios.add(e.getPosicion().getY() + "," + e.getPosicion().getX() + ";" + e.leerTipo() + ";" + e.getNombre() + ";" + e.getCivilizacion().getNombre());
                 }
             }
+            Files.write(files[1].toPath(), lineas);
+            Files.write(files[2].toPath(), edificios);
         } catch (IOException ex) {
             Logger.getLogger(Loader.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -78,21 +91,19 @@ public class Loader {
                 if ("pradera".toLowerCase().equals(linea[1])) {
                     mapa.getCelda(pos).setTipoCont(Celda.PRADERA);
                 }
-            } else if (linea.length == 5) {
+            } else {
                 switch (linea[1].toLowerCase()) {
                     case "bosque":
-                        crearRecurso(pos, ContenedorRecurso.BOSQUE, linea[2], Integer.parseInt(linea[4]));
+                        crearRecurso(pos, ContenedorRecurso.BOSQUE, linea[2], Integer.parseInt(linea[3]));
                         break;
                     case "arbusto":
-                        crearRecurso(pos, ContenedorRecurso.ARBUSTO, linea[2], Integer.parseInt(linea[4]));
+                        crearRecurso(pos, ContenedorRecurso.ARBUSTO, linea[2], Integer.parseInt(linea[3]));
                         break;
                     case "cantera":
-                        crearRecurso(pos, ContenedorRecurso.CANTERA, linea[2], Integer.parseInt(linea[4]));
+                        crearRecurso(pos, ContenedorRecurso.CANTERA, linea[2], Integer.parseInt(linea[3]));
                         break;
-
                 }
             }
-
         }
     }
 
@@ -100,17 +111,16 @@ public class Loader {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
-            if (linea.length == 10) {
-                switch (linea[1]) {
-                    case "Paisano":
-                        crearPersonaje(pos, Personaje.PAISANO, linea[3], linea[9], Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), Integer.parseInt(linea[7]), linea[8]);
-                        break;
-                    case "Soldado":
-                        crearPersonaje(pos, Personaje.SOLDADO, linea[3], linea[9], Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), Integer.parseInt(linea[7]), linea[8]);
-                        break;
-                }
-            }
 
+            switch (linea[1].toLowerCase()) {
+                case "paisano":
+                    crearPersonaje(pos, Personaje.PAISANO, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
+                    break;
+                case "soldado":
+                    crearPersonaje(pos, Personaje.SOLDADO, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
+                    break;
+            }
+            
         }
     }
 
@@ -118,16 +128,19 @@ public class Loader {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
-            if (linea.length == 5) {
+            if (linea.length == 4) {
                 if (mapa.getCelda(pos).getEdificio() != null) {
                     System.out.println("Sobreescribiendo edificio: " + mapa.getCelda(pos).getEdificio().getNombre());
                 }
-                switch (linea[1]) {
-                    case "Casa":
-                        crearEdificio(pos, Edificio.CASA, linea[2], linea[4]);
+                switch (linea[1].toLowerCase()) {
+                    case "casa":
+                        crearEdificio(pos, Edificio.CASA, linea[2], linea[3]);
                         break;
-                    case "Cuartel":
-                        crearEdificio(pos, Edificio.CUARTEL, linea[2], linea[4]);
+                    case "cuartel":
+                        crearEdificio(pos, Edificio.CUARTEL, linea[2], linea[3]);
+                        break;
+                    case "ciudadela":
+                        crearEdificio(pos, Edificio.CIUDADELA, linea[2], linea[3]);
                         break;
                 }
             }
@@ -143,9 +156,10 @@ public class Loader {
         Edificio edificio = new Edificio(tipo, pos, nombre, current);
         mapa.getCelda(pos).setEdificio(edificio);
         current.getEdificios().put(nombre, edificio);
+        current.makeAdyVisible(pos);
     }
 
-    private void crearPersonaje(Posicion pos, int tipo, String nombre, String civilizacion, int ataque, int defensa, int salud, int capacidad, String grupo) {
+    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
@@ -166,6 +180,7 @@ public class Loader {
             personaje.setGrupo(group);
         }
         current.getPersonajes().put(nombre, personaje);
+        current.makeAdyVisible(pos);
     }
 
     private void crearRecurso(Posicion pos, int tipo, String nombre, int cantidad) {

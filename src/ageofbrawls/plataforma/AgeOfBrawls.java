@@ -363,7 +363,7 @@ public class AgeOfBrawls {
                     }
                     activa.getGrupos().get(grupo3).desagrupar();
                     break;
-                    
+
                 case "defender":
                     if (comando.length != 3) {
                         System.out.println("Error de sintaxis.");
@@ -371,7 +371,7 @@ public class AgeOfBrawls {
                     }
                     String defensor = comando[1];
                     String direcc = comando[2];
-                     
+
                     if (activa.getPersonajes().containsKey(defensor)) {
                         Personaje personaje2 = activa.getPersonajes().get(defensor);
                         personaje2.defender(direcc);
@@ -382,7 +382,7 @@ public class AgeOfBrawls {
                         System.out.println("Error: sujeto a defender no encontrado.");
                     }
                     break;
-                    
+
                 case "cargar":
                     if (comando.length != 2) {
                         System.out.println("Error de sintaxis");
@@ -391,6 +391,23 @@ public class AgeOfBrawls {
 
                     try {
                         Loader loader = new Loader(mapa, ruta);
+                        activa= mapa.getCivilizaciones().get(mapa.getCivilizaciones().entrySet().toArray()[0]);
+                        mapa.imprimirCabecera();
+                        mapa.imprimir(activa);
+                        System.out.println("Archivos cargados.");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    break;
+                case "guardar":
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis");
+                    }
+                    ruta = comando[1];
+
+                    try {
+                        Loader loader = new Loader(mapa, ruta, true);
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
                     }

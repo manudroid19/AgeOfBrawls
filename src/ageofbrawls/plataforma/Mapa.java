@@ -153,7 +153,18 @@ public class Mapa {
             System.out.println(civ);
         }
     }
-
+    public void clear(){
+        this.civilizaciones.clear();
+        for(ArrayList<Celda> ar : mapa){
+            for(Celda celda : ar){
+                celda.setTipoCont(Celda.PRADERA);
+                celda.setEdificio(null);
+                celda.getGrupos().clear();
+                celda.getPersonajes().clear();
+                celda.setHaygrupo(false);
+            }
+        }
+    }
     private void makeBloqueRec(int i, int j) {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
         ArrayList<Integer> bloque = new ArrayList<>(4);
         for (int k = 0; k < 4; k++) {

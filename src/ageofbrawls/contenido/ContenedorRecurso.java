@@ -42,6 +42,7 @@ public class ContenedorRecurso {
     
 
     public String getNombre() {
+        if(nombre==null) return "";
         return nombre;
     }
 

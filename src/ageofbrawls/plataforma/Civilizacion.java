@@ -145,7 +145,7 @@ public class Civilizacion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Celda c = mapa.getCelda(h, k);
-                if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                if (c != null && c.isOculto(this) && (h == i || j == k || h==k ||(c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(this, false);
                     if (c.getContenedorRec() != null) {
                         c.getContenedorRec().setNombre(c.getContenedorRec() + Integer.toString(getContador(c.getContenedorRec().getTipo())));
