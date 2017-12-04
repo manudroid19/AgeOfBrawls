@@ -149,6 +149,22 @@ public class Personaje {
             System.out.println("Error: posicion introducida errónea");
         }
     }
+    
+    public void setSalud(int cant, boolean relative) {
+        if (relative) {
+            if (salud + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            salud += cant;
+        } else {
+            if (salud + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            salud = cant;
+        }
+    }
 
     public void describirPersonaje() {
         if (tipo == Personaje.SOLDADO) {
@@ -506,6 +522,8 @@ public class Personaje {
             return;
         }
         int PuntosAQuitar = this.getAtaque();
+        
+         
 
         ArrayList<Personaje> pers = new ArrayList<>();
         if (!civilizacion.getMapa().getCelda(pos).getGrupos().isEmpty()) {
@@ -523,6 +541,7 @@ public class Personaje {
                 pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
             }
         }
+        System.out.println("Has inflingido " +PuntosAQuitar+ " a los miembros de la civilización (" +pers.get(0).getCivilizacion()+ ").");
         int PuntosAQuitarACadaUno;
         if (pers.isEmpty()) {
             PuntosAQuitarACadaUno = 0;
@@ -547,6 +566,8 @@ public class Personaje {
         }
 
         if (PuntosAQuitarACadaUno==0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
+            System.out.println("Has inflingido " +PuntosAQuitar+ " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre()+ " de la civilizacion (" +civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()+ ").");
+            civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
             
         }
 
