@@ -9,6 +9,7 @@ import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -362,9 +363,11 @@ public class Grupo {
 
         if (mapa.getCelda(pos).getEdificio() == null || mapa.getCelda(pos).getEdificio().getTipo() != Edificio.CIUDADELA) {
             System.out.println("No se puede almacenar recursos en esa celda");
+            return;
         }
         if (this.getCantRecTotal() <= 0) {
             System.out.println("El grupo no transporta recursos");
+            return;
         }
         if (this.cantRecMadera > 0) {
             civilizacion.setMadera(this.cantRecMadera, true);
@@ -486,9 +489,8 @@ public class Grupo {
         }
 
         civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
-
+        this.posicion=pos;
         civilizacion.getMapa().getCelda(pos).addGrupo(this);
-
         civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getDefensa(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
@@ -584,4 +586,74 @@ public class Grupo {
             civilizacion.getGrupos().remove(this.nombre);
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.personajes);
+        hash = 97 * hash + this.salud;
+        hash = 97 * hash + this.defensa;
+        hash = 97 * hash + this.ataque;
+        hash = 97 * hash + this.capRec;
+        hash = 97 * hash + this.cantRecMadera;
+        hash = 97 * hash + this.cantRecPiedra;
+        hash = 97 * hash + this.cantRecComida;
+        hash = 97 * hash + Objects.hashCode(this.posicion);
+        hash = 97 * hash + Objects.hashCode(this.civilizacion);
+        hash = 97 * hash + Objects.hashCode(this.nombre);
+        hash = 97 * hash + (this.haySoldado ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Grupo other = (Grupo) obj;
+        if (this.salud != other.salud) {
+            return false;
+        }
+        if (this.defensa != other.defensa) {
+            return false;
+        }
+        if (this.ataque != other.ataque) {
+            return false;
+        }
+        if (this.capRec != other.capRec) {
+            return false;
+        }
+        if (this.cantRecMadera != other.cantRecMadera) {
+            return false;
+        }
+        if (this.cantRecPiedra != other.cantRecPiedra) {
+            return false;
+        }
+        if (this.cantRecComida != other.cantRecComida) {
+            return false;
+        }
+        if (this.haySoldado != other.haySoldado) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.personajes, other.personajes)) {
+            return false;
+        }
+        if (!Objects.equals(this.posicion, other.posicion)) {
+            return false;
+        }
+        if (!Objects.equals(this.civilizacion, other.civilizacion)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

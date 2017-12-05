@@ -324,7 +324,7 @@ public class Personaje {
             System.out.println("El personaje no transporta recursos");
             return;
         }
-        if(!civilizacion.puedeAlmacenar(cantRecComida+cantRecMadera+cantRecPiedra)){
+        if (!civilizacion.puedeAlmacenar(cantRecComida + cantRecMadera + cantRecPiedra)) {
             System.out.println("No hay espacio suficiente en la ciudadela.");
             return;
         }
@@ -585,9 +585,9 @@ public class Personaje {
             if (atacado.salud <= 0) {
                 if (atacado.grupo != null) {
                     atacado.grupo.desligar(atacado);
-                    atacado.grupo.setCantRecComida(atacado.grupo.getCantRecComida()-cantRecComida);
-                    atacado.grupo.setCantRecPiedra(atacado.grupo.getCantRecPiedra()-cantRecPiedra);
-                    atacado.grupo.setCantRecMadera(atacado.grupo.getCantRecMadera()-cantRecMadera);
+                    atacado.grupo.setCantRecComida(atacado.grupo.getCantRecComida() - cantRecComida);
+                    atacado.grupo.setCantRecPiedra(atacado.grupo.getCantRecPiedra() - cantRecPiedra);
+                    atacado.grupo.setCantRecMadera(atacado.grupo.getCantRecMadera() - cantRecMadera);
                 }
                 civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
                 civilizacion.getPersonajes().remove(atacado.getNombre());
@@ -601,9 +601,9 @@ public class Personaje {
         }
 
         if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
             System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
-            
+            civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
+
         }
 
     }
@@ -655,10 +655,10 @@ public class Personaje {
         if (this.cantRecMadera != other.cantRecMadera) {
             return false;
         }
-        if (this.cantRecComida != other.cantRecComida) {
+        if (this.cantRecPiedra != other.cantRecPiedra) {
             return false;
         }
-        if (this.cantRecPiedra != other.cantRecPiedra) {
+        if (this.cantRecComida != other.cantRecComida) {
             return false;
         }
         if (this.muerto != other.muerto) {
@@ -670,6 +670,13 @@ public class Personaje {
         if (!Objects.equals(this.posicion, other.posicion)) {
             return false;
         }
+        if (!Objects.equals(this.civilizacion, other.civilizacion)) {
+            return false;
+        }
+        if (!Objects.equals(this.grupo, other.grupo)) {
+            return false;
+        }
         return true;
     }
+
 }

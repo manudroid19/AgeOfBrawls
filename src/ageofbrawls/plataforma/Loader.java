@@ -157,6 +157,9 @@ public class Loader {
         mapa.getCelda(pos).setEdificio(edificio);
         current.getEdificios().put(nombre, edificio);
         current.makeAdyVisible(pos);
+        if(edificio.getTipo()==Edificio.CIUDADELA){
+            current.anadirCiudadela();
+        }
     }
 
     private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) {
