@@ -460,8 +460,13 @@ public class Grupo {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
+        if(this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
+            System.out.println("El grupo no puede entrar en el edificio de la otra civilización");
+            return;
+        }
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() < this.getPersonajes().size()) {
             System.out.println("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
+            return;
         }
 
         civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
@@ -540,7 +545,7 @@ public class Grupo {
         }
 
         if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion() + ").");
+            System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
             civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
         }
 

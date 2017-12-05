@@ -307,6 +307,8 @@ public class Edificio {
                 if(tipo==CIUDADELA){
                     civilizacion.quitarCiudadela();
                 }
+                civilizacion.getEdificios().remove(this.getNombre());
+                civilizacion.getMapa().getCelda(this.posicion).setEdificio(null);
                 civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
                 System.out.println();
                 civilizacion.getMapa().imprimirCabecera();

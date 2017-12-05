@@ -332,7 +332,7 @@ public class AgeOfBrawls {
                     }
                     String desligado = comando[1];
                     String grupo = comando[2];
-                    int j = 0;
+                    
                     if (desligado == null || grupo == null) {
                         break;
                     }
@@ -398,7 +398,7 @@ public class AgeOfBrawls {
                         Grupo grupo1 = activa.getGrupos().get(atacante);
                         grupo1.atacar(dire);
                     } else {
-                        System.out.println("Error: sujeto a defender no encontrado.");
+                        System.out.println("Error: sujeto a atacar no encontrado.");
                     }
                     
                     break;
