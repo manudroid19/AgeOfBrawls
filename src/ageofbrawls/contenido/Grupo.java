@@ -252,6 +252,10 @@ public class Grupo {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
+        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+            System.out.println("El grupo está en un edificio y por tanto no puede recolectar");
+            return;
+        }
 
         if (this.getCantRecTotal() == this.capRec) {
             System.out.println(this.getNombre() + " no puede recolectar más");
@@ -339,16 +343,20 @@ public class Grupo {
 
     public void almacenar(Mapa mapa, String direccion) {
         if (mapa == null || direccion == null) {
-            System.out.println("Error en almcenar.");
+            System.out.println("Error en almacenar.");
             return;
         }
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
             return;
         }
 
         Posicion pos = posicion.getAdy(direccion);
         if (pos.equals(posicion)) { //error con la posicion
+            return;
+        }
+        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+            System.out.println("El grupo está en un edificio y por tanto no puede almacenar");
             return;
         }
 
@@ -382,13 +390,17 @@ public class Grupo {
         }
 
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            System.out.println("Como hay un soldado en el grupo, este grupo no puede construir");
             return;
         }
 
         Posicion posConstruir = posicion.getAdy(dir);
         if (posConstruir.equals(posicion) || !civilizacion.getMapa().perteneceAMapa(posConstruir) || !civilizacion.getMapa().getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
             System.out.println("Error: No se puede contruir en la celda de destino.");
+            return;
+        }
+        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+            System.out.println("El grupo está en un edificio y por tanto no puede construir");
             return;
         }
         switch (tipoC) {
@@ -437,6 +449,10 @@ public class Grupo {
 
         if (this.haySoldado) {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            return;
+        }
+        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+            System.out.println("El personaje está en un edificio y por tanto no puede recolectar");
             return;
         }
 

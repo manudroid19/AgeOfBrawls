@@ -227,7 +227,7 @@ public class Personaje {
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
             civilizacion.getMapa().imprimir(civilizacion);
-            
+
         } else {
             System.out.println("Error: No te puedes mover a esa celda.");
         }
@@ -242,15 +242,19 @@ public class Personaje {
             System.out.println("Error en recolectar.");
             return;
         }
-        for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
-            if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
-                System.out.println("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
-                return;
-            }
+
+        if (this.grupo != null) {
+            System.out.println("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
+            return;
         }
+
         Posicion pos = posicion.getAdy(direccion);
         ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
+            return;
+        }
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
+            System.out.println("El personaje está en un edificio y por tanto no puede recolectar");
             return;
         }
         if (this.tipo != Personaje.PAISANO) {
@@ -304,6 +308,10 @@ public class Personaje {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
+            System.out.println("El personaje está en un edificio y por tanto no puede almacenar recursos");
+            return;
+        }
         if (this.tipo != Personaje.PAISANO) {
             System.out.println("Un soldado no puede recolectar");
             return;
@@ -342,12 +350,15 @@ public class Personaje {
             System.out.println("Error en consEdif.");
             return;
         }
-        for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
-            if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
-                System.out.println("El personaje no puede moverse por si solo ya que pertenece a un grupo");
-                return;
-            }
+        if (this.grupo != null) {
+            System.out.println("El personaje no puede moverse por si solo ya que pertenece a un grupo");
+            return;
         }
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
+            System.out.println("El personaje está en un edificio y por tanto no puede construir");
+            return;
+        }
+
         if (tipo == Personaje.PAISANO) {
             Posicion posConstruir = posicion.getAdy(dir);
             if (posConstruir.equals(posicion) || !civilizacion.getMapa().perteneceAMapa(posConstruir) || !civilizacion.getMapa().getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
@@ -419,16 +430,16 @@ public class Personaje {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-        if(this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
+        if (this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
             System.out.println("El personaje no puede entrar en el edificio de la otra civilización");
             return;
         }
-        
-            if (this.grupo !=null) {
-                System.out.println("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
-                return;
-            }
-        
+
+        if (this.grupo != null) {
+            System.out.println("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
+            return;
+        }
+
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() == 0) {
             System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
             return;
@@ -452,11 +463,11 @@ public class Personaje {
             System.out.println("Nada que reparar.");
             return;
         }
-        for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
-            if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
-                System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
-                return;
-            }
+
+        if (this.grupo != null) {
+            System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
+            return;
+
         }
         if (tipo == Personaje.PAISANO) {
 
