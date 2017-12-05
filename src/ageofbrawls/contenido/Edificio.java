@@ -125,18 +125,6 @@ public class Edificio {
         return nombre;
     }
 
-    public int getMadera() {
-        return civilizacion.getMadera();
-    }
-
-    public int getPiedra() {
-        return civilizacion.getPiedra();
-    }
-
-    public int getAlimentos() {
-        return civilizacion.getAlimentos();
-    }
-
     public int getMaxVida() {
         switch (tipo) {
             case Edificio.CASA:
@@ -218,7 +206,7 @@ public class Edificio {
             return;
         }
         if (tipo == Edificio.CIUDADELA) {
-            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < 50) {
+            if (civilizacion.getAlimentos() < 50) {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
@@ -242,7 +230,7 @@ public class Edificio {
             System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
 
         } else if (tipo == Edificio.CUARTEL) {
-            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < 100) {
+            if (civilizacion.getAlimentos() < 100) {
                 System.out.println("Error: no hay suficiente alimento disponible.");
                 return;
             }
