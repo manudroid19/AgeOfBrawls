@@ -185,9 +185,6 @@ public class Edificio {
         }
     }
 
-    
-
-    
     public void setTipo(int tipo) {
         if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
@@ -290,15 +287,15 @@ public class Edificio {
             } else {
                 ps = 0;
                 destruido = true;
-                System.out.println("El edificio " + this.getNombre() + " ha sido destruido");
-                civilizacion.getEdificios().remove(this.getNombre());
-                if(tipo==CIUDADELA){
-                    civilizacion.quitarCiudadela();
-                }
                 civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
-                System.out.println();
+                civilizacion.getEdificios().remove(this.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
+                System.out.println("El edificio " + this.getNombre() + " ha sido destruido");
+                if (tipo == CIUDADELA) {
+                    civilizacion.quitarCiudadela();
+                }
+
             }
         } else {
             System.out.println("Error dañando edificio.");
