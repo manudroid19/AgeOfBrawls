@@ -189,8 +189,8 @@ public class Grupo {
         System.out.println("Nombre del grupo: " + nombre);
         System.out.println("Civilizacion: " + civilizacion.getNombre());
         System.out.println("Armadura :" + defensa);
-        if(this.haySoldado){
-        System.out.println("Ataque :" + ataque);
+        if (this.haySoldado) {
+            System.out.println("Ataque :" + ataque);
         }
         if (!this.haySoldado) {
             System.out.println("Capacidad de recoleccion del grupo:" + capRec);
@@ -252,7 +252,7 @@ public class Grupo {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
-        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             System.out.println("El grupo está en un edificio y por tanto no puede recolectar");
             return;
         }
@@ -282,7 +282,7 @@ public class Grupo {
                         return;
                     }
                     this.getPersonajes().get(i);
-                    
+
                     if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
@@ -303,7 +303,7 @@ public class Grupo {
                     if (recolectando == 0) {
                         return;
                     }
-                   
+
                     if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
@@ -324,7 +324,7 @@ public class Grupo {
                     if (recolectando == 0) {
                         return;
                     }
-                    
+
                     if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
@@ -355,7 +355,7 @@ public class Grupo {
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
-        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             System.out.println("El grupo está en un edificio y por tanto no puede almacenar");
             return;
         }
@@ -399,7 +399,7 @@ public class Grupo {
             System.out.println("Error: No se puede contruir en la celda de destino.");
             return;
         }
-        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             System.out.println("El grupo está en un edificio y por tanto no puede construir");
             return;
         }
@@ -451,7 +451,7 @@ public class Grupo {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
             return;
         }
-        if(civilizacion.getMapa().getCelda(posicion).getEdificio()!= null){
+        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             System.out.println("El personaje está en un edificio y por tanto no puede recolectar");
             return;
         }
@@ -476,7 +476,7 @@ public class Grupo {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-        if(this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
+        if (this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
             System.out.println("El grupo no puede entrar en el edificio de la otra civilización");
             return;
         }
@@ -557,6 +557,9 @@ public class Grupo {
                 }
                 civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
                 civilizacion.getPersonajes().remove(atacado.getNombre());
+                atacado.getGrupo().setCantRecComida(atacado.getGrupo().getCantRecComida() - cantRecComida);
+                atacado.getGrupo().setCantRecPiedra(atacado.getGrupo().getCantRecPiedra() - cantRecPiedra);
+                atacado.getGrupo().setCantRecMadera(atacado.getGrupo().getCantRecMadera() - cantRecMadera);
             }
         }
 

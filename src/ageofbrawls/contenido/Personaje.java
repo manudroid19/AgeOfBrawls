@@ -585,6 +585,9 @@ public class Personaje {
             if (atacado.salud <= 0) {
                 if (atacado.grupo != null) {
                     atacado.grupo.desligar(atacado);
+                    atacado.grupo.setCantRecComida(atacado.grupo.getCantRecComida()-cantRecComida);
+                    atacado.grupo.setCantRecPiedra(atacado.grupo.getCantRecPiedra()-cantRecPiedra);
+                    atacado.grupo.setCantRecMadera(atacado.grupo.getCantRecMadera()-cantRecMadera);
                 }
                 civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
                 civilizacion.getPersonajes().remove(atacado.getNombre());
