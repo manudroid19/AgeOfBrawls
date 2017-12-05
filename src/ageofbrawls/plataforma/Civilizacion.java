@@ -239,6 +239,7 @@ public void setAlimentos(int cant, boolean relative) {
         contCiudadelas--;
         if(contCiudadelas==0){
             System.out.println("La última ciudadela de "+nombre+ " ha sido destruida. Game Over.");
+            System.exit(0);
         }
     }
     public int contarEdificios(int tipo) {

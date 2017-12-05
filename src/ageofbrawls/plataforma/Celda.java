@@ -201,6 +201,12 @@ public class Celda {
         for (int i = 0; i < this.getPersonajes().size(); i++) {
             pers.add(this.getPersonajes().get(i));
         }
+        for(int i=1;i<pers.size();i++){
+            if(!pers.get(i).getCivilizacion().equals(pers.get(i-1).getCivilizacion())){
+                System.out.println("No puedes agrupar personajes de distintas civilizaciones!");
+                return;
+            }
+        }
         int k = 1;
         String nombreGrupo = "grupo1";
         while (civilizacion.getGrupos().containsKey(nombreGrupo)) {

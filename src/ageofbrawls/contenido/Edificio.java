@@ -6,7 +6,6 @@
 package ageofbrawls.contenido;
 
 import ageofbrawls.plataforma.Civilizacion;
-import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 
 /**
@@ -288,6 +287,7 @@ public class Edificio {
                 ps = 0;
                 destruido = true;
                 civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
+                civilizacion.getMapa().getCelda(posicion).setEdificio(null);
                 civilizacion.getEdificios().remove(this.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
