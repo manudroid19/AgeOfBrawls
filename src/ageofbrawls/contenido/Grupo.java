@@ -277,14 +277,15 @@ public class Grupo {
                     if (recolectando == 0) {
                         return;
                     }
-                    Personaje pers1 = new Personaje(this.getPersonajes().get(i).getTipo(), this.getPersonajes().get(i).getPosicion(), this.getPersonajes().get(i).getNombre(), this.getPersonajes().get(i).getCivilizacion());
-                    if (pers1.getTipo() == Personaje.PAISANO) {
-                        int recolect = (pers1.getCapRec() - pers1.getCantRecTotal());
+                    this.getPersonajes().get(i);
+                    
+                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                        int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            pers1.setCantRecMadera(pers1.getCantRecMadera() + recolect);
+                            this.getPersonajes().get(i).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            pers1.setCantRecMadera(pers1.getCantRecMadera() + recolectando);
+                            this.getPersonajes().get(i).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolectando);
                             recolectando = 0;
                         }
 
@@ -298,14 +299,14 @@ public class Grupo {
                     if (recolectando == 0) {
                         return;
                     }
-                    Personaje pers1 = new Personaje(this.getPersonajes().get(i).getTipo(), this.getPersonajes().get(i).getPosicion(), this.getPersonajes().get(i).getNombre(), this.getPersonajes().get(i).getCivilizacion());
-                    if (pers1.getTipo() == Personaje.PAISANO) {
-                        int recolect = (pers1.getCapRec() - pers1.getCantRecTotal());
+                   
+                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                        int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            pers1.setCantRecComida(pers1.getCantRecComida() + recolect);
+                            this.getPersonajes().get(i).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            pers1.setCantRecComida(pers1.getCantRecComida() + recolectando);
+                            this.getPersonajes().get(i).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolectando);
                             recolectando = 0;
                         }
 
@@ -319,14 +320,14 @@ public class Grupo {
                     if (recolectando == 0) {
                         return;
                     }
-                    Personaje pers1 = new Personaje(this.getPersonajes().get(i).getTipo(), this.getPersonajes().get(i).getPosicion(), this.getPersonajes().get(i).getNombre(), this.getPersonajes().get(i).getCivilizacion());
-                    if (pers1.getTipo() == Personaje.PAISANO) {
-                        int recolect = (pers1.getCapRec() - pers1.getCantRecTotal());
+                    
+                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                        int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            pers1.setCantRecPiedra(pers1.getCantRecPiedra() + recolect);
+                            this.getPersonajes().get(i).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            pers1.setCantRecPiedra(pers1.getCantRecPiedra() + recolectando);
+                            this.getPersonajes().get(i).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolectando);
                             recolectando = 0;
                         }
 
