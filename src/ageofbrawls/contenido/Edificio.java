@@ -18,7 +18,6 @@ public class Edificio {
     public final static int CIUDADELA = 1;
     public final static int CUARTEL = 2;
     public final static int CASA = 3;
-    public final static int CAPALMACEN = 100000;
     public final static int CAPALOJ = 10;
     private Posicion posicion;
     private Civilizacion civilizacion;
@@ -27,11 +26,9 @@ public class Edificio {
     private int capAloj;
     private int ataque;
     private int defensa;
-    private int capAlmacen;
     private int ps;
     private boolean destruido;
     private String nombre;
-    private int madera, piedra, alimentos;
 
     public Edificio(int tipo, Posicion posicion, String nombre, Civilizacion civilizacion) {
         if (tipo > 0 && tipo < 4 && nombre != null && civilizacion != null) {
@@ -59,13 +56,9 @@ public class Edificio {
                     break;
                 case Edificio.CIUDADELA:
                     this.ps = 1000;
-                    this.capAlmacen = Edificio.CAPALMACEN;
                     this.capAloj = 10;
                     this.ataque = 0;
                     this.defensa = 0;
-                    madera = 500;
-                    piedra = 500;
-                    alimentos = 500;
                     break;
             }
         } else {
@@ -83,10 +76,6 @@ public class Edificio {
             }
             this.nombre = nombre;
             this.ps = 1000;
-            this.capAlmacen = Edificio.CAPALMACEN;
-            madera = 500;
-            piedra = 500;
-            alimentos = 500;
         } else {
             System.out.println("Error seteando tipo");
         }
@@ -125,7 +114,7 @@ public class Edificio {
     }
 
     public int getCapAlmacen() {
-        return capAlmacen;
+        return civilizacion.getCapAlmacen();
     }
 
     public boolean estaDestruido() {
@@ -137,15 +126,15 @@ public class Edificio {
     }
 
     public int getMadera() {
-        return this.madera;
+        return civilizacion.getMadera();
     }
 
     public int getPiedra() {
-        return this.piedra;
+        return civilizacion.getPiedra();
     }
 
     public int getAlimentos() {
-        return this.alimentos;
+        return civilizacion.getAlimentos();
     }
 
     public int getMaxVida() {
@@ -208,54 +197,9 @@ public class Edificio {
         }
     }
 
-    public void setPiedra(int cant, boolean relative) {
-        if (relative) {
-            if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            piedra += cant;
-        } else {
-            if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            piedra = cant;
-        }
-    }
+    
 
-    public void setAlimentos(int cant, boolean relative) {
-        if (relative) {
-            if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            alimentos += cant;
-        } else {
-            if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            alimentos = cant;
-        }
-    }
-
-    public void setMadera(int cant, boolean relative) {
-        if (relative) {
-            if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            madera += cant;
-        } else {
-            if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            madera = cant;
-        }
-    }
-
+    
     public void setTipo(int tipo) {
         if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
@@ -288,7 +232,7 @@ public class Edificio {
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
             civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
-            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-50, true);
+            civilizacion.setAlimentos(-50, true);
             civilizacion.makeAdyVisible(pos);
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
@@ -312,7 +256,7 @@ public class Edificio {
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
             civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
-            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-100, true);
+            civilizacion.setAlimentos(-100, true);
             civilizacion.makeAdyVisible(pos);
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
@@ -345,7 +289,7 @@ public class Edificio {
         System.out.println("Capacidad de ataque: " + ataque);
         System.out.println("Capacidad de defensa: " + defensa);
         if (tipo == Edificio.CIUDADELA) {
-            System.out.println("Recursos: " + madera + " de madera, " + piedra + " de piedra y " + alimentos + " de alimentos");
+            System.out.println("Recursos: " + civilizacion.getMadera() + " de madera, " + civilizacion.getPiedra() + " de piedra y " + civilizacion.getAlimentos() + " de alimentos");
         }
         System.out.println("Nombre: " + nombre);
         System.out.println("Civilizacion: " + civilizacion.getNombre());
@@ -360,6 +304,9 @@ public class Edificio {
                 destruido = true;
                 System.out.println("El edificio " + this.getNombre() + " ha sido destruido");
                 civilizacion.getEdificios().remove(this.getNombre());
+                if(tipo==CIUDADELA){
+                    civilizacion.quitarCiudadela();
+                }
                 civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
                 System.out.println();
                 civilizacion.getMapa().imprimirCabecera();

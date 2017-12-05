@@ -30,6 +30,9 @@ public class Civilizacion {
     private String nombre;
     private Mapa mapa;
     private int bosques = 1, arbustos = 1, canteras = 1; //contadores
+    private int madera, piedra, alimentos;
+    private int capAlmacen, contCiudadelas=0;
+    public final static int CAPALMACEN = 100000;
 
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
         edificios = new HashMap<>();
@@ -37,6 +40,10 @@ public class Civilizacion {
         recursosVisibles = new HashMap<>();
         grupos = new HashMap<>();
         oculto = new ArrayList<>();
+        this.capAlmacen = CAPALMACEN;
+        madera = 500;
+        piedra = 500;
+        alimentos = 500;
         for (int i = 0; i < mapa.getFilas(); i++) {
             ArrayList<Boolean> fila = new ArrayList<>();
             for (int j = 0; j < mapa.getColumnas(); j++) {
@@ -51,6 +58,7 @@ public class Civilizacion {
             mapa.makeAdyPrad(posCiudadela);
             String nomCiud = "ciudadela1";
             Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud, this);
+            anadirCiudadela();
             mapa.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nomCiud, ciud);
             Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
@@ -75,6 +83,20 @@ public class Civilizacion {
 
     public Mapa getMapa() {
         return mapa;
+    }
+    public int getCapAlmacen() {
+        return capAlmacen;
+    }
+    public int getMadera() {
+        return this.madera;
+    }
+
+    public int getPiedra() {
+        return this.piedra;
+    }
+
+    public int getAlimentos() {
+        return this.alimentos;
     }
 
     public String getNombre() {
@@ -108,7 +130,52 @@ public class Civilizacion {
         }
         return oculto.get(posicion.getY()).get(posicion.getX());
     }
+public void setPiedra(int cant, boolean relative) {
+        if (relative) {
+            if (piedra + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            piedra += cant;
+        } else {
+            if (piedra + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            piedra = cant;
+        }
+    }
+public void setAlimentos(int cant, boolean relative) {
+        if (relative) {
+            if (alimentos + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            alimentos += cant;
+        } else {
+            if (alimentos + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            alimentos = cant;
+        }
+    }
 
+    public void setMadera(int cant, boolean relative) {
+        if (relative) {
+            if (madera + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            madera += cant;
+        } else {
+            if (madera + cant < 0) {
+                System.out.println("error, seteo incorrecto");
+                return;
+            }
+            madera = cant;
+        }
+    }
     public void setOculto(Posicion pos, boolean oculto) {
         ArrayList fila = this.oculto.get(pos.getY());
         fila.set(pos.getX(), oculto);
@@ -146,13 +213,14 @@ public class Civilizacion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Celda c = mapa.getCelda(h, k);
-                if (c != null && c.isOculto(this) && (h == i || j == k  || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
                     c.setOculto(this, false);
                     if (c.getContenedorRec() != null) {
                         if (c.getContenedorRec().getNombre() == null || "".equals(c.getContenedorRec().getNombre())) {
                             int n = getContador(c.getContenedorRec().getTipo());
-                            while (recursosVisibles.containsKey(c.getContenedorRec().toString() + n))
-                                n=getContador(c.getContenedorRec().getTipo());
+                            while (recursosVisibles.containsKey(c.getContenedorRec().toString() + n)) {
+                                n = getContador(c.getContenedorRec().getTipo());
+                            }
                             c.getContenedorRec().setNombre(c.getContenedorRec().toString() + n);
                         }
                         recursosVisibles.put(c.getContenedorRec().getNombre(), c.getContenedorRec());
@@ -161,7 +229,12 @@ public class Civilizacion {
             }
         }
     }
-
+    public void anadirCiudadela(){
+        contCiudadelas++;
+    }
+    public void quitarCiudadela(){
+        contCiudadelas--;
+    }
     public int contarEdificios(int tipo) {
         int n = 0;
         if (tipo > 0 && tipo < 4) {

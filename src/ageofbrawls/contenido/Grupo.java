@@ -358,17 +358,17 @@ public class Grupo {
             System.out.println("El grupo no transporta recursos");
         }
         if (this.cantRecMadera > 0) {
-            mapa.getCelda(pos).getEdificio().setMadera(this.cantRecMadera, true);
+            civilizacion.setMadera(this.cantRecMadera, true);
             System.out.println("Almacenadas " + this.cantRecMadera + " unidades de madera en la ciudadela");
             this.setCantRecMadera(0);
         }
         if (this.cantRecPiedra > 0) {
-            mapa.getCelda(pos).getEdificio().setPiedra(this.cantRecPiedra, true);
+            civilizacion.setPiedra(this.cantRecPiedra, true);
             System.out.println("Almacenadas " + this.cantRecPiedra + " unidades de piedra en la ciudadela");
             this.setCantRecPiedra(0);
         }
         if (this.cantRecComida > 0) {
-            mapa.getCelda(pos).getEdificio().setAlimentos(this.cantRecComida, true);
+            civilizacion.setAlimentos(this.cantRecComida, true);
             System.out.println("Almacenadas " + this.cantRecComida + " unidades de alimento en la ciudadela");
             this.setCantRecComida(0);
         }
@@ -392,12 +392,12 @@ public class Grupo {
         }
         switch (tipoC) {
             case "casa":
-                if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 100 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 100) {
-                    System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                if (civilizacion.getMadera() < 100 || civilizacion.getPiedra() < 100) {
+                    System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
                     return;
                 }
-                civilizacion.getEdificios().get("ciudadela1").setPiedra(-100, true);
-                civilizacion.getEdificios().get("ciudadela1").setMadera(-100, true);
+                civilizacion.setPiedra(-100, true);
+                civilizacion.setMadera(-100, true);
                 Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                 System.out.println();
@@ -408,12 +408,12 @@ public class Grupo {
                 System.out.println("Coste: 100 de madera, 100 de piedra.");
                 break;
             case "cuartel":
-                if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 200 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 200) {
-                    System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                if (civilizacion.getMadera() < 200 || civilizacion.getPiedra() < 200) {
+                    System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
                     return;
                 }
-                civilizacion.getEdificios().get("ciudadela1").setPiedra(-200, true);
-                civilizacion.getEdificios().get("ciudadela1").setMadera(-200, true);
+                civilizacion.setPiedra(-200, true);
+                civilizacion.setMadera(-200, true);
                 Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                 civilizacion.getEdificios().put(cuart.getNombre(), cuart);
@@ -442,12 +442,12 @@ public class Grupo {
         int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
         int costeMadera = (int) (puntosAReparar * 0.4);
         int costePiedra = (int) (puntosAReparar * 0.5);
-        if (civilizacion.getEdificios().get("ciudadela1").getMadera() < costeMadera || civilizacion.getEdificios().get("ciudadela1").getPiedra() < costePiedra) {
+        if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {
             System.out.println("No tienes suficientes recursos disponibles!");
             return;
         }
-        civilizacion.getEdificios().get("ciudadela1").setMadera(-costeMadera, true);
-        civilizacion.getEdificios().get("ciudadela1").setPiedra(-costePiedra, true);
+        civilizacion.setMadera(-costeMadera, true);
+        civilizacion.setPiedra(-costePiedra, true);
         civilizacion.getMapa().getCelda(pos).getEdificio().reparar();
         System.out.println("Reparación completada.");
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");

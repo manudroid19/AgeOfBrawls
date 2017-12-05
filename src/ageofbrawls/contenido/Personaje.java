@@ -315,17 +315,17 @@ public class Personaje {
             System.out.println("El personaje no transporta recursos");
         }
         if (this.cantRecMadera > 0) {
-            mapa.getCelda(pos).getEdificio().setMadera(this.cantRecMadera, true);
+            civilizacion.setMadera(this.cantRecMadera, true);
             System.out.println("Almacenadas " + this.cantRecMadera + " unidades de madera en la ciudadela");
             this.setCantRecMadera(0);
         }
         if (this.cantRecPiedra > 0) {
-            mapa.getCelda(pos).getEdificio().setPiedra(this.cantRecPiedra, true);
+            civilizacion.setPiedra(this.cantRecPiedra, true);
             System.out.println("Almacenadas " + this.cantRecPiedra + " unidades de piedra en la ciudadela");
             this.setCantRecPiedra(0);
         }
         if (this.cantRecComida > 0) {
-            mapa.getCelda(pos).getEdificio().setAlimentos(this.cantRecComida, true);
+            civilizacion.setAlimentos(this.cantRecComida, true);
             System.out.println("Almacenadas " + this.cantRecComida + " unidades de alimento en la ciudadela");
             this.setCantRecComida(0);
         }
@@ -350,12 +350,12 @@ public class Personaje {
             }
             switch (tipoC) {
                 case "casa":
-                    if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 100 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 100) {
-                        System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                    if (civilizacion.getMadera() < 100 || civilizacion.getPiedra() < 100) {
+                        System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
                         return;
                     }
-                    civilizacion.getEdificios().get("ciudadela1").setPiedra(-100, true);
-                    civilizacion.getEdificios().get("ciudadela1").setMadera(-100, true);
+                    civilizacion.setPiedra(-100, true);
+                    civilizacion.setMadera(-100, true);
                     Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
                     civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                     System.out.println();
@@ -366,12 +366,12 @@ public class Personaje {
                     System.out.println("Coste: 100 de madera, 100 de piedra.");
                     break;
                 case "cuartel":
-                    if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 200 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 200) {
-                        System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                    if (civilizacion.getMadera() < 200 || civilizacion.getPiedra() < 200) {
+                        System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
                         return;
                     }
-                    civilizacion.getEdificios().get("ciudadela1").setPiedra(-200, true);
-                    civilizacion.getEdificios().get("ciudadela1").setMadera(-200, true);
+                    civilizacion.setPiedra(-200, true);
+                    civilizacion.setMadera(-200, true);
                     Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
                     civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                     civilizacion.getEdificios().put(cuart.getNombre(), cuart);
@@ -382,13 +382,14 @@ public class Personaje {
                     System.out.println("Coste: 200 de madera, 200 de piedra.");
                     break;
                 case "ciudadela":
-                    if (civilizacion.getEdificios().get("ciudadela1").getMadera() < 500 || civilizacion.getEdificios().get("ciudadela1").getPiedra() < 500) {
-                        System.out.println("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getEdificios().get("ciudadela1").getMadera() + " y " + civilizacion.getEdificios().get("ciudadela1").getPiedra());
+                    if (civilizacion.getMadera() < 500 || civilizacion.getPiedra() < 500) {
+                        System.out.println("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
                         return;
                     }
-                    civilizacion.getEdificios().get("ciudadela1").setPiedra(-500, true);
-                    civilizacion.getEdificios().get("ciudadela1").setMadera(-500, true);
+                    civilizacion.setPiedra(-500, true);
+                    civilizacion.setMadera(-500, true);
                     Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1), this.civilizacion);
+                    civilizacion.anadirCiudadela();
                     civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
                     civilizacion.getEdificios().put(ciud.getNombre(), ciud);
                     System.out.println();
@@ -452,12 +453,12 @@ public class Personaje {
             int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
             int costeMadera = (int) (puntosAReparar * 0.4);
             int costePiedra = (int) (puntosAReparar * 0.5);
-            if (civilizacion.getEdificios().get("ciudadela1").getMadera() < costeMadera || civilizacion.getEdificios().get("ciudadela1").getPiedra() < costePiedra) {
+            if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {
                 System.out.println("No tienes suficientes recursos disponibles!");
                 return;
             }
-            civilizacion.getEdificios().get("ciudadela1").setMadera(-costeMadera, true);
-            civilizacion.getEdificios().get("ciudadela1").setPiedra(-costePiedra, true);
+            civilizacion.setMadera(-costeMadera, true);
+            civilizacion.setPiedra(-costePiedra, true);
             civilizacion.getMapa().getCelda(pos).getEdificio().reparar();
             System.out.println("Reparación completada.");
             System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
@@ -475,13 +476,13 @@ public class Personaje {
                 return;
             }
             int costeAlimento = (int) (puntosARecuperar * 0.8);
-            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
-                int puntosRecuperados = (int) (civilizacion.getEdificios().get("ciudadela1").getAlimentos() / 0.8);
+            if (civilizacion.getAlimentos() < costeAlimento) {
+                int puntosRecuperados = (int) (civilizacion.getAlimentos() / 0.8);
                 this.salud = (this.getSalud() + puntosRecuperados);
-                civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
+                civilizacion.setAlimentos(0, false);
                 return;
             }
-            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-costeAlimento, true);
+            civilizacion.setAlimentos(-costeAlimento, true);
             this.recuperar();
             System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         } else {
@@ -491,13 +492,13 @@ public class Personaje {
                 return;
             }
             int costeAlimento = (int) (puntosARecuperar * 0.8);
-            if (civilizacion.getEdificios().get("ciudadela1").getAlimentos() < costeAlimento) {
-                int puntosRecuperados = (int) (civilizacion.getEdificios().get("ciudadela1").getAlimentos() / 0.8);
+            if (civilizacion.getAlimentos() < costeAlimento) {
+                int puntosRecuperados = (int) (civilizacion.getAlimentos() / 0.8);
                 this.salud = (this.getSalud() + puntosRecuperados);
-                civilizacion.getEdificios().get("ciudadela1").setAlimentos(0, false);
+                civilizacion.setAlimentos(0, false);
                 return;
             }
-            civilizacion.getEdificios().get("ciudadela1").setAlimentos(-costeAlimento, true);
+            civilizacion.setAlimentos(-costeAlimento, true);
             this.recuperar();
             System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
         }
