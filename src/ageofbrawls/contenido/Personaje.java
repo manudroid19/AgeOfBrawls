@@ -310,9 +310,15 @@ public class Personaje {
         }
         if (mapa.getCelda(pos).getEdificio() == null || mapa.getCelda(pos).getEdificio().getTipo() != Edificio.CIUDADELA) {
             System.out.println("No se puede almacenar recursos en esa celda");
+            return;
         }
         if (this.getCantRecTotal() <= 0) {
             System.out.println("El personaje no transporta recursos");
+            return;
+        }
+        if(!civilizacion.puedeAlmacenar(cantRecComida+cantRecMadera+cantRecPiedra)){
+            System.out.println("No hay espacio suficiente en la ciudadela.");
+            return;
         }
         if (this.cantRecMadera > 0) {
             civilizacion.setMadera(this.cantRecMadera, true);

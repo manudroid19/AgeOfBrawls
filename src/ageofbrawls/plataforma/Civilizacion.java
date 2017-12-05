@@ -32,7 +32,7 @@ public class Civilizacion {
     private int bosques = 1, arbustos = 1, canteras = 1; //contadores
     private int madera, piedra, alimentos;
     private int capAlmacen, contCiudadelas=0;
-    public final static int CAPALMACEN = 100000;
+    public final static int CAPALMACEN = 550;
 
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
         edificios = new HashMap<>();
@@ -203,6 +203,9 @@ public void setAlimentos(int cant, boolean relative) {
             System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
 
         }
+    }
+    public boolean puedeAlmacenar(int cantidad){
+        return (madera+piedra+alimentos+cantidad)<=capAlmacen;
     }
 
     public void makeAdyVisible(Posicion posicion) {
