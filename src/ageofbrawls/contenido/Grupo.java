@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Grupo {
 
     private ArrayList<Personaje> personajes;
-    private int salud, armadura, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
+    private int salud, defensa, ataque, capRec, cantRecMadera, cantRecPiedra, cantRecComida;
     private Posicion posicion;
     private Civilizacion civilizacion;
     private String nombre;
@@ -34,11 +34,11 @@ public class Grupo {
                 this.personajes.get(i).setGrupo(this);
                 if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
                     this.haySoldado = true;
-                    armadura += this.personajes.get(i).getDefensa();
+                    defensa += this.personajes.get(i).getDefensa();
                     ataque += this.personajes.get(i).getAtaque();
 
                 } else {
-                    armadura += this.personajes.get(i).getDefensa();
+                    defensa += this.personajes.get(i).getDefensa();
                     capRec += this.personajes.get(i).getCapRec();
                     cantRecMadera += this.personajes.get(i).getCantRecMadera();
                     cantRecPiedra += this.personajes.get(i).getCantRecPiedra();
@@ -54,8 +54,8 @@ public class Grupo {
         return salud;
     }
 
-    public int getArmadura() {
-        return armadura;
+    public int getDefensa() {
+        return defensa;
     }
 
     public int getAtaque() {
@@ -188,7 +188,7 @@ public class Grupo {
 
         System.out.println("Nombre del grupo: " + nombre);
         System.out.println("Civilizacion: " + civilizacion.getNombre());
-        System.out.println("Armadura :" + armadura);
+        System.out.println("Armadura :" + defensa);
         if(this.haySoldado){
         System.out.println("Ataque :" + ataque);
         }
@@ -209,6 +209,12 @@ public class Grupo {
         }
         if (civilizacion.getMapa().perteneceAMapa(posicion) && civilizacion.getMapa().getCelda(posicion).esCeldaLibre(false)) {
             civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
+            if (civilizacion.getMapa().getCelda(this.posicion).getEdificio() != null) {
+                Edificio edif = civilizacion.getMapa().getCelda(this.posicion).getEdificio();
+                edif.setCapAloj(this.personajes.size(), true);
+                edif.setDefensa(-this.defensa, true);
+                edif.setAtaque(-ataque, true);
+            }
             this.posicion = posicion;
             actualizarPosiciones();
             civilizacion.getMapa().getCelda(posicion).addGrupo(this);
@@ -216,6 +222,12 @@ public class Grupo {
             System.out.println();
             civilizacion.getMapa().imprimirCabecera();
             civilizacion.getMapa().imprimir(civilizacion);
+            if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
+                Edificio edif = civilizacion.getMapa().getCelda(this.posicion).getEdificio();
+                edif.setCapAloj(this.personajes.size(), true);
+                edif.setDefensa(-this.defensa, true);
+                edif.setAtaque(-ataque, true);
+            }
         } else {
             System.out.println("Error: No te puedes mover a esa celda.");
         }
@@ -457,7 +469,7 @@ public class Grupo {
         civilizacion.getMapa().getCelda(pos).addGrupo(this);
 
         civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
-        civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getArmadura(), true);
+        civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getDefensa(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
         System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");
         for (int i = 0; i < this.getPersonajes().size(); i++) {

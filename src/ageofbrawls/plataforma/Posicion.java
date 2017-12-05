@@ -141,6 +141,10 @@ public class Posicion {
         Collections.shuffle(candidatos);
         return candidatos.get(0);
     }
+    
+    public String toStringMapa() {
+        return  "(" + y + "," + x+")";
+    }
 
     @Override
     public String toString() {
