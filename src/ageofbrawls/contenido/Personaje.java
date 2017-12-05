@@ -419,12 +419,16 @@ public class Personaje {
             System.out.println("No hay edificio en la posición indicada.");
             return;
         }
-        for (int i = 0; i < civilizacion.getMapa().getCelda(this.posicion).getGrupos().size(); i++) {
-            if (civilizacion.getMapa().getCelda(this.posicion).getGrupos().get(i).getPersonajes().contains(this)) {
+        if(this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()){
+            System.out.println("El personaje no puede entrar en el edificio de la otra civilización");
+            return;
+        }
+        
+            if (this.grupo !=null) {
                 System.out.println("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
                 return;
             }
-        }
+        
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() == 0) {
             System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
             return;
