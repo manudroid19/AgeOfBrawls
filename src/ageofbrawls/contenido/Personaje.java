@@ -577,26 +577,25 @@ public class Personaje {
         }
         for (int i = 0; i < pers.size(); i++) {
             Personaje atacado = pers.get(i);
+            int quitados;
             if (pers.get(i).getTipo() == Personaje.PAISANO) {
-                atacado.salud = atacado.salud - (PuntosAQuitarACadaUno);
+                quitados = (PuntosAQuitarACadaUno);                
             } else {
-                atacado.salud = atacado.salud - (int) ((double) PuntosAQuitarACadaUno * 0.5);
+                quitados=(int) ((double) PuntosAQuitarACadaUno * 0.5);
             }
+            atacado.salud = atacado.salud -quitados;
             if (atacado.salud <= 0) {
                 if (atacado.grupo != null) {
                     atacado.grupo.desligar(atacado);
-                    atacado.grupo.setCantRecComida(atacado.grupo.getCantRecComida() - cantRecComida);
-                    atacado.grupo.setCantRecPiedra(atacado.grupo.getCantRecPiedra() - cantRecPiedra);
-                    atacado.grupo.setCantRecMadera(atacado.grupo.getCantRecMadera() - cantRecMadera);
                 }
                 civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
                 civilizacion.getPersonajes().remove(atacado.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Has inflingido " + PuntosAQuitar + " de daño a los personajes de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
+                System.out.println("Has inflingido " + quitados + " de daño al personaje "+atacado.getNombre()+" de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
                 System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
             } else {
-                System.out.println("Has inflingido " + PuntosAQuitar + " de daño a los personajes de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
+                System.out.println("Has inflingido " + quitados + " de daño al personaje "+atacado.getNombre()+" de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
             }
         }
 
