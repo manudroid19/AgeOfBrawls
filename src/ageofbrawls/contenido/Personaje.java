@@ -218,8 +218,6 @@ public class Personaje {
             if (civilizacion.getMapa().getCelda(this.posicion).getEdificio() != null) {
                 Edificio edif = civilizacion.getMapa().getCelda(this.posicion).getEdificio();
                 edif.setCapAloj(1, true);
-                edif.setDefensa(-defensa, true);
-                edif.setAtaque(-ataque, true);
             }
             this.posicion = posicion;
             civilizacion.getMapa().getCelda(posicion).addPersonaje(this);
@@ -450,8 +448,6 @@ public class Personaje {
         posicion = new Posicion(pos);
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        civilizacion.getMapa().getCelda(pos).getEdificio().setAtaque(this.getAtaque(), true);
-        civilizacion.getMapa().getCelda(pos).getEdificio().setDefensa(this.getDefensa(), true);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-1, true);
         this.recuperarVida();
         System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");

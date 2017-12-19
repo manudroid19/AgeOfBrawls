@@ -7,6 +7,7 @@ package ageofbrawls.contenido;
 
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,8 +24,6 @@ public class Edificio {
     private int tipo;
     private int capacidadAlojamiento;
     private int capAloj;
-    private int ataque;
-    private int defensa;
     private int ps;
     private boolean destruido;
     private String nombre;
@@ -44,20 +43,14 @@ public class Edificio {
                     this.ps = 200;
                     this.capacidadAlojamiento = Edificio.CAPALOJ;
                     this.capAloj = 7;
-                    this.ataque = 0;
-                    this.defensa = 0;
                     break;
                 case Edificio.CUARTEL:
                     this.ps = 500;
                     this.capAloj = 5;
-                    this.ataque = 0;
-                    this.defensa = 0;
                     break;
                 case Edificio.CIUDADELA:
                     this.ps = 1000;
                     this.capAloj = 10;
-                    this.ataque = 0;
-                    this.defensa = 0;
                     break;
             }
         } else {
@@ -105,10 +98,26 @@ public class Edificio {
     }
 
     public int getAtaque() {
+        int ataque=0;
+        ArrayList<Personaje> pers = (ArrayList<Personaje>) civilizacion.getMapa().getCelda(posicion).getPersonajes().clone();
+        for (Grupo g : civilizacion.getMapa().getCelda(posicion).getGrupos()){
+            pers.addAll( (ArrayList<Personaje>) g.getPersonajes().clone());
+        }
+        for (Personaje p : pers){
+            ataque += p.getAtaque();
+        }
         return ataque;
     }
 
     public int getDefensa() {
+        int defensa=0;
+        ArrayList<Personaje> pers = (ArrayList<Personaje>)civilizacion.getMapa().getCelda(posicion).getPersonajes().clone();
+        for (Grupo g : civilizacion.getMapa().getCelda(posicion).getGrupos()){
+            pers.addAll((ArrayList<Personaje>)g.getPersonajes().clone());
+        }
+        for (Personaje p : pers){
+            defensa += p.getDefensa();
+        }
         return defensa;
     }
 
@@ -152,38 +161,6 @@ public class Edificio {
         }
     }
 
-    public void setAtaque(int atack, boolean relative) {
-        if (relative) {
-            if (ataque + atack < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            ataque += atack;
-        } else {
-            if (ataque + atack < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            ataque = atack;
-        }
-    }
-
-    public void setDefensa(int defense, boolean relative) {
-        if (relative) {
-            if (defensa + defense < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            defensa += defense;
-        } else {
-            if (defensa + defense < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
-            }
-            defensa = defense;
-        }
-    }
-
     public void setTipo(int tipo) {
         if (tipo > 0 && tipo < 4) {
             this.tipo = tipo;
@@ -207,6 +184,10 @@ public class Edificio {
                 return;
             }
             Posicion pos = posicion.posicionAdyacenteLibre(civilizacion.getMapa());
+            if(pos==posicion){
+                System.out.println("No hay celdas adyacentes libres.");
+                return;
+            }
             int i = 1;
             String nombrePers = "paisano1";
             while (civilizacion.getPersonajes().containsKey(nombrePers)) {
@@ -270,8 +251,8 @@ public class Edificio {
         System.out.println("Tipo: " + leerTipo());
         System.out.println("Salud: " + ps);
         System.out.println("Capacidad de Alojamiento para defenderlo " + capAloj);
-        System.out.println("Capacidad de ataque: " + ataque);
-        System.out.println("Capacidad de defensa: " + defensa);
+        System.out.println("Capacidad de ataque: " + getAtaque());
+        System.out.println("Capacidad de defensa: " + getDefensa());
         if (tipo == Edificio.CIUDADELA) {
             System.out.println("Recursos: " + civilizacion.getMadera() + " de madera, " + civilizacion.getPiedra() + " de piedra y " + civilizacion.getAlimentos() + " de alimentos");
         }

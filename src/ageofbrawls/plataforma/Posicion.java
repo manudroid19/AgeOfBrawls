@@ -132,6 +132,7 @@ public class Posicion {
             for (int h = i - 1; h < i + 2; h++) {
                 for (int k = j - 1; k < j + 2; k++) {
                     Posicion pos = new Posicion(h, k);
+                    if(mapa.getCelda(pos)==null){return this;}
                     if (mapa.getCelda(pos).esCeldaLibre(false) && mapa.perteneceAMapa(pos)) {
                         return pos;
                     }
