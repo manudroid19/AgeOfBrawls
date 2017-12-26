@@ -153,7 +153,7 @@ public class Personaje {
     public void setSalud(int cant, boolean relative) {
         if (relative) {
             if (salud + cant < 0) {
-                System.out.println("error, seteo incorrecto");
+                salud=0;
                 return;
             }
             salud += cant;
@@ -545,6 +545,10 @@ public class Personaje {
         }
         if (civilizacion.getMapa().getCelda(pos).getEdificio() == null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) {
             System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
+            return;
+        }
+        if (civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion == civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
+            System.out.println("El personaje no puede atacar a un edificio de su propia civilización");
             return;
         }
         int PuntosAQuitar = this.getAtaque();

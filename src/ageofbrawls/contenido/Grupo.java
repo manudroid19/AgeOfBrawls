@@ -499,8 +499,8 @@ public class Grupo {
 
     public void atacar(String direccion) {
         Posicion pos = posicion.getAdy(direccion);
-        if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
-            System.out.println("No hay edificio en la posición indicada.");
+        if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos)) {
+            System.out.println("No es una celda válida.");
             return;
         }
 
@@ -510,6 +510,10 @@ public class Grupo {
         }
         if (civilizacion.getMapa().getCelda(pos).getEdificio() == null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) {
             System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
+            return;
+        }
+        if (civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion == civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
+            System.out.println("El grupo de soldados no puede atacar a un edificio de su propia civilización");
             return;
         }
         int PuntosAQuitar = this.getAtaque();
@@ -530,7 +534,9 @@ public class Grupo {
                 pers.add(civilizacion.getMapa().getCelda(pos).getPersonajes().get(i));
             }
         }
-        System.out.println("Has inflingido " + PuntosAQuitar + " a los miembros de la civilización (" + pers.get(0).getCivilizacion() + ").");
+        if (!pers.isEmpty()) {
+            System.out.println("Has inflingido " + PuntosAQuitar + " a los miembros de la civilización (" + pers.get(0).getCivilizacion().getNombre() + ").");
+        }
         int PuntosAQuitarACadaUno;
         if (pers.isEmpty()) {
             PuntosAQuitarACadaUno = 0;
@@ -539,19 +545,27 @@ public class Grupo {
         }
         for (int i = 0; i < pers.size(); i++) {
             Personaje atacado = pers.get(i);
+            int quitados;
             if (pers.get(i).getTipo() == Personaje.PAISANO) {
-                atacado.setSalud(-(PuntosAQuitarACadaUno), true);
+                quitados = (PuntosAQuitarACadaUno);                
             } else {
-                atacado.setSalud(-(int) ((double) PuntosAQuitarACadaUno * 0.5), true);
+                quitados=(int) ((double) PuntosAQuitarACadaUno * 0.5);
             }
+            atacado.setSalud(-quitados,true);
             if (atacado.getSalud() <= 0) {
-                System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
                 if (atacado.getGrupo() != null) {
                     atacado.getGrupo().desligar(atacado);
                 }
                 civilizacion.getMapa().getCelda(pos).getPersonajes().remove(atacado);
                 civilizacion.getPersonajes().remove(atacado.getNombre());
+                civilizacion.getMapa().imprimirCabecera();
+                civilizacion.getMapa().imprimir(civilizacion);
+                System.out.println("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
+                System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
+            } else {
+                System.out.println("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + pers.get(0).getCivilizacion().getNombre() + ").");
             }
+
         }
 
         if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
