@@ -129,7 +129,7 @@ public class Juego {
 
     public void manejar(String quien, Scanner sca) {
         if (!activa.getPersonajes().containsKey(quien) && !activa.getGrupos().containsKey(quien)) {
-            System.out.println("El personaje no existe");
+            System.out.println("El personaje/grupo no existe");
             return;
         }
         System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
