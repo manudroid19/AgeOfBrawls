@@ -7,7 +7,7 @@ package ageofbrawls.plataforma;
 
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
-import ageofbrawls.contenido.Grupo;
+import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Personaje;
 import java.util.ArrayList;
 import java.util.Collection;
