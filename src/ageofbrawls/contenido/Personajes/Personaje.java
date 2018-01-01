@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.contenido;
+package ageofbrawls.contenido.Personajes;
 
+import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.Grupo;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;

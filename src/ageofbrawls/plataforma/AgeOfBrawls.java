@@ -1,4 +1,3 @@
-
 package ageofbrawls.plataforma;
 
 import java.util.Scanner;
@@ -41,30 +40,6 @@ public class AgeOfBrawls {
                         break;
                     }
                     juego.mover(comando[1], comando[2]);//quien, donde
-                    break;
-
-                case "listar":
-                    if (comando.length != 2) {
-                        System.out.println("Error de sintaxis.");
-                        break;
-                    }
-                    switch (comando[1].toLowerCase()) {
-                        case "personajes":
-                            juego.listarPersonajes();
-                            break;
-                        case "grupos":
-                            juego.listarGrupos();
-                            break;
-                        case "edificios":
-                            juego.listarEdificios();
-                            break;
-                        case "civilizaciones":
-                            juego.listarCivilizaciones();
-                            break;
-                        default:
-                            System.out.println("Comando no valido");
-                            break;
-                    }
                     break;
 
                 case "describir":
@@ -157,7 +132,7 @@ public class AgeOfBrawls {
                         System.out.println("Error de sintaxis");
                         break;
                     }
-                    juego.desligar(comando[1],comando[2]); //personaje desligado, grupo
+                    juego.desligar(comando[1], comando[2]); //personaje desligado, grupo
                     break;
 
                 case "desagrupar":
@@ -172,7 +147,7 @@ public class AgeOfBrawls {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.defender(comando[1],comando[2]);
+                    juego.defender(comando[1], comando[2]);
                     break;
 
                 case "atacar":
@@ -194,6 +169,29 @@ public class AgeOfBrawls {
                         System.out.println("Error de sintaxis");
                     }
                     juego.guardar(comando[1]);
+                    break;
+                case "listar":
+                    if (comando.length != 2) {
+                        System.out.println("Error de sintaxis.");
+                        break;
+                    }
+                    switch (comando[1].toLowerCase()) {
+                        case "personajes":
+                            juego.listarPersonajes();
+                            break;
+                        case "grupos":
+                            juego.listarGrupos();
+                            break;
+                        case "edificios":
+                            juego.listarEdificios();
+                            break;
+                        case "civilizaciones":
+                            juego.listarCivilizaciones();
+                            break;
+                        default:
+                            System.out.println("Comando no valido");
+                            break;
+                    }
                     break;
                 default:
                     if (!orden.equals("salir") && !orden.equals("\n")) {

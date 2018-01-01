@@ -5,6 +5,7 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
 import java.util.ArrayList;
