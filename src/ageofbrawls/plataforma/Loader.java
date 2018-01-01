@@ -3,7 +3,9 @@ package ageofbrawls.plataforma;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
+import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Personajes.Soldado;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -109,13 +111,13 @@ public class Loader {
 
             switch (linea[1].toLowerCase()) {
                 case "paisano":
-                    crearPersonaje(pos, Personaje.PAISANO, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
+                    crearPersonaje(pos, 0, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
                     break;
                 case "soldado":
-                    crearPersonaje(pos, Personaje.SOLDADO, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
+                    crearPersonaje(pos, 1, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
                     break;
             }
-            
+
         }
     }
 
@@ -152,7 +154,7 @@ public class Loader {
         mapa.getCelda(pos).setEdificio(edificio);
         current.getEdificios().put(nombre, edificio);
         current.makeAdyVisible(pos);
-        if(edificio.getTipo()==Edificio.CIUDADELA){
+        if (edificio.getTipo() == Edificio.CIUDADELA) {
             current.anadirCiudadela();
         }
     }
@@ -162,7 +164,19 @@ public class Loader {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
         Civilizacion current = mapa.getCivilizaciones().get(civilizacion);
-        Personaje personaje = new Personaje(tipo, pos, nombre, current, ataque, defensa, capacidad, salud);
+        Personaje personaje;
+        if (tipo == 0) {
+            personaje = new Paisano(pos, nombre, current);
+            personaje.setSalud(salud, false);
+            personaje.setDefensa(defensa);
+            ((Paisano)personaje).setCapRec(capacidad);
+            
+        } else {
+            personaje = new Soldado(pos, nombre, current);
+            personaje.setSalud(salud, false);
+            personaje.setDefensa(defensa);
+            ((Soldado) personaje).setAtaque(ataque);
+        }
         if (grupo == null || "".equals(grupo)) {
             mapa.getCelda(pos).addPersonaje(personaje);
         } else {

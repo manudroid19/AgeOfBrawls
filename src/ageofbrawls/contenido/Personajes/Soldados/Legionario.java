@@ -10,5 +10,8 @@ package ageofbrawls.contenido.Personajes.Soldados;
  * @author mprad
  */
 public class Legionario {
-    
+    @Override
+    public String toString(){
+        return "legionario";
+    }
 }

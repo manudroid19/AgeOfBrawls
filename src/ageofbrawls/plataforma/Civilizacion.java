@@ -8,6 +8,7 @@ package ageofbrawls.plataforma;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
+import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +63,7 @@ public class Civilizacion {
             mapa.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nomCiud, ciud);
             Posicion posPaisano = edificios.get("ciudadela1").getPosicion().posicionAdyacenteLibre(mapa);
-            Personaje paisano1 = new Personaje(Personaje.PAISANO, posPaisano, "paisano1", this);
+            Personaje paisano1 = new Paisano(posPaisano, "paisano1", this);
             personajes.put(paisano1.getNombre(), paisano1);
             mapa.getCelda(posPaisano).addPersonaje(paisano1);
             this.makeAdyVisible(posPaisano);

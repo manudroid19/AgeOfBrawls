@@ -10,5 +10,8 @@ package ageofbrawls.contenido.Personajes.Soldados;
  * @author mprad
  */
 public class Arquero {
-    
+    @Override
+    public String toString(){
+        return "arquero";
+    }
 }

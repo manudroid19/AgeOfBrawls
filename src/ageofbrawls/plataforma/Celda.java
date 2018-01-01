@@ -8,6 +8,7 @@ package ageofbrawls.plataforma;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
+import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import java.util.ArrayList;
 
@@ -241,7 +242,7 @@ public class Celda {
     public String toString() {
         if (!this.personajes.isEmpty()) {
             if ((this.personajes.size() == 1 && !this.haygrupo) && this.edificio == null) {
-                if (this.personajes.get(0).getTipo() == Personaje.PAISANO) {
+                if (this.personajes.get(0) instanceof Paisano) {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P ";
                 } else {
                     return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S ";

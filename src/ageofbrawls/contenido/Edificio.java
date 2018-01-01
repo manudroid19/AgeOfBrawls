@@ -6,7 +6,9 @@
 package ageofbrawls.contenido;
 
 import ageofbrawls.contenido.Personajes.Grupo;
+import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Personajes.Soldado;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
 import java.util.ArrayList;
@@ -24,8 +26,8 @@ public class Edificio {
     private Posicion posicion;
     private Civilizacion civilizacion;
     private int tipo;
-    private int capacidadAlojamiento;
-    private int capAloj;
+    private int capAlojCasa;
+    private int capAlojDef;
     private int ps;
     private boolean destruido;
     private String nombre;
@@ -43,16 +45,16 @@ public class Edificio {
             switch (tipo) {
                 case Edificio.CASA:
                     this.ps = 200;
-                    this.capacidadAlojamiento = Edificio.CAPALOJ;
-                    this.capAloj = 7;
+                    this.capAlojCasa = Edificio.CAPALOJ;
+                    this.capAlojDef = 7;
                     break;
                 case Edificio.CUARTEL:
                     this.ps = 500;
-                    this.capAloj = 5;
+                    this.capAlojDef = 5;
                     break;
                 case Edificio.CIUDADELA:
                     this.ps = 1000;
-                    this.capAloj = 10;
+                    this.capAlojDef = 10;
                     break;
             }
         } else {
@@ -91,12 +93,12 @@ public class Edificio {
         return civilizacion;
     }
 
-    public int getCapAloj() {
-        return capacidadAlojamiento;
+    public int getCapAlojDef() {
+        return capAlojCasa;
     }
 
     public int getCapAloj1() {
-        return capAloj;
+        return capAlojDef;
     }
 
     public int getAtaque() {
@@ -149,17 +151,17 @@ public class Edificio {
 
     public void setCapAloj(int aloj, boolean relative) {
         if (relative) {
-            if (capAloj + aloj < 0) {
+            if (capAlojDef + aloj < 0) {
                 System.out.println("error, seteo incorrecto");
                 return;
             }
-            capAloj += aloj;
+            capAlojDef += aloj;
         } else {
-            if (capAloj + aloj < 0) {
+            if (capAlojDef + aloj < 0) {
                 System.out.println("error, seteo incorrecto");
                 return;
             }
-            capAloj = aloj;
+            capAlojDef = aloj;
         }
     }
 
@@ -195,7 +197,7 @@ public class Edificio {
             while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("paisano" + i, "paisano" + (++i));
             }
-            Personaje person = new Personaje(Personaje.PAISANO, pos, nombrePers, civilizacion);
+            Personaje person = new Paisano( pos, nombrePers, civilizacion);
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
             civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
@@ -219,7 +221,7 @@ public class Edificio {
             while (civilizacion.getPersonajes().containsKey(nombrePers)) {
                 nombrePers = nombrePers.replace("soldado" + i, "soldado" + (++i));
             }
-            Personaje person = new Personaje(Personaje.SOLDADO, pos, nombrePers, civilizacion);
+            Personaje person = new Soldado(pos, nombrePers, civilizacion);
             civilizacion.getMapa().getCelda(pos).addPersonaje(person);
             civilizacion.getPersonajes().put(person.getNombre(), person);
             civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
@@ -252,7 +254,7 @@ public class Edificio {
     public void describirEdificio() {
         System.out.println("Tipo: " + leerTipo());
         System.out.println("Salud: " + ps);
-        System.out.println("Capacidad de Alojamiento para defenderlo " + capAloj);
+        System.out.println("Capacidad de Alojamiento para defenderlo " + capAlojDef);
         System.out.println("Capacidad de ataque: " + getAtaque());
         System.out.println("Capacidad de defensa: " + getDefensa());
         if (tipo == Edificio.CIUDADELA) {

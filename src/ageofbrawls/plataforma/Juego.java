@@ -3,6 +3,7 @@ package ageofbrawls.plataforma;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
+import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -164,7 +165,7 @@ public class Juego {
     public void almacenar(String almacenador, String direccion) {
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
-            personaje2.almacenar(mapa, direccion);
+            ((Paisano) personaje2).almacenar(mapa, direccion);
         } else if (activa.getGrupos().containsKey(almacenador)) {
             Grupo grupo1 = activa.getGrupos().get(almacenador);
             grupo1.almacenar(mapa, direccion);
@@ -176,7 +177,7 @@ public class Juego {
     public void recolectar(String persona, String direccion) {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
-            personaje2.recolectar(mapa, direccion);
+            ((Paisano) personaje2).recolectar(mapa, direccion);
         } else if (activa.getGrupos().containsKey(persona)) {
             Grupo grupo1 = activa.getGrupos().get(persona);
             grupo1.recolectar(mapa, direccion);
@@ -197,7 +198,7 @@ public class Juego {
     public void reparar(String reparador, String dir) {
         if (activa.getPersonajes().containsKey(reparador)) {
             Personaje personaje2 = activa.getPersonajes().get(reparador);
-            personaje2.reparar(personaje2.getPosicion().getAdy(dir));
+            ((Paisano) personaje2).reparar(personaje2.getPosicion().getAdy(dir));
         } else if (activa.getGrupos().containsKey(reparador)) {
             Grupo grupo1 = activa.getGrupos().get(reparador);
             grupo1.reparar(grupo1.getPosicion().getAdy(dir));
@@ -209,7 +210,7 @@ public class Juego {
     public void construir(String constructor, String tipo, String dir) {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
-            personaje1.consEdif(tipo, dir, activa);
+            ((Paisano) personaje1).consEdif(tipo, dir, activa);
         } else if (activa.getGrupos().containsKey(constructor)) {
             Grupo grupo1 = activa.getGrupos().get(constructor);
             grupo1.consEdif(tipo, dir, activa);

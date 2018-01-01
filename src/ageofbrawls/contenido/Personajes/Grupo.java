@@ -8,17 +8,20 @@ package ageofbrawls.contenido.Personajes;
 import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Santiago
  */
-public class Grupo {
+public class Grupo extends Personaje {
 
     private ArrayList<Personaje> personajes;
     private Posicion posicion;
@@ -27,7 +30,7 @@ public class Grupo {
     private boolean haySoldado;
 
     public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) {
-
+        super(posicion, nombre, civilizacion);
         if (posicion != null && nombre != null && personajes != null && civilizacion != null) {
             this.personajes = new ArrayList<>(personajes);
             this.posicion = new Posicion(posicion);
@@ -35,7 +38,7 @@ public class Grupo {
             this.civilizacion = civilizacion;
             for (int i = 0; i < (this.personajes.size()); i++) {
                 personajes.get(i).setGrupo(this);
-                if (this.personajes.get(i).getTipo() == Personaje.SOLDADO) {
+                if (this.personajes.get(i) instanceof Soldado) {
                     this.haySoldado = true;
                 }
             }
@@ -128,6 +131,10 @@ public class Grupo {
         return personajes;
     }
 
+    public void setGrupo(Grupo grupo) {
+        System.out.println("Error");
+    }
+
     public void setPosicion(Posicion posicion) {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
@@ -139,19 +146,25 @@ public class Grupo {
 
     public void vaciarCantRecComida() {
         for (Personaje p : personajes) {
-            p.setCantRecComida(0);
+            if (p instanceof Paisano) {
+                ((Paisano) p).setCantRecComida(0);
+            }
         }
     }
 
     public void vaciarCantRecMadera() {
         for (Personaje p : personajes) {
-            p.setCantRecMadera(0);
+            if (p instanceof Paisano) {
+                ((Paisano) p).setCantRecMadera(0);
+            }
         }
     }
 
     public void vaciarCantRecPiedra() {
         for (Personaje p : personajes) {
-            p.setCantRecPiedra(0);
+            if (p instanceof Paisano) {
+                ((Paisano) p).setCantRecPiedra(0);
+            }
         }
     }
 
@@ -208,35 +221,23 @@ public class Grupo {
         }
     }
 
-    private void mover(Posicion posicion) {
-        if (civilizacion.getMapa() == null || posicion == null) {
-            System.out.println("Error en mover.");
-            return;
-        }
-        if (civilizacion.getMapa().perteneceAMapa(posicion) && civilizacion.getMapa().getCelda(posicion).esCeldaLibre(false)) {
-            civilizacion.getMapa().getCelda(this.posicion).removeGrupo(this);
-            if (civilizacion.getMapa().getCelda(this.posicion).getEdificio() != null) {
-                Edificio edif = civilizacion.getMapa().getCelda(this.posicion).getEdificio();
-                edif.setCapAloj(this.personajes.size(), true);
-            }
-            this.posicion = posicion;
-            actualizarPosiciones();
-            civilizacion.getMapa().getCelda(posicion).addGrupo(this);
-            civilizacion.makeAdyVisible(posicion);
-            System.out.println();
-            civilizacion.getMapa().imprimirCabecera();
-            civilizacion.getMapa().imprimir(civilizacion);
-            if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-                Edificio edif = civilizacion.getMapa().getCelda(this.posicion).getEdificio();
-                edif.setCapAloj(this.personajes.size(), true);
-            }
-        } else {
-            System.out.println("Error: No te puedes mover a esa celda.");
-        }
-    }
-
     public void mover(String direccion) {
-        mover(posicion.getAdy(direccion)); //chequeos de nulo en getAdy y en mover
+        try {
+            Posicion posicion = this.posicion.getAdy(direccion);
+            Mapa mapa = civilizacion.getMapa();
+            Celda celdaAntigua = mapa.getCelda(this.posicion);
+            
+            moverGenerico(posicion, personajes.size());
+            celdaAntigua.removeGrupo(this);
+            actualizarPosiciones();
+            mapa.getCelda(posicion).addGrupo(this);
+            
+            System.out.println();
+            mapa.imprimirCabecera();
+            mapa.imprimir(civilizacion);
+        } catch (Exception ex) {
+            //Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void recolectar(Mapa mapa, String direccion) {
@@ -284,13 +285,13 @@ public class Grupo {
                     }
                     this.getPersonajes().get(i);
 
-                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                    if (this.getPersonajes().get(i) instanceof Paisano) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            this.getPersonajes().get(i).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolect);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            this.getPersonajes().get(i).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolectando);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolectando);
                             recolectando = 0;
                         }
 
@@ -304,13 +305,13 @@ public class Grupo {
                         return;
                     }
 
-                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                    if (this.getPersonajes().get(i) instanceof Paisano) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            this.getPersonajes().get(i).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolect);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            this.getPersonajes().get(i).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolectando);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolectando);
                             recolectando = 0;
                         }
 
@@ -324,13 +325,13 @@ public class Grupo {
                         return;
                     }
 
-                    if (this.getPersonajes().get(i).getTipo() == Personaje.PAISANO) {
+                    if (this.getPersonajes().get(i) instanceof Paisano) {
                         int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
                         if (recolectando > recolect) {
-                            this.getPersonajes().get(i).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolect);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolect);
                             recolectando = recolectando - recolect;
                         } else {
-                            this.getPersonajes().get(i).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolectando);
+                            ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolectando);
                             recolectando = 0;
                         }
 
@@ -549,12 +550,12 @@ public class Grupo {
         for (int i = 0; i < pers.size(); i++) {
             Personaje atacado = pers.get(i);
             int quitados;
-            if (pers.get(i).getTipo() == Personaje.PAISANO) {
-                quitados = (PuntosAQuitarACadaUno);                
+            if (pers.get(i) instanceof Paisano) {
+                quitados = (PuntosAQuitarACadaUno);
             } else {
-                quitados=(int) ((double) PuntosAQuitarACadaUno * 0.5);
+                quitados = (int) ((double) PuntosAQuitarACadaUno * 0.5);
             }
-            atacado.setSalud(-quitados,true);
+            atacado.setSalud(-quitados, true);
             if (atacado.getSalud() <= 0) {
                 if (atacado.getGrupo() != null) {
                     atacado.getGrupo().desligar(atacado);
@@ -633,6 +634,16 @@ public class Grupo {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void recuperarVida() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void recuperar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
