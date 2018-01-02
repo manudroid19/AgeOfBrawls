@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.contenido.edificios;
+package ageofbrawls.z.excepciones.Movimiento;
 
 /**
  *
  * @author Santiago
  */
-public final class ExcepcionCreacionPersonaje extends ExcepcionEdificio {
+public class ExcepcionNoTransitableEdificio extends ExcepcionNoTransitable {
     
 }

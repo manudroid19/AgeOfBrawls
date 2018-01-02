@@ -14,10 +14,11 @@ import java.util.logging.Logger;
  *
  * @author mprad
  */
-public class Juego {
+public class Juego implements Comando {
 
     Civilizacion activa;
     Mapa mapa;
+    static ConsolaNormal consola;
 
     public Juego() {
         mapa = new Mapa(20, true);
@@ -28,6 +29,7 @@ public class Juego {
         activa = romana;
     }
 
+    @Override
     public void cambiar(String destino) {
         Civilizacion civ = mapa.getCivilizaciones().get(destino);
         if (civ == null) {
@@ -40,10 +42,12 @@ public class Juego {
         System.out.println("Has cambiado a la civilización " + activa.getNombre());
     }
 
+    @Override
     public void civilizacion() {
         System.out.println("La civilización activa es: " + activa.getNombre());
     }
 
+    @Override
     public void guardar(String ruta) {
         try {
             Loader loader = new Loader(mapa, ruta, true);
@@ -52,6 +56,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void cargar(String ruta) {
         try {
             Loader loader = new Loader(mapa, ruta);
@@ -64,6 +69,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void atacar(String atacante, String direccion) {
         if (activa.getPersonajes().containsKey(atacante)) {
             Personaje personaje2 = activa.getPersonajes().get(atacante);
@@ -76,6 +82,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void defender(String defensor, String direccion) {
         if (activa.getPersonajes().containsKey(defensor)) {
             Personaje personaje2 = activa.getPersonajes().get(defensor);
@@ -89,6 +96,7 @@ public class Juego {
 
     }
 
+    @Override
     public void desagrupar(String grupo) {
         if (!activa.getGrupos().containsKey(grupo)) {
             System.out.println("El grupo no existe");
@@ -97,6 +105,7 @@ public class Juego {
         activa.getGrupos().get(grupo).desagrupar();
     }
 
+    @Override
     public void desligar(String desligado, String grupo) {
         if (!activa.getGrupos().containsKey(grupo)) {
             System.out.println("El grupo no existe");
@@ -114,6 +123,7 @@ public class Juego {
         activa.getGrupos().get(grupo).desligar(pers);
     }
 
+    @Override
     public void agrupar(String donde) {
         Posicion posAgrupar = new Posicion(donde);
         if (posAgrupar.getX() == -1) {
@@ -128,6 +138,7 @@ public class Juego {
         celda1.agrupar(activa);
     }
 
+    @Override
     public void manejar(String quien, Scanner sca) {
         if (!activa.getPersonajes().containsKey(quien) && !activa.getGrupos().containsKey(quien)) {
             System.out.println("El personaje/grupo no existe");
@@ -162,6 +173,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void almacenar(String almacenador, String direccion) {
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
@@ -174,6 +186,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void recolectar(String persona, String direccion) {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
@@ -186,6 +199,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void crear(String edificio, String tipo) {
         Edificio creador = activa.getEdificios().get(edificio);
         if (creador == null || (creador.getTipo() == Edificio.CUARTEL && !tipo.equals("soldado")) || (creador.getTipo() == Edificio.CIUDADELA && !tipo.equals("paisano"))) {
@@ -195,6 +209,7 @@ public class Juego {
         creador.crearPersonaje(activa);
     }
 
+    @Override
     public void reparar(String reparador, String dir) {
         if (activa.getPersonajes().containsKey(reparador)) {
             Personaje personaje2 = activa.getPersonajes().get(reparador);
@@ -207,6 +222,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void construir(String constructor, String tipo, String dir) {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
@@ -219,6 +235,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void mirar(String donde) {
         Posicion posMirar = new Posicion(donde);
         if (posMirar.getX() == -1) {
@@ -251,6 +268,7 @@ public class Juego {
         }
     }
 
+    @Override
     public void describir(String sujeto) {
         if (activa.getPersonajes().containsKey(sujeto)) {
             Personaje personaje1 = activa.getPersonajes().get(sujeto);
@@ -269,22 +287,27 @@ public class Juego {
         }
     }
 
+    @Override
     public void listarPersonajes() {
         activa.listarPersonajes();
     }
 
+    @Override
     public void listarGrupos() {
         activa.listarGrupos();
     }
 
+    @Override
     public void listarEdificios() {
         activa.listarEdificios();
     }
 
+    @Override
     public void listarCivilizaciones() {
         mapa.listarCivilizaciones();
     }
 
+    @Override
     public void mover(String quien, String donde) {
         Personaje personaje = activa.getPersonajes().get(quien);
         if (personaje == null) {
@@ -299,10 +322,12 @@ public class Juego {
         }
     }
 
+    @Override
     public void imprimirCabecera() {
         mapa.imprimirCabecera();
     }
 
+    @Override
     public void imprimirMapa() {
         mapa.imprimir(activa);
     }

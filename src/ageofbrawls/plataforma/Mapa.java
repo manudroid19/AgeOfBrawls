@@ -123,7 +123,7 @@ public class Mapa {
         civilizaciones.put(nombre, civilizacion);
     }
 
-    void makeAdyPrad(Posicion posicion) { //Hacer todas las celdas asyacentes pradera
+    void makeAdyPrad(Posicion posicion) { //Hacer todas las celdas adacentes pradera
         if (posicion == null) {
             System.out.println("Error.");
             return;

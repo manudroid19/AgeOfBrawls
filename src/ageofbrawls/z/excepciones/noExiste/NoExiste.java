@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.plataforma;
+package ageofbrawls.z.excepciones.noExiste;
 
 /**
  *
  * @author Santiago
  */
-public abstract class ExcepcionCelda extends Exception {
+public class NoExiste extends Exception {
     
 }

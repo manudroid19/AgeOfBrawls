@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.contenido.Personajes;
-
+package ageofbrawls.z.excepciones.EscasezRecursos;
 
 /**
  *
  * @author Santiago
  */
-public final class ExcepcionRepararEdificio extends ExcepcionSoldado {
+public class EscasezRecursosConstruccion extends EscasezRecursos {
     
 }

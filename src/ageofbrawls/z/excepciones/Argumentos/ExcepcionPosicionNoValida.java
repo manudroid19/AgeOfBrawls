@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.plataforma;
+package ageofbrawls.z.excepciones.Argumentos;
 
 /**
  *
  * @author Santiago
  */
-public final class ExcepcionAgrupar extends ExcepcionCelda {
+public class ExcepcionPosicionNoValida extends ExcepcionArgumentos {
     
 }

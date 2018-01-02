@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.contenido.Personajes;
-
+package ageofbrawls.z.excepciones.AccionRestringida;
 
 /**
  *
  * @author Santiago
  */
-public class ExcepcionGrupo extends ExcepcionPersonaje {
+public class ExcepcionRestringidaSoldado extends ExcepcionRestringida {
     
 }
