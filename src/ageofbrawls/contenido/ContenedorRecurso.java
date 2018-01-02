@@ -39,8 +39,6 @@ public class ContenedorRecurso {
         return this.cantidad;
     }
 
-    
-
     public String getNombre() {
         if(nombre==null) return "";
         return nombre;

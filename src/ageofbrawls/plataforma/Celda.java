@@ -10,6 +10,7 @@ import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import static ageofbrawls.plataforma.Juego.consola;
 import java.util.ArrayList;
 
 /**

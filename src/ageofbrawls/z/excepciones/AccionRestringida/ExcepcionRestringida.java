@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.plataforma;
+package ageofbrawls.z.excepciones.AccionRestringida;
 
 /**
  *
  * @author Santiago
  */
-public final class ExcepcionGetAdy extends ExcepcionPosicion {
+public class ExcepcionRestringida extends Exception {
     
 }
