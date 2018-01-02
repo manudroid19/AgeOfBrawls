@@ -210,10 +210,10 @@ public class Juego {
     public void construir(String constructor, String tipo, String dir) {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
-            ((Paisano) personaje1).consEdif(tipo, dir, activa);
+            personaje1.construir(tipo, dir);
         } else if (activa.getGrupos().containsKey(constructor)) {
             Grupo grupo1 = activa.getGrupos().get(constructor);
-            grupo1.consEdif(tipo, dir, activa);
+            grupo1.construir(tipo, dir);
         } else {
             System.out.println("Error: constructor no encontrado.");
         }
@@ -238,7 +238,7 @@ public class Juego {
         if (!celda.getPersonajes().isEmpty()) {
             System.out.println("Personajes: ");
             for (Personaje per : celda.getPersonajes()) {
-                per.describirPersonaje();
+                per.describir();
             }
         }
         if (celda.getContenedorRec() != null) {
@@ -246,7 +246,7 @@ public class Juego {
         }
         if (!celda.getGrupos().isEmpty()) {
             for (Grupo gr : celda.getGrupos()) {
-                gr.describirGrupo();
+                gr.describir();
             }
         }
     }
@@ -254,7 +254,7 @@ public class Juego {
     public void describir(String sujeto) {
         if (activa.getPersonajes().containsKey(sujeto)) {
             Personaje personaje1 = activa.getPersonajes().get(sujeto);
-            personaje1.describirPersonaje();
+            personaje1.describir();
         } else if (activa.getEdificios().containsKey(sujeto)) {
             Edificio edificio = activa.getEdificios().get(sujeto);
             edificio.describirEdificio();
@@ -263,7 +263,7 @@ public class Juego {
             rec.describirContenedorRecurso();
         } else if (activa.getGrupos().containsKey(sujeto)) {
             Grupo grupo1 = activa.getGrupos().get(sujeto);
-            grupo1.describirGrupo();
+            grupo1.describir();
         } else {
             System.out.println("Error: sujeto a describir no encontrado.");
         }

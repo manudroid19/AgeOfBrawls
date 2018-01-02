@@ -27,7 +27,6 @@ public class Paisano extends Personaje {
     public void setCapRec(int capRec) {
         this.capRec = capRec;
     }
-    
 
     public void setCantRecMadera(int valor) {
         if (valor >= 0) {
@@ -73,8 +72,8 @@ public class Paisano extends Personaje {
         return cantRecComida + cantRecMadera + cantRecPiedra;
     }
 
-    public void describirPersonaje() {
-        super.describirPersonaje();
+    public void describir() {
+        super.describir();
         System.out.println("Capacidad de recolección: " + capRec);
         System.out.println("Cantidad de madera que transporta: " + cantRecMadera);
         System.out.println("Cantidad de comida que transporta: " + cantRecComida);
@@ -92,9 +91,9 @@ public class Paisano extends Personaje {
             System.out.println("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
             return;
         }
-        Posicion posicion = super.getPosicion();
+        Posicion posicion = getPosicion();
+        Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
-        Civilizacion civilizacion = super.getCivilizacion();
         ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             return;
@@ -136,177 +135,65 @@ public class Paisano extends Personaje {
     }
 
     public void almacenar(Mapa mapa, String direccion) {
-        if (mapa == null || direccion == null) {
-            System.out.println("Error en almacenar.");
+        if (getGrupo() != null) {
+            System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
             return;
         }
-        Civilizacion civilizacion = super.getCivilizacion();
-        Posicion posicion = super.getPosicion();
-        for (int i = 0; i < civilizacion.getMapa().getCelda(posicion).getGrupos().size(); i++) {
-            if (civilizacion.getMapa().getCelda(posicion).getGrupos().get(i).getPersonajes().contains(this)) {
-                System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
-                return;
-            }
-        }
-        Posicion pos = posicion.getAdy(direccion);
-        if (pos.equals(posicion)) { //error con la posicion
-            return;
-        }
-        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("El personaje está en un edificio y por tanto no puede almacenar recursos");
-            return;
-        }
-        if (mapa.getCelda(pos).getEdificio() == null || mapa.getCelda(pos).getEdificio().getTipo() != Edificio.CIUDADELA) {
-            System.out.println("No se puede almacenar recursos en esa celda");
-            return;
-        }
-        if (this.getCantRecTotal() <= 0) {
-            System.out.println("El personaje no transporta recursos");
-            return;
-        }
-        if (!civilizacion.puedeAlmacenar(cantRecComida + cantRecMadera + cantRecPiedra)) {
-            System.out.println("No hay espacio suficiente en la ciudadela.");
-            return;
-        }
-        if (this.cantRecMadera > 0) {
-            civilizacion.setMadera(this.cantRecMadera, true);
-            System.out.println("Almacenadas " + this.cantRecMadera + " unidades de madera en la ciudadela");
-            this.setCantRecMadera(0);
-        }
-        if (this.cantRecPiedra > 0) {
-            civilizacion.setPiedra(this.cantRecPiedra, true);
-            System.out.println("Almacenadas " + this.cantRecPiedra + " unidades de piedra en la ciudadela");
-            this.setCantRecPiedra(0);
-        }
-        if (this.cantRecComida > 0) {
-            civilizacion.setAlimentos(this.cantRecComida, true);
-            System.out.println("Almacenadas " + this.cantRecComida + " unidades de alimento en la ciudadela");
-            this.setCantRecComida(0);
-        }
+        almacenarGenerico(mapa, direccion);
     }
 
-    public void consEdif(String tipoC, String dir, Civilizacion civilizacion) {
-        if (civilizacion.getMapa() == null || tipoC == null || dir == null) {
+    @Override
+    protected void vaciarCantRecMadera() {
+        setCantRecMadera(0);
+    }
+    @Override
+    protected void vaciarCantRecComida() {
+        setCantRecComida(0);
+    }
+    @Override
+    protected void vaciarCantRecPiedra() {
+        setCantRecPiedra(0);
+    }
+    
+    @Override
+    public void construir(String tipoC, String dir) {
+        if (tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;
         }
         Grupo grupo = super.getGrupo();
-        Posicion posicion = super.getPosicion();
         if (grupo != null) {
             System.out.println("El personaje no puede construir por si solo ya que pertenece a un grupo");
             return;
         }
-        if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("El personaje está en un edificio y por tanto no puede construir");
-            return;
-        }
-        Posicion posConstruir = posicion.getAdy(dir);
-        if (posConstruir.equals(posicion) || !civilizacion.getMapa().perteneceAMapa(posConstruir) || !civilizacion.getMapa().getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
-            System.out.println("Error: No se puede contruir en la celda de destino.");
-            return;
-        }
-        switch (tipoC) {
-            case "casa":
-                if (civilizacion.getMadera() < 100 || civilizacion.getPiedra() < 100) {
-                    System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
-                }
-                civilizacion.setPiedra(-100, true);
-                civilizacion.setMadera(-100, true);
-                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
-                civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
-                System.out.println();
-                civilizacion.getEdificios().put(edif.getNombre(), edif);
-                civilizacion.getMapa().imprimirCabecera();
-                civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Casa construida en " + posConstruir);
-                System.out.println("Coste: 100 de madera, 100 de piedra.");
-                break;
-            case "cuartel":
-                if (civilizacion.getMadera() < 200 || civilizacion.getPiedra() < 200) {
-                    System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
-                }
-                civilizacion.setPiedra(-200, true);
-                civilizacion.setMadera(-200, true);
-                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
-                civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
-                civilizacion.getEdificios().put(cuart.getNombre(), cuart);
-                System.out.println();
-                civilizacion.getMapa().imprimirCabecera();
-                civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Cuartel construido en " + posConstruir);
-                System.out.println("Coste: 200 de madera, 200 de piedra.");
-                break;
-            case "ciudadela":
-                if (civilizacion.getMadera() < 500 || civilizacion.getPiedra() < 500) {
-                    System.out.println("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
-                }
-                civilizacion.setPiedra(-500, true);
-                civilizacion.setMadera(-500, true);
-                Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1), civilizacion);
-                civilizacion.anadirCiudadela();
-                civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
-                civilizacion.getEdificios().put(ciud.getNombre(), ciud);
-                System.out.println();
-                civilizacion.getMapa().imprimirCabecera();
-                civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Ciudadela construida en " + posConstruir);
-                System.out.println("Coste: 500 de madera, 500 de piedra.");
-                break;
-            default:
-                System.out.println("Error: tipo de construccion incorrecta.");
-        }
-
+        construirGenerico(tipoC, dir);
     }
-    public void recuperarVida(){
+
+    public void recuperarVida() {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 50 - this.getSalud();
-            if (puntosARecuperar == 0) {
-                System.out.println("El personaje tiene toda la vida");
-                return;
-            }
-            int costeAlimento = (int) (puntosARecuperar * 0.8);
-            if (civilizacion.getAlimentos() < costeAlimento) {
-                int puntosRecuperados = (int) (civilizacion.getAlimentos() / 0.8);
-                super.setSalud(puntosRecuperados, true);
-                civilizacion.setAlimentos(0, false);
-                return;
-            }
-            civilizacion.setAlimentos(-costeAlimento, true);
-            this.recuperar();
-            System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
+        if (puntosARecuperar == 0) {
+            System.out.println("El personaje tiene toda la vida");
+            return;
+        }
+        int costeAlimento = (int) (puntosARecuperar * 0.8);
+        if (civilizacion.getAlimentos() < costeAlimento) {
+            int puntosRecuperados = (int) (civilizacion.getAlimentos() / 0.8);
+            super.setSalud(puntosRecuperados, true);
+            civilizacion.setAlimentos(0, false);
+            return;
+        }
+        civilizacion.setAlimentos(-costeAlimento, true);
+        this.recuperar();
+        System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
     }
 
     public void reparar(Posicion pos) {
-        Civilizacion civilizacion = super.getCivilizacion();
-        Grupo grupo = super.getGrupo();
-        Posicion posicion = super.getPosicion();
-        if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getPs() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
-            System.out.println("Nada que reparar.");
-            return;
-        }
-
-        if (grupo != null) {
+        if (getGrupo() != null) {
             System.out.println("El personaje no puede reparar por si solo ya que pertenece a un grupo");
             return;
-
         }
-
-        int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
-        int costeMadera = (int) (puntosAReparar * 0.4);
-        int costePiedra = (int) (puntosAReparar * 0.5);
-        if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {
-            System.out.println("No tienes suficientes recursos disponibles!");
-            return;
-        }
-        civilizacion.setMadera(-costeMadera, true);
-        civilizacion.setPiedra(-costePiedra, true);
-        civilizacion.getMapa().getCelda(pos).getEdificio().reparar();
-        System.out.println("Reparación completada.");
-        System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
-
+        repararGenerico(pos);
     }
 
     @Override
@@ -316,6 +203,6 @@ public class Paisano extends Personaje {
 
     @Override
     public void recuperar() {
-            super.setSalud(50, false);
+        super.setSalud(50, false);
     }
 }

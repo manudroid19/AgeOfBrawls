@@ -66,7 +66,7 @@ public class Loader {
             lineas.clear();
             for (Civilizacion civ : mapa.getCivilizaciones().values()) {
                 for (Personaje p : civ.getPersonajes().values()) {
-                    lineas.add(p.getPosicion().getY() + "," + p.getPosicion().getX() + ";" + p.leerTipo() + ";" + p.getNombre() + ";" + p.getAtaque() + ";" + p.getDefensa() + ";" + p.getSalud() + ";" + p.getCapRec() + ";" + p.leerGrupo() + ";" + p.getCivilizacion().getNombre());
+                    lineas.add(p.getPosicion().getY() + "," + p.getPosicion().getX() + ";" + p.toString() + ";" + p.getNombre() + ";" + p.getAtaque() + ";" + p.getDefensa() + ";" + p.getSalud() + ";" + p.getCapRec() + ";" + p.leerGrupo() + ";" + p.getCivilizacion().getNombre());
                 }
                 for (Edificio e : civ.getEdificios().values()) {
                     edificios.add(e.getPosicion().getY() + "," + e.getPosicion().getX() + ";" + e.leerTipo() + ";" + e.getNombre() + ";" + e.getCivilizacion().getNombre());
