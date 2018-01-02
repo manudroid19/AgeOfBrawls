@@ -11,6 +11,7 @@ import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -57,10 +58,10 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public int getAtaque() {
+    public int danhoAtaque() {
         int valor = 0;
         for (Personaje p : personajes) {
-            valor += p.getAtaque();
+            valor += p.danhoAtaque();
         }
         return valor;
     }
@@ -72,6 +73,15 @@ public class Grupo extends Personaje {
             valor += p.getCapRec();
         }
         return valor;
+    }
+
+    public int capacidadMovimiento() {
+        for (Personaje p : personajes) {
+            if (!(p instanceof Caballero)) {
+                return 1;
+            }
+        }
+        return 2;
     }
 
     @Override
@@ -156,6 +166,15 @@ public class Grupo extends Personaje {
         }
     }
 
+    public boolean estaFormadoPor(Class clase) {
+        for (Personaje p : personajes) {
+            if (!clase.isInstance(p)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void desligar(Personaje personaje) {
         if (personaje == null) {
             System.out.println("El personaje no existe");
@@ -198,7 +217,7 @@ public class Grupo extends Personaje {
         System.out.println("Civilizacion: " + getCivilizacion().getNombre());
         System.out.println("Armadura :" + getDefensa());
         if (this.haySoldado) {
-            System.out.println("Ataque :" + getAtaque());
+            System.out.println("Ataque :" + danhoAtaque());
         }
         if (!this.haySoldado) {
             System.out.println("Capacidad de recoleccion del grupo:" + getCapRec());

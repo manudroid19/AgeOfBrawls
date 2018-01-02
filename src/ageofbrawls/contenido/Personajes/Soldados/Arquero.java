@@ -5,13 +5,22 @@
  */
 package ageofbrawls.contenido.Personajes.Soldados;
 
+import ageofbrawls.contenido.Personajes.Soldado;
+import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Posicion;
+
 /**
  *
  * @author mprad
  */
-public class Arquero {
+public class Arquero extends Soldado {
+
+    public Arquero(Posicion posicion, String nombre, Civilizacion civilizacion) {
+        super(posicion, nombre, civilizacion);
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return "arquero";
     }
 }

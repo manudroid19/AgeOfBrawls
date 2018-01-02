@@ -5,11 +5,19 @@
  */
 package ageofbrawls.contenido.Personajes.Soldados;
 
+import ageofbrawls.contenido.Personajes.Soldado;
+import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Posicion;
+
 /**
  *
  * @author mprad
  */
-public class Legionario {
+public class Legionario extends Soldado{
+
+    public Legionario(Posicion posicion, String nombre, Civilizacion civilizacion) {
+        super(posicion, nombre, civilizacion);
+    }
     @Override
     public String toString(){
         return "legionario";

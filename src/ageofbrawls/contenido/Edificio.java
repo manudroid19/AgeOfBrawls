@@ -108,7 +108,7 @@ public class Edificio {
             pers.addAll( (ArrayList<Personaje>) g.getPersonajes().clone());
         }
         for (Personaje p : pers){
-            ataque += p.getAtaque();
+            ataque += p.danhoAtaque();
         }
         return ataque;
     }

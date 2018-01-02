@@ -22,7 +22,8 @@ public class Soldado extends Personaje {
         ataque = 70;
     }
 
-    public int getAtaque() {
+    @Override
+    public int danhoAtaque() {
         return ataque;
     }
 

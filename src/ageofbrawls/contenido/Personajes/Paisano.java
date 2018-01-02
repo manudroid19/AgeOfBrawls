@@ -6,7 +6,6 @@
 package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
