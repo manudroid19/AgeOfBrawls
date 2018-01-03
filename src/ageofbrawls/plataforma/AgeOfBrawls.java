@@ -14,6 +14,7 @@ public class AgeOfBrawls {
     public static void main(String[] args) {
 
         Juego juego = new Juego();
+        Comando comando = (Comando) juego;
         Scanner sca = new Scanner(System.in);
 
         System.out.println("Bienvenido a Age Of Brawls!!");
@@ -21,10 +22,10 @@ public class AgeOfBrawls {
         System.out.println("Dispones inicialmente de 500 de piedra, madera y alimentos para levantar tu imperio.");
         System.out.println("Construir una casa cuesta 100 de piedra y madera, un cuartel 200 de piedra y madera, crear un paisano 50 de alimentos y crear un soldado 100 de alimentos.");
         System.out.println();
-        juego.imprimirCabecera();
+        comando.imprimirCabecera();
 
         String orden = "";
-        juego.imprimirMapa();
+        comando.imprimirMapa();
         while (!"salir".equals(orden)) {
             System.out.print("Introduce orden: ");
             orden = sca.nextLine();
@@ -32,161 +33,161 @@ public class AgeOfBrawls {
                 System.out.println("Error de sintaxis.");
                 continue;
             }
-            String comando[] = orden.split(" ");
-            switch (comando[0].toLowerCase()) {
+            String[] comandos = orden.split(" ");
+            switch (comandos[0].toLowerCase()) {
                 case "mover":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.mover(comando[1], comando[2]);//quien, donde
+                    comando.mover(comandos[1], comandos[2]);//quien, donde
                     break;
 
                 case "describir":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.describir(comando[1]);
+                    comando.describir(comandos[1]);
                     break;
                 case "mirar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.mirar(comando[1]);
+                    comando.mirar(comandos[1]);
                     break;
                 case "construir":
-                    if (comando.length != 4) {
+                    if (comandos.length != 4) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.construir(comando[1], comando[2], comando[3]);//constructor, tipo de edificio, direccion
+                    comando.construir(comandos[1], comandos[2], comandos[3]);//constructor, tipo de edificio, direccion
                     break;
                 case "reparar":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.reparar(comando[1], comando[2]);//reparador, direccion
+                    comando.reparar(comandos[1], comandos[2]);//reparador, direccion
                     break;
 
                 case "crear":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.crear(comando[1], comando[2]); //edificio creador, tipo de edificio
+                    comando.crear(comandos[1], comandos[2]); //edificio creador, tipo de edificio
                     break;
 
                 case "recolectar":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.recolectar(comando[1], comando[2]);//persona, direccion
+                    comando.recolectar(comandos[1], comandos[2]);//persona, direccion
                     break;
 
                 case "almacenar":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.almacenar(comando[1], comando[2]); //quien almacena, direccion
+                    comando.almacenar(comandos[1], comandos[2]); //quien almacena, direccion
                     break;
                 case "manejar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.manejar(comando[1], sca);
+                    comando.manejar(comandos[1], sca);
                     break;
                 case "cambiar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.cambiar(comando[1]);
+                    comando.cambiar(comandos[1]);
                     break;
                 case "civilizacion":
-                    juego.civilizacion();
+                    comando.civilizacion();
                     break;
                 case "imprimir":
-                    if (comando.length != 2 || !comando[1].equals("mapa")) {
+                    if (comandos.length != 2 || !comandos[1].equals("mapa")) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.imprimirCabecera();
-                    juego.imprimirMapa();
+                    comando.imprimirCabecera();
+                    comando.imprimirMapa();
                     break;
                 case "agrupar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.agrupar(comando[1]);
+                    comando.agrupar(comandos[1]);
                     break;
 
                 case "desligar":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis");
                         break;
                     }
-                    juego.desligar(comando[1], comando[2]); //personaje desligado, grupo
+                    comando.desligar(comandos[1], comandos[2]); //personaje desligado, grupo
                     break;
 
                 case "desagrupar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis");
                     }
-                    juego.desagrupar(comando[1]);
+                    comando.desagrupar(comandos[1]);
                     break;
 
                 case "defender":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.defender(comando[1], comando[2]);
+                    comando.defender(comandos[1], comandos[2]);
                     break;
 
                 case "atacar":
-                    if (comando.length != 3) {
+                    if (comandos.length != 3) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    juego.atacar(comando[1], comando[2]);
+                    comando.atacar(comandos[1], comandos[2]);
                     break;
 
                 case "cargar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis");
                     }
-                    juego.cargar(comando[1]);
+                    comando.cargar(comandos[1]);
                     break;
                 case "guardar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis");
                     }
-                    juego.guardar(comando[1]);
+                    comando.guardar(comandos[1]);
                     break;
                 case "listar":
-                    if (comando.length != 2) {
+                    if (comandos.length != 2) {
                         System.out.println("Error de sintaxis.");
                         break;
                     }
-                    switch (comando[1].toLowerCase()) {
+                    switch (comandos[1].toLowerCase()) {
                         case "personajes":
-                            juego.listarPersonajes();
+                            comando.listarPersonajes();
                             break;
                         case "grupos":
-                            juego.listarGrupos();
+                            comando.listarGrupos();
                             break;
                         case "edificios":
-                            juego.listarEdificios();
+                            comando.listarEdificios();
                             break;
                         case "civilizaciones":
-                            juego.listarCivilizaciones();
+                            comando.listarCivilizaciones();
                             break;
                         default:
                             System.out.println("Comando no valido");
