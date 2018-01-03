@@ -5,13 +5,15 @@
  */
 package ageofbrawls.z.excepciones.noExiste;
 
+import ageofbrawls.z.excepciones.ExcepcionJuego;
+
 /**
  *
  * @author Santiago
  */
-public class ExcepcionNoExisteMapa extends ExcepcionNoExiste {
+public abstract class ExcepcionNoExiste extends ExcepcionJuego {
     
-    public ExcepcionNoExisteMapa(String mensaje) {
+    public ExcepcionNoExiste(String mensaje) {
         super(mensaje);
     }
     

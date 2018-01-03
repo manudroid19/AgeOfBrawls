@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.Argumentos;
+package ageofbrawls.z.excepciones.AccionRestringida;
 
 /**
  *
  * @author Santiago
  */
-public class ExcepcionPosicionNoValida extends ExcepcionArgumentos {
+public class ExcepcionRestringidaEdificio extends ExcepcionRestringida {
+    
+    public ExcepcionRestringidaEdificio(String mensaje) {
+        super(mensaje);
+    }
     
 }

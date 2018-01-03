@@ -10,6 +10,7 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Recursos.Recurso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class Civilizacion {
     private Mapa mapa;
     private int bosques = 1, arbustos = 1, canteras = 1; //contadores
     private int madera, piedra, alimentos;
-    private int capAlmacen, contCiudadelas=0;
+    private int capAlmacen, contCiudadelas = 0;
     public final static int CAPALMACEN = 3000;
 
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
@@ -85,9 +86,11 @@ public class Civilizacion {
     public Mapa getMapa() {
         return mapa;
     }
+
     public int getCapAlmacen() {
         return capAlmacen;
     }
+
     public int getMadera() {
         return this.madera;
     }
@@ -131,7 +134,8 @@ public class Civilizacion {
         }
         return oculto.get(posicion.getY()).get(posicion.getX());
     }
-public void setPiedra(int cant, boolean relative) {
+
+    public void setPiedra(int cant, boolean relative) {
         if (relative) {
             if (piedra + cant < 0) {
                 System.out.println("error, seteo incorrecto");
@@ -146,7 +150,8 @@ public void setPiedra(int cant, boolean relative) {
             piedra = cant;
         }
     }
-public void setAlimentos(int cant, boolean relative) {
+
+    public void setAlimentos(int cant, boolean relative) {
         if (relative) {
             if (alimentos + cant < 0) {
                 System.out.println("error, seteo incorrecto");
@@ -177,6 +182,7 @@ public void setAlimentos(int cant, boolean relative) {
             madera = cant;
         }
     }
+
     public void setOculto(Posicion pos, boolean oculto) {
         ArrayList fila = this.oculto.get(pos.getY());
         fila.set(pos.getX(), oculto);
@@ -205,8 +211,9 @@ public void setAlimentos(int cant, boolean relative) {
 
         }
     }
-    public boolean puedeAlmacenar(int cantidad){
-        return (madera+piedra+alimentos+cantidad)<=capAlmacen;
+
+    public boolean puedeAlmacenar(int cantidad) {
+        return (madera + piedra + alimentos + cantidad) <= capAlmacen;
     }
 
     public void makeAdyVisible(Posicion posicion) {
@@ -233,28 +240,31 @@ public void setAlimentos(int cant, boolean relative) {
             }
         }
     }
-    public void anadirCiudadela(){
+
+    public void anadirCiudadela() {
         contCiudadelas++;
     }
-    public void quitarCiudadela(){
+
+    public void quitarCiudadela() {
         contCiudadelas--;
-        if(contCiudadelas==0){
-            System.out.println("La última ciudadela de "+nombre+ " ha sido destruida. Game Over.");
+        if (contCiudadelas == 0) {
+            System.out.println("La última ciudadela de " + nombre + " ha sido destruida. Game Over.");
             System.exit(0);
         }
     }
-    public int contarEdificios(int tipo) {
+
+    public int contarEdificios(Class <? extends Edificio> clase) {
         int n = 0;
-        if (tipo > 0 && tipo < 4) {
+        if (clase != null) {
             Collection<Edificio> edifs = this.getEdificios().values();
             for (Edificio ed : edifs) {
-                if (ed.getTipo() == tipo) {
+                if (clase.isInstance(ed)) {
                     n++;
                 }
             }
             return n;
         } else {
-            System.out.println("Error: tipo incorrecto.");
+            System.out.println("Error: clase incorrecta.");
         }
         return -1;
     }

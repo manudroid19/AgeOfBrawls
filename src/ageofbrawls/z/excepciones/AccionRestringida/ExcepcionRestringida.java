@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.noExiste;
+package ageofbrawls.z.excepciones.AccionRestringida;
+
+import ageofbrawls.z.excepciones.ExcepcionJuego;
 
 /**
  *
  * @author Santiago
  */
-public class ExcepcionNoExisteMapa extends ExcepcionNoExiste {
+public class ExcepcionRestringida extends ExcepcionJuego {
     
-    public ExcepcionNoExisteMapa(String mensaje) {
+    public ExcepcionRestringida(String mensaje) {
         super(mensaje);
     }
     
+
 }

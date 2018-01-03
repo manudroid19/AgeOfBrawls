@@ -5,12 +5,22 @@
  */
 package ageofbrawls.plataforma;
 
-
 /**
  *
  * @author Santiago
  */
 public interface Consola {
- public void imprimir(String mensaje);
- public String leer(String descripcion);
+
+    public void imprimir(String mensaje);
+
+    public void imprimir();
+
+    public void imprimirEnLinea(String mensaje);
+
+    public String leer(String descripcion);
+
+    public String leer();
+
+    public String leerEnLinea(String descripcion);
+
 }

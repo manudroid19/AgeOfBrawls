@@ -10,7 +10,6 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
-import static ageofbrawls.plataforma.Juego.consola;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +52,7 @@ public class Celda {
     }
 
     public Contenedor getContenedorRec() {
-        return recurso;
+        return contenedor;
     }
 
     public Edificio getEdificio() {
@@ -90,10 +89,10 @@ public class Celda {
 
     public void setTipoCont(int tipo) {
         if (tipo == PRADERA) {
-            recurso = null;
+            contenedor = null;
         } else {
-            if (recurso == null) {
-                recurso = new Contenedor(tipo, 0);
+            if (contenedor == null) {
+                contenedor = new Contenedor(tipo, 0);
             } else {
                 recurso.setTipo(tipo);
             }
@@ -114,7 +113,7 @@ public class Celda {
 
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {
-            recurso = null;
+            contenedor = null;
             this.edificio = edificio;
         } else {
             this.edificio =null;
@@ -152,7 +151,7 @@ public class Celda {
     }
 
     public String leerTipoCont() {
-        if (recurso == null) {
+        if (contenedor == null) {
             return "pradera";
         }
         switch (this.recurso.getTipo()) {

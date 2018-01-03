@@ -5,8 +5,8 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +18,7 @@ public class Juego implements Comando {
 
     Civilizacion activa;
     Mapa mapa;
-    static ConsolaNormal consola;
+    public static final Consola CONSOLA = (Consola) new ConsolaNormal();
 
     public Juego() {
         mapa = new Mapa(20, true);
@@ -30,21 +30,20 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void cambiar(String destino) {
+    public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion{
         Civilizacion civ = mapa.getCivilizaciones().get(destino);
         if (civ == null) {
-            System.out.println("No existe la civilizacion");
-            return;
+            throw new ExcepcionNoExisteCivilizacion("No existe la civilizacion");
         }
         activa = civ;
         mapa.imprimirCabecera();
         mapa.imprimir(activa);
-        System.out.println("Has cambiado a la civilización " + activa.getNombre());
+        Juego.CONSOLA.imprimir("Has cambiado a la civilización " + activa.getNombre());
     }
 
     @Override
     public void civilizacion() {
-        System.out.println("La civilización activa es: " + activa.getNombre());
+        Juego.CONSOLA.imprimir("La civilización activa es: " + activa.getNombre());
     }
 
     @Override
@@ -63,14 +62,14 @@ public class Juego implements Comando {
             activa = mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);
             mapa.imprimirCabecera();
             mapa.imprimir(activa);
-            System.out.println("Archivos cargados.");
+            Juego.CONSOLA.imprimir("Archivos cargados.");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public void atacar(String atacante, String direccion) {
+    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto{
         if (activa.getPersonajes().containsKey(atacante)) {
             Personaje personaje2 = activa.getPersonajes().get(atacante);
             personaje2.atacar(direccion);
@@ -78,7 +77,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(atacante);
             grupo1.atacar(direccion);
         } else {
-            System.out.println("Error: sujeto a atacar no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a atacar no encontrado.");
         }
     }
 
@@ -91,7 +90,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(defensor);
             grupo1.defender(direccion);
         } else {
-            System.out.println("Error: sujeto a defender no encontrado.");
+            Juego.CONSOLA.imprimir("Error: sujeto a defender no encontrado.");
         }
 
     }
@@ -99,7 +98,7 @@ public class Juego implements Comando {
     @Override
     public void desagrupar(String grupo) {
         if (!activa.getGrupos().containsKey(grupo)) {
-            System.out.println("El grupo no existe");
+            Juego.CONSOLA.imprimir("El grupo no existe");
             return;
         }
         activa.getGrupos().get(grupo).desagrupar();
@@ -108,16 +107,16 @@ public class Juego implements Comando {
     @Override
     public void desligar(String desligado, String grupo) {
         if (!activa.getGrupos().containsKey(grupo)) {
-            System.out.println("El grupo no existe");
+            Juego.CONSOLA.imprimir("El grupo no existe");
             return;
         }
         if (!activa.getPersonajes().containsKey(desligado)) {
-            System.out.println("El personaje no existe");
+            Juego.CONSOLA.imprimir("El personaje no existe");
             return;
         }
         Personaje pers = activa.getPersonajes().get(desligado);
         if (!activa.getGrupos().get(grupo).getPersonajes().contains(pers)) {
-            System.out.println("El personaje no pertenece a este grupo");
+            Juego.CONSOLA.imprimir("El personaje no pertenece a este grupo");
             return;
         }
         activa.getGrupos().get(grupo).desligar(pers);
@@ -127,27 +126,27 @@ public class Juego implements Comando {
     public void agrupar(String donde) {
         Posicion posAgrupar = new Posicion(donde);
         if (posAgrupar.getX() == -1) {
-            System.out.println("Error de sintaxis.");
+            Juego.CONSOLA.imprimir("Error de sintaxis.");
             return;
         }
         Celda celda1 = mapa.getCelda(posAgrupar);
         if (celda1 == null || celda1.isOculto(activa)) {
-            System.out.println("Esta celda no existe o aun no es visible!");
+            Juego.CONSOLA.imprimir("Esta celda no existe o aun no es visible!");
             return;
         }
         celda1.agrupar(activa);
     }
 
     @Override
-    public void manejar(String quien, Scanner sca) {
+    public void manejar(String quien) {
         if (!activa.getPersonajes().containsKey(quien) && !activa.getGrupos().containsKey(quien)) {
-            System.out.println("El personaje/grupo no existe");
+            Juego.CONSOLA.imprimir("El personaje/grupo no existe");
             return;
         }
-        System.out.println("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
+        Juego.CONSOLA.imprimir("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
         String tecla = "";
         while (!tecla.equals("q")) {
-            tecla = sca.nextLine();
+            tecla = Juego.CONSOLA.leer();
             switch (tecla) {
                 case "a":
                     mover(quien, "oeste");
@@ -177,12 +176,12 @@ public class Juego implements Comando {
     public void almacenar(String almacenador, String direccion) {
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
-            ((Paisano) personaje2).almacenar(mapa, direccion);
+            ((Paisano) personaje2).almacenar(direccion);
         } else if (activa.getGrupos().containsKey(almacenador)) {
             Grupo grupo1 = activa.getGrupos().get(almacenador);
-            grupo1.almacenar(mapa, direccion);
+            grupo1.almacenar(direccion);
         } else {
-            System.out.println("Error: almacenador no encontrado.");
+            Juego.CONSOLA.imprimir("Error: almacenador no encontrado.");
         }
     }
 
@@ -190,12 +189,12 @@ public class Juego implements Comando {
     public void recolectar(String persona, String direccion) {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
-            ((Paisano) personaje2).recolectar(mapa, direccion);
+            ((Paisano) personaje2).recolectar(direccion);
         } else if (activa.getGrupos().containsKey(persona)) {
             Grupo grupo1 = activa.getGrupos().get(persona);
-            grupo1.recolectar(mapa, direccion);
+            grupo1.recolectar(direccion);
         } else {
-            System.out.println("Error: sujeto a moverse no encontrado.");
+            Juego.CONSOLA.imprimir("Error: sujeto a moverse no encontrado.");
         }
     }
 
@@ -203,7 +202,7 @@ public class Juego implements Comando {
     public void crear(String edificio, String tipo) {
         Edificio creador = activa.getEdificios().get(edificio);
         if (creador == null || (creador.getTipo() == Edificio.CUARTEL && !tipo.equals("soldado")) || (creador.getTipo() == Edificio.CIUDADELA && !tipo.equals("paisano"))) {
-            System.out.println("Comando erroneo. No se puede crear.");
+            Juego.CONSOLA.imprimir("Comando erroneo. No se puede crear.");
             return;
         }
         creador.crearPersonaje(activa);
@@ -218,7 +217,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(reparador);
             grupo1.reparar(grupo1.getPosicion().getAdy(dir));
         } else {
-            System.out.println("Error: reparador no encontrado.");
+            Juego.CONSOLA.imprimir("Error: reparador no encontrado.");
         }
     }
 
@@ -231,7 +230,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(constructor);
             grupo1.construir(tipo, dir);
         } else {
-            System.out.println("Error: constructor no encontrado.");
+            Juego.CONSOLA.imprimir("Error: constructor no encontrado.");
         }
     }
 
@@ -239,21 +238,21 @@ public class Juego implements Comando {
     public void mirar(String donde) {
         Posicion posMirar = new Posicion(donde);
         if (posMirar.getX() == -1) {
-            System.out.println("Error de sintaxis.");
+            Juego.CONSOLA.imprimir("Error de sintaxis.");
             return;
         }
         Celda celda = mapa.getCelda(posMirar);
         if (celda == null || celda.isOculto(activa)) {
-            System.out.println("Esta celda no existe o aun no es visible!");
+            Juego.CONSOLA.imprimir("Esta celda no existe o aun no es visible!");
             return;
         }
-        System.out.println("Celda de tipo " + celda.leerTipoCont());
+        Juego.CONSOLA.imprimir("Celda de tipo " + celda.leerTipoCont());
         if (celda.getEdificio() != null) {
-            System.out.println("Hay un edificio: ");
+            Juego.CONSOLA.imprimir("Hay un edificio: ");
             celda.getEdificio().describirEdificio();
         }
         if (!celda.getPersonajes().isEmpty()) {
-            System.out.println("Personajes: ");
+            Juego.CONSOLA.imprimir("Personajes: ");
             for (Personaje per : celda.getPersonajes()) {
                 per.describir();
             }
@@ -283,7 +282,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(sujeto);
             grupo1.describir();
         } else {
-            System.out.println("Error: sujeto a describir no encontrado.");
+            Juego.CONSOLA.imprimir("Error: sujeto a describir no encontrado.");
         }
     }
 
@@ -313,7 +312,7 @@ public class Juego implements Comando {
         if (personaje == null) {
             Grupo grupo = activa.getGrupos().get(quien);
             if (grupo == null) {
-                System.out.println("El personaje o grupo no existe");
+                Juego.CONSOLA.imprimir("El personaje o grupo no existe");
                 return;
             }
             grupo.mover(donde);
