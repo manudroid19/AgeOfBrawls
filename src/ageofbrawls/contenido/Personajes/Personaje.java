@@ -1,6 +1,5 @@
 package ageofbrawls.contenido.Personajes;
 
-import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Soldados.Arquero;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
@@ -11,8 +10,6 @@ import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -231,11 +228,11 @@ public abstract class Personaje {
         System.out.println("Error");
     }
 
-    public void recolectar(Mapa mapa, String direccion) {
+    public void recolectar(String direccion) {
         System.out.println("Error");
     }
 
-    public void almacenar(Mapa mapa, String direccion) {
+    public void almacenar(String direccion) {
         System.out.println("Error");
     }
 
@@ -428,7 +425,8 @@ public abstract class Personaje {
         }
     }
 
-    protected void almacenarGenerico(Mapa mapa, String direccion) {
+    protected void almacenarGenerico(String direccion) {
+        Mapa mapa = civilizacion.getMapa();
         if (mapa == null || direccion == null) {
             System.out.println("Error en almacenar.");
             return;

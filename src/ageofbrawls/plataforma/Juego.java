@@ -177,10 +177,10 @@ public class Juego implements Comando {
     public void almacenar(String almacenador, String direccion) {
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
-            ((Paisano) personaje2).almacenar(mapa, direccion);
+            ((Paisano) personaje2).almacenar(direccion);
         } else if (activa.getGrupos().containsKey(almacenador)) {
             Grupo grupo1 = activa.getGrupos().get(almacenador);
-            grupo1.almacenar(mapa, direccion);
+            grupo1.almacenar(direccion);
         } else {
             System.out.println("Error: almacenador no encontrado.");
         }
@@ -190,10 +190,10 @@ public class Juego implements Comando {
     public void recolectar(String persona, String direccion) {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
-            ((Paisano) personaje2).recolectar(mapa, direccion);
+            ((Paisano) personaje2).recolectar(direccion);
         } else if (activa.getGrupos().containsKey(persona)) {
             Grupo grupo1 = activa.getGrupos().get(persona);
-            grupo1.recolectar(mapa, direccion);
+            grupo1.recolectar(direccion);
         } else {
             System.out.println("Error: sujeto a moverse no encontrado.");
         }

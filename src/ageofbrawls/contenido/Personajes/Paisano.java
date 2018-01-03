@@ -80,7 +80,8 @@ public class Paisano extends Personaje {
         System.out.println("Cantidad de Recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
     }
 
-    public void recolectar(Mapa mapa, String direccion) {
+    public void recolectar(String direccion) {
+        Mapa mapa = getCivilizacion().getMapa();
         if (mapa == null || direccion == null) {
             System.out.println("Error en recolectar.");
             return;
@@ -133,12 +134,12 @@ public class Paisano extends Personaje {
         }
     }
 
-    public void almacenar(Mapa mapa, String direccion) {
+    public void almacenar(String direccion) {
         if (getGrupo() != null) {
             System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
             return;
         }
-        almacenarGenerico(mapa, direccion);
+        almacenarGenerico(direccion);
     }
 
     @Override

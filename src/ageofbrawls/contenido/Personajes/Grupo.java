@@ -252,8 +252,9 @@ public class Grupo extends Personaje {
         }
     }
 
-    public void recolectar(Mapa mapa, String direccion) {
-        if (mapa == null || direccion == null) {
+    public void recolectar(String direccion) {
+        Mapa mapa = getCivilizacion().getMapa();
+        if (direccion == null) {
             System.out.println("Error en recolectar.");
             return;
         }
@@ -344,12 +345,12 @@ public class Grupo extends Personaje {
         }
     }
 
-    public void almacenar(Mapa mapa, String direccion) {
+    public void almacenar(String direccion) {
         if (this.haySoldado) {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
             return;
         }
-        almacenarGenerico(mapa, direccion);
+        almacenarGenerico(direccion);
     }
 
     @Override
