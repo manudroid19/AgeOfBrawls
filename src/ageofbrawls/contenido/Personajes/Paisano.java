@@ -6,6 +6,10 @@
 package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.Recursos.Comida;
+import ageofbrawls.contenido.Recursos.Madera;
+import ageofbrawls.contenido.Recursos.Piedra;
+import ageofbrawls.contenido.Recursos.Recurso;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
@@ -25,6 +29,16 @@ public class Paisano extends Personaje {
 
     public void setCapRec(int capRec) {
         this.capRec = capRec;
+    }
+
+    public void setCantRec(Class<? extends Recurso> clase, int valor) {
+        if(Comida.class.equals(clase)){
+            setCantRecComida(valor);
+        }else if(Madera.class.equals(clase)){
+            setCantRecMadera(valor);
+        }else if(Piedra.class.equals(clase)){
+            setCantRecPiedra(valor);
+        }
     }
 
     public void setCantRecMadera(int valor) {
@@ -146,15 +160,17 @@ public class Paisano extends Personaje {
     protected void vaciarCantRecMadera() {
         setCantRecMadera(0);
     }
+
     @Override
     protected void vaciarCantRecComida() {
         setCantRecComida(0);
     }
+
     @Override
     protected void vaciarCantRecPiedra() {
         setCantRecPiedra(0);
     }
-    
+
     @Override
     public void construir(String tipoC, String dir) {
         if (tipoC == null || dir == null) {

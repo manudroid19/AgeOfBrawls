@@ -31,7 +31,7 @@ public interface Comando {
     public void listarEdificios();
     public void listarGrupos();
     public void listarPersonajes();
-    public void manejar(String quien, Scanner sca);
+    public void manejar(String quien);
     public void mirar(String donde);
     public void mover(String persona, String direccion);
     public void recolectar(String recolector, String direccion);

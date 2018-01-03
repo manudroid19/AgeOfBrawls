@@ -12,19 +12,41 @@ import java.util.Scanner;
  * @author Santiago
  */
 public class ConsolaNormal implements Consola {
+    Scanner sca;
+    public ConsolaNormal() {
+        sca=new Scanner(System.in);
+    }
+
     @Override
-    public void imprimir(String mensaje){
+    public void imprimir(String mensaje) {
         System.out.println(mensaje);
     }
-    
+
     @Override
-    public String leer(String descripcion){
-        System.out.println(descripcion); 
-        Scanner sca= new Scanner(System.in);
-        String orden="";
-        orden=sca.nextLine();
-        return orden;
+    public void imprimir() {
+        System.out.println();
     }
-    
-    
+
+    @Override
+    public String leer(String descripcion) {
+        System.out.println(descripcion);
+        return sca.nextLine();
+    }
+
+    @Override
+    public void imprimirEnLinea(String mensaje) {
+        System.out.print(mensaje);
+    }
+
+    @Override
+    public String leerEnLinea(String descripcion) {
+        System.out.print(descripcion);
+        return sca.nextLine();
+    }
+
+    @Override
+    public String leer() {
+        return sca.nextLine();
+    }
+
 }
