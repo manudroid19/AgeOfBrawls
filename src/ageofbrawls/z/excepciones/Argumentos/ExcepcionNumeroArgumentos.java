@@ -9,6 +9,6 @@ package ageofbrawls.z.excepciones.Argumentos;
  *
  * @author Santiago
  */
-public class ExcepcionFaltaArgumentos extends ExcepcionArgumentos {
+public class ExcepcionNumeroArgumentos extends ExcepcionArgumentos {
     
 }

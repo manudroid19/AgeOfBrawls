@@ -5,6 +5,7 @@ import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,11 +30,10 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void cambiar(String destino) {
+    public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion{
         Civilizacion civ = mapa.getCivilizaciones().get(destino);
         if (civ == null) {
-            Juego.CONSOLA.imprimir("No existe la civilizacion");
-            return;
+            throw new ExcepcionNoExisteCivilizacion("No existe la civilizacion");
         }
         activa = civ;
         mapa.imprimirCabecera();
@@ -69,7 +69,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void atacar(String atacante, String direccion) {
+    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto{
         if (activa.getPersonajes().containsKey(atacante)) {
             Personaje personaje2 = activa.getPersonajes().get(atacante);
             personaje2.atacar(direccion);
@@ -77,7 +77,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(atacante);
             grupo1.atacar(direccion);
         } else {
-            Juego.CONSOLA.imprimir("Error: sujeto a atacar no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a atacar no encontrado.");
         }
     }
 

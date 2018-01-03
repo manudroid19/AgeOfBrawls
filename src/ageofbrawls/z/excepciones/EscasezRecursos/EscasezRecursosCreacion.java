@@ -9,6 +9,6 @@ package ageofbrawls.z.excepciones.EscasezRecursos;
  *
  * @author Santiago
  */
-public class EscasezRecursosCreacion extends EscasezRecursos {
+public class EscasezRecursosCreacion extends ExcepcionEscasezRecursos {
     
 }
