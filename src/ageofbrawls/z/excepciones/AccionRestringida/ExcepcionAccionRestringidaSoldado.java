@@ -9,6 +9,6 @@ package ageofbrawls.z.excepciones.AccionRestringida;
  *
  * @author Santiago
  */
-public class ExcepcionRestringidaSoldado extends ExcepcionRestringida {
+public class ExcepcionAccionRestringidaSoldado extends ExcepcionAccionRestringida {
     
 }

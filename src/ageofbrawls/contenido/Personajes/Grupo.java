@@ -5,8 +5,8 @@
  */
 package ageofbrawls.contenido.Personajes;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
@@ -264,7 +264,7 @@ public class Grupo extends Personaje {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
-        ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
+        Contenedor contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
@@ -289,7 +289,7 @@ public class Grupo extends Personaje {
             mapa.imprimir(civilizacion);
         }
         switch (tipoC) {
-            case ContenedorRecurso.BOSQUE:
+            case Contenedor.BOSQUE:
                 System.out.println("Has recolectado " + recolectando + " unidades de madera");
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (this.getPersonajes().get(i) instanceof Paisano) {
@@ -305,7 +305,7 @@ public class Grupo extends Personaje {
                     }
                 }
                 break;
-            case ContenedorRecurso.ARBUSTO:
+            case Contenedor.ARBUSTO:
                 System.out.println("Has recolectado " + recolectando + " unidades de comida");
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (this.getPersonajes().get(i) instanceof Paisano) {
@@ -321,7 +321,7 @@ public class Grupo extends Personaje {
                     }
                 }
                 break;
-            case ContenedorRecurso.CANTERA:
+            case Contenedor.CANTERA:
                 System.out.println("Has recolectado " + recolectando + " unidades de piedra");
                 for (int i = 0; i < this.getPersonajes().size(); i++) {
                     if (recolectando == 0) {

@@ -1,7 +1,7 @@
 package ageofbrawls.plataforma;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
@@ -277,7 +277,7 @@ public class Juego implements Comando {
             Edificio edificio = activa.getEdificios().get(sujeto);
             edificio.describirEdificio();
         } else if (activa.getContenedoresRecurso().containsKey(sujeto)) {
-            ContenedorRecurso rec = activa.getContenedoresRecurso().get(sujeto);
+            Contenedor rec = activa.getContenedoresRecurso().get(sujeto);
             rec.describirContenedorRecurso();
         } else if (activa.getGrupos().containsKey(sujeto)) {
             Grupo grupo1 = activa.getGrupos().get(sujeto);

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.AccionRestringida;
+package ageofbrawls.contenido.edificio;
 
 /**
  *
  * @author Santiago
  */
-public class ExcepcionRestringidaEdificio extends ExcepcionRestringida {
+public class Ciudadela {
     
 }

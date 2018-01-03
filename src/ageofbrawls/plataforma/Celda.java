@@ -5,8 +5,8 @@
  */
 package ageofbrawls.plataforma;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
@@ -21,7 +21,7 @@ public class Celda {
 
     public static final int PRADERA = 0;
     private Edificio edificio;
-    private ContenedorRecurso recurso;
+    private Contenedor contenedor;
     private Posicion posicion;
     private boolean haygrupo;
     private ArrayList<Personaje> personajes;
@@ -39,9 +39,9 @@ public class Celda {
             this.edificio = new Edificio(edificio, posicion, nombreEdificio, civilizacion);//valida o edificio e o string
         }
         if (tipo == PRADERA) {
-            recurso = null;
+            contenedor.setRecurso(null);
         } else {
-            recurso = new ContenedorRecurso(tipo, cantidadRecurso);//valida tipo e cantRecurso
+            contenedor = new Contenedor(recurso, cantidadRecurso);//valida tipo e cantRecurso
         }
         personajes = new ArrayList<>();
         grupos = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Celda {
         this(PRADERA, 0, 0, new Posicion(i, j), null, null);
     }
 
-    public ContenedorRecurso getContenedorRec() {
+    public Contenedor getContenedorRec() {
         return recurso;
     }
 
@@ -93,7 +93,7 @@ public class Celda {
             recurso = null;
         } else {
             if (recurso == null) {
-                recurso = new ContenedorRecurso(tipo, 0);
+                recurso = new Contenedor(tipo, 0);
             } else {
                 recurso.setTipo(tipo);
             }
@@ -105,7 +105,7 @@ public class Celda {
             recurso = null;
         } else {
             if (recurso == null) {
-                recurso = new ContenedorRecurso(tipo, cantidad);
+                recurso = new Contenedor(tipo, cantidad);
             } else {
                 recurso.set(tipo, cantidad);
             }
@@ -156,11 +156,11 @@ public class Celda {
             return "pradera";
         }
         switch (this.recurso.getTipo()) {
-            case ContenedorRecurso.BOSQUE:
+            case Contenedor.BOSQUE:
                 return "bosque";
-            case ContenedorRecurso.CANTERA:
+            case Contenedor.CANTERA:
                 return "cantera";
-            case ContenedorRecurso.ARBUSTO:
+            case Contenedor.ARBUSTO:
                 return "arbusto";
             default:
                 return null;
@@ -294,11 +294,11 @@ public class Celda {
             }
         }
         switch (this.recurso.getTipo()) {
-            case ContenedorRecurso.BOSQUE:
+            case Contenedor.BOSQUE:
                 return Mapa.ANSI_CYAN_BACKGROUND + " B ";
-            case ContenedorRecurso.CANTERA:
+            case Contenedor.CANTERA:
                 return Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C ";
-            case ContenedorRecurso.ARBUSTO:
+            case Contenedor.ARBUSTO:
                 return Mapa.ANSI_YELLOW_BACKGROUND + " A ";
             default:
                 return " ";

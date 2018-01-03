@@ -10,9 +10,16 @@ package ageofbrawls.contenido.Recursos;
  * @author Santiago
  */
 public final class Comida extends Recurso {
+
+    public Comida(int cantidad) {
+        super(cantidad);
+    }
     
-    public Comida(int tipoRecurso, int cantidad) {
-        super(tipoRecurso, cantidad);
+    
+    
+    @Override
+    public String toString() {
+        return "comida";
     }
     
 }

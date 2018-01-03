@@ -5,7 +5,7 @@
  */
 package ageofbrawls.contenido.Personajes;
 
-import ageofbrawls.contenido.ContenedorRecurso;
+import ageofbrawls.contenido.contenedor.Contenedor;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
@@ -93,7 +93,7 @@ public class Paisano extends Personaje {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
-        ContenedorRecurso contenedor = mapa.getCelda(pos).getContenedorRec();
+        Contenedor contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             return;
         }
@@ -118,15 +118,15 @@ public class Paisano extends Personaje {
             mapa.imprimir(civilizacion);
         }
         switch (tipoC) {
-            case ContenedorRecurso.BOSQUE:
+            case Contenedor.BOSQUE:
                 System.out.println("Has recolectado " + recolectando + " unidades de madera");
                 setCantRecMadera(getCantRecMadera() + recolectando);
                 break;
-            case ContenedorRecurso.ARBUSTO:
+            case Contenedor.ARBUSTO:
                 System.out.println("Has recolectado " + recolectando + " unidades de comida");
                 setCantRecComida(getCantRecComida() + recolectando);
                 break;
-            case ContenedorRecurso.CANTERA:
+            case Contenedor.CANTERA:
                 System.out.println("Has recolectado " + recolectando + " unidades de piedra");
                 setCantRecPiedra(getCantRecPiedra() + recolectando);
                 break;

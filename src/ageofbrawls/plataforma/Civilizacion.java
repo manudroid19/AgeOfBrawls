@@ -5,8 +5,8 @@
  */
 package ageofbrawls.plataforma;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
@@ -25,7 +25,7 @@ public class Civilizacion {
 
     private HashMap<String, Personaje> personajes;
     private HashMap<String, Edificio> edificios;
-    private HashMap<String, ContenedorRecurso> recursosVisibles;
+    private HashMap<String, Contenedor> recursosVisibles;
     private HashMap<String, Grupo> grupos;
     private ArrayList<ArrayList<Boolean>> oculto;
     private String nombre;
@@ -106,18 +106,18 @@ public class Civilizacion {
 
     public int getContador(int tipo) {
         switch (tipo) {
-            case ContenedorRecurso.BOSQUE:
+            case Contenedor.BOSQUE:
                 return bosques++;
-            case ContenedorRecurso.CANTERA:
+            case Contenedor.CANTERA:
                 return canteras++;
-            case ContenedorRecurso.ARBUSTO:
+            case Contenedor.ARBUSTO:
                 return arbustos++;
             default:
                 return -1;
         }
     }
 
-    public HashMap<String, ContenedorRecurso> getContenedoresRecurso() {
+    public HashMap<String, Contenedor> getContenedoresRecurso() {
         return recursosVisibles;
     }
 

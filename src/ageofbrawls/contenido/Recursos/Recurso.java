@@ -9,29 +9,18 @@ package ageofbrawls.contenido.Recursos;
  *
  * @author Santiago
  */
-public class Recurso {
+public abstract class Recurso {
 
-    public final static int MADERA = 1;
-    public final static int PIEDRA = 2;
-    public final static int COMIDA = 3;
-    private int tipoRecurso;
     private int cantidad;
-    
-    public Recurso(){
-        
-    }
-    
-    public Recurso(int tipoRecurso,int cantidad){
-       if ((tipoRecurso > 0 && tipoRecurso <= 3) && cantidad>=0) {
-            this.tipoRecurso = tipoRecurso;
-            this.cantidad=cantidad;
+
+    public Recurso(int cantidad) {
+        if (cantidad >= 0) {
+
+            this.cantidad = cantidad;
+        } else {
+            this.cantidad = 0;
         }
-       else if((tipoRecurso > 0 && tipoRecurso <= 3) && cantidad<0) {
-            this.tipoRecurso = tipoRecurso;
-        }
-       else
-            System.out.println("Tipo de recurso no válido");
-       
+
     }
 
     public int getCantidad() {
@@ -46,18 +35,10 @@ public class Recurso {
         }
     }
 
-    public int getTipoRecurso() {
-        return tipoRecurso;
-    }
 
-    public void setTipoRecurso(int tipoRecurso) {
-        if (tipoRecurso > 0 && tipoRecurso <= 3) {
-            this.tipoRecurso = tipoRecurso;
-        } else {
-            System.out.println("Tipo de recurso no válido");
-            
-        }
-        
+@Override
+        public String toString() {
+        return "recurso";
     }
 
 }

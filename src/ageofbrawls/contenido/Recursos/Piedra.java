@@ -10,9 +10,16 @@ package ageofbrawls.contenido.Recursos;
  * @author Santiago
  */
 public final class Piedra extends Recurso {
+
+    public Piedra(int cantidad) {
+        super(cantidad);
+    }
     
-    public Piedra(int tipoRecurso, int cantidad) {
-        super(tipoRecurso, cantidad);
+    
+    
+    @Override
+    public String toString() {
+        return "piedra";
     }
     
 }

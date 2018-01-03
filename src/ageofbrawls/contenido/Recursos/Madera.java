@@ -10,9 +10,16 @@ package ageofbrawls.contenido.Recursos;
  * @author Santiago
  */
 public final class Madera extends Recurso {
+
+    public Madera(int cantidad) {
+        super(cantidad);
+    }
     
-    public Madera(int tipoRecurso, int cantidad) {
-        super(tipoRecurso, cantidad);
+    
+    
+    @Override
+    public String toString() {
+        return "madera";
     }
     
 }

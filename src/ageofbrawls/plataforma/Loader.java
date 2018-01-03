@@ -1,7 +1,7 @@
 package ageofbrawls.plataforma;
 
-import ageofbrawls.contenido.ContenedorRecurso;
-import ageofbrawls.contenido.Edificio;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
@@ -91,13 +91,13 @@ public class Loader {
             } else {
                 switch (linea[1].toLowerCase()) {
                     case "bosque":
-                        crearRecurso(pos, ContenedorRecurso.BOSQUE, linea[2], Integer.parseInt(linea[3]));
+                        crearRecurso(pos, Contenedor.BOSQUE, linea[2], Integer.parseInt(linea[3]));
                         break;
                     case "arbusto":
-                        crearRecurso(pos, ContenedorRecurso.ARBUSTO, linea[2], Integer.parseInt(linea[3]));
+                        crearRecurso(pos, Contenedor.ARBUSTO, linea[2], Integer.parseInt(linea[3]));
                         break;
                     case "cantera":
-                        crearRecurso(pos, ContenedorRecurso.CANTERA, linea[2], Integer.parseInt(linea[3]));
+                        crearRecurso(pos, Contenedor.CANTERA, linea[2], Integer.parseInt(linea[3]));
                         break;
                 }
             }
