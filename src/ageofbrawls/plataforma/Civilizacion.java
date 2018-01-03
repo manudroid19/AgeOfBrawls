@@ -33,7 +33,7 @@ public class Civilizacion {
     private int bosques = 1, arbustos = 1, canteras = 1; //contadores
     private int madera, piedra, alimentos;
     private int capAlmacen, contCiudadelas=0;
-    public final static int CAPALMACEN = 550;
+    public final static int CAPALMACEN = 3000;
 
     public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
         edificios = new HashMap<>();
