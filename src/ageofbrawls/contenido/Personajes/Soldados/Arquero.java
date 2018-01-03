@@ -13,7 +13,7 @@ import ageofbrawls.plataforma.Posicion;
  *
  * @author mprad
  */
-public class Arquero extends Soldado {
+public final class Arquero extends Soldado {
 
     public Arquero(Posicion posicion, String nombre, Civilizacion civilizacion) {
         super(posicion, nombre, civilizacion);

@@ -58,7 +58,7 @@ public class Loader {
                 if (celda.getContenedorRec() == null) {
                     a = "";
                 } else {
-                    a = celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getCantidad();
+                    a = celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getRecurso().getCantidad();
                 }
                 lineas.add(celda.getPosicion().getX() + "," + celda.getPosicion().getY() + ";" + celda.leerTipoCont() + ";" + a);
             }

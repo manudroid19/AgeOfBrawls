@@ -5,6 +5,8 @@
  */
 package ageofbrawls.contenido;
 
+import ageofbrawls.contenido.Recursos.Recurso;
+
 /**
  *
  * @author mprad
@@ -14,17 +16,18 @@ public class ContenedorRecurso {
     public final static int BOSQUE = 1;
     public final static int CANTERA = 2;
     public final static int ARBUSTO = 3;
+    private Recurso recurso;
     private int tipo;
-    private int cantidad;
     private String nombre;
-    
+
     public ContenedorRecurso(int tipo, int cantidad) {
+        recurso= new Recurso();
         if (tipo >= 0 && tipo <= 3) {
             this.tipo = tipo;
             if (this.tipo != 0 && cantidad >= 0) {
-                this.cantidad = cantidad;
+                this.recurso.setCantidad(cantidad);
             } else {
-                this.cantidad = 0;
+                this.recurso.setCantidad(cantidad);
             }
         } else {
             System.out.println("Error: tipo de CR no valido.");
@@ -35,13 +38,19 @@ public class ContenedorRecurso {
         return this.tipo;
     }
 
-    public int getCantidad() {
-        return this.cantidad;
+    public String getNombre() {
+        if (nombre == null) {
+            return "";
+        }
+        return nombre;
     }
 
-    public String getNombre() {
-        if(nombre==null) return "";
-        return nombre;
+    public Recurso getRecurso() {
+        if (recurso != null) {
+            return recurso;
+        } else {
+            return null;
+        }
     }
 
     public void setTipo(int tipo) {
@@ -50,19 +59,6 @@ public class ContenedorRecurso {
         } else {
             System.out.println("Error: El tipo introducido no es válido");
         }
-
-    }
-
-    public void setCantidad(int cantidad) {
-        if (cantidad >= 0) {
-            this.cantidad = cantidad;
-//            if (this.cantidad == 0) {
-//                this.tipo = PRADERA;
-//            }
-        } else {
-            System.out.println("Error: Cantidad introducida no es válida");
-        }
-
     }
 
     public void setNombre(String nombre) {
@@ -71,13 +67,19 @@ public class ContenedorRecurso {
         }
     }
 
+    public void setRecurso(Recurso recurso) {
+        if (recurso != null) {
+            this.recurso = recurso;
+        }
+    }
+
     public void set(int tipo, int cantidad) {
         if (tipo >= 0 && tipo <= 3) {
             this.tipo = tipo;
             if (this.tipo != 0 && cantidad >= 0) {
-                this.cantidad = cantidad;
+                this.recurso.setCantidad(cantidad);
             } else {
-                this.cantidad = 0;
+                this.recurso.setCantidad(0);
             }
         } else {
             System.out.println("Error: tipo de CR no valido.");
@@ -89,15 +91,15 @@ public class ContenedorRecurso {
         switch (tipo) {
             case ContenedorRecurso.BOSQUE:
                 System.out.println("Contenedor de recurso");
-                System.out.println("Cantidad de madera: " + cantidad);
+                System.out.println("Cantidad de madera: " + this.recurso.getCantidad());
                 break;
             case ContenedorRecurso.CANTERA:
                 System.out.println("Contenedor de recurso");
-                System.out.println("Cantidad de piedra: " + cantidad);
+                System.out.println("Cantidad de piedra: " + this.recurso.getCantidad());
                 break;
             case ContenedorRecurso.ARBUSTO:
                 System.out.println("Contenedor de recurso");
-                System.out.println("Cantidad de comida: " + cantidad);
+                System.out.println("Cantidad de comida: " + this.recurso.getCantidad());
                 break;
         }
 

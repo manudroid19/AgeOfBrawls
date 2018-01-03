@@ -280,11 +280,11 @@ public class Grupo extends Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getCantidad()), tipoC = contenedor.getTipo();
-        if (contenedor.getCantidad() - recolectando == 0) {
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad()), tipoC = contenedor.getTipo();
+        if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).setTipoCont(Celda.PRADERA);
         }
-        contenedor.setCantidad(contenedor.getCantidad() - recolectando);
+        contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
