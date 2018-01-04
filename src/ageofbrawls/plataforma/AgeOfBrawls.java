@@ -13,7 +13,7 @@ public class AgeOfBrawls {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ExcepcionJuego {
+    public static void main(String[] args) {
 
         Comando comando = (Comando) new Juego();
 
