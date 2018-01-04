@@ -284,6 +284,7 @@ public abstract class Personaje {
             throw new ExcepcionDireccionNoValida("Error: No se puede construir en la celda de destino.");
             
         }
+        civilizacion.makeAdyVisible(posConstruir);
         switch (tipo) {
             case "casa":
                 if (civilizacion.getMadera() < 100 || civilizacion.getPiedra() < 100) {
@@ -294,10 +295,12 @@ public abstract class Personaje {
                 civilizacion.setMadera(-100, true);
                 Casa edif = new Casa(posConstruir, "casa" + (civilizacion.contarEdificios(Casa.class) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
+                
                 System.out.println();
                 civilizacion.getEdificios().put(edif.getNombre(), edif);
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
+                
                 Juego.CONSOLA.imprimir("Casa construida en " + posConstruir);
                 Juego.CONSOLA.imprimir("Coste: 100 de madera, 100 de piedra.");
                 break;
