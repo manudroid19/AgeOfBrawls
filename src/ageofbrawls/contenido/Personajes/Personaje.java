@@ -396,7 +396,7 @@ public abstract class Personaje {
             }
         }
         int PuntosAQuitarACadaUno;
-        if (atacados.isEmpty()) {
+        if (atacados.isEmpty() && civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             PuntosAQuitarACadaUno = 0;
             throw new ExcepcionAccionRestringidaPersonaje("No se puede atacar a personajes de la misma civilizacion");
         } else {
@@ -453,7 +453,7 @@ public abstract class Personaje {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar desde un edificio");
             
         }
-        if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela) && mapa.getCelda(posicion).getEdificio().getCivilizacion()!= this.civilizacion) {
+        if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela) || mapa.getCelda(posicion).getEdificio().getCivilizacion() != this.civilizacion) {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar recursos en esa celda");
             
         }
