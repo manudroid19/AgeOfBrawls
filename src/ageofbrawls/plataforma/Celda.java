@@ -273,13 +273,13 @@ public class Celda {
             if (this.edificio == null) {
                 return Mapa.ANSI_GREEN_BACKGROUND + "   ";
             } else if (this.edificio instanceof Ciudadela) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+                return Mapa.ANSI_PURPLE_BACKGROUND + " U ";
 
             } else if (this.edificio instanceof Casa) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+                return Mapa.ANSI_PURPLE_BACKGROUND + " K ";
 
             } else if (this.edificio instanceof Cuartel) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
+                return Mapa.ANSI_PURPLE_BACKGROUND + " Z ";
             }
         }
         if (contenedor instanceof Bosque) {

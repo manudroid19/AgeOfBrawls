@@ -394,6 +394,7 @@ public abstract class Personaje {
         int PuntosAQuitarACadaUno;
         if (atacados.isEmpty()) {
             PuntosAQuitarACadaUno = 0;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede atacar a personajes de la misma civilizacion");
         } else {
             PuntosAQuitarACadaUno = (int) (PuntosAQuitar / atacados.size());
         }
