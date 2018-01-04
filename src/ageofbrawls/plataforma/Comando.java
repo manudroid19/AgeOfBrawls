@@ -28,7 +28,7 @@ public interface Comando {
     public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
     public void civilizacion();
     public void construir(String constructor, String tipo, String dir) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos;
-    public void crear(String edificio,String tipo) throws ExcepcionNoExisteEdificio,EscasezRecursosCreacion,ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente;
+    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos;
     public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
     public void desagrupar(String grupo) throws ExcepcionNoExisteGrupo, ExcepcionAccionRestringidaPersonaje;
     public void describir(String sujeto) throws ExcepcionNoExisteSujeto;
@@ -41,7 +41,7 @@ public interface Comando {
     public void listarGrupos();
     public void listarPersonajes();
     public void manejar(String quien) throws ExcepcionNoExisteSujeto,  ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
-    public void mirar(String donde) throws ExcepcionNoExistePosicion;
+    public void mirar(String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
     public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites, ExcepcionNadaQueRecolectar;
     public void recolectar(String recolector, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
     public void reparar(String reparador, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida, ExcepcionEscasezRecursos;

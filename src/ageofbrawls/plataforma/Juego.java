@@ -7,12 +7,15 @@ import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringida;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
+import ageofbrawls.z.excepciones.Sintaxis.ExcepcionComando;
 import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -84,7 +87,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void defender(String defensor, String direccion) throws ExcepcionArgumentosInternos {
+    public void defender(String defensor, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos {
         if (activa.getPersonajes().containsKey(defensor)) {
             Personaje personaje2 = activa.getPersonajes().get(defensor);
             personaje2.defender(direccion);
@@ -92,34 +95,33 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(defensor);
             grupo1.defender(direccion);
         } else {
-            Juego.CONSOLA.imprimir("Error: sujeto a defender no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a defender no encontrado.");
         }
 
     }
 
     @Override
-    public void desagrupar(String grupo) throws ExcepcionAccionRestringidaPersonaje {
+    public void desagrupar(String grupo) throws ExcepcionAccionRestringidaPersonaje, ExcepcionNoExisteGrupo {
         if (!activa.getGrupos().containsKey(grupo)) {
-            Juego.CONSOLA.imprimir("El grupo no existe");
-            return;
+            throw new ExcepcionNoExisteGrupo("El grupo no existe");
         }
         activa.getGrupos().get(grupo).desagrupar();
     }
 
     @Override
-    public void desligar(String desligado, String grupo) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void desligar(String desligado, String grupo) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExisteGrupo, ExcepcionNoExistePersonaje {
         if (!activa.getGrupos().containsKey(grupo)) {
-            Juego.CONSOLA.imprimir("El grupo no existe");
-            return;
+            throw new ExcepcionNoExisteGrupo("El grupo no existe");
+            
         }
         if (!activa.getPersonajes().containsKey(desligado)) {
-            Juego.CONSOLA.imprimir("El personaje no existe");
-            return;
+           throw new ExcepcionNoExistePersonaje("El personaje no existe");
+            
         }
         Personaje pers = activa.getPersonajes().get(desligado);
         if (!activa.getGrupos().get(grupo).getPersonajes().contains(pers)) {
-            Juego.CONSOLA.imprimir("El personaje no pertenece a este grupo");
-            return;
+            throw new ExcepcionNoExisteGrupo("El personaje no pertenece a este grupo");
+            
         }
         activa.getGrupos().get(grupo).desligar(pers);
     }
@@ -128,22 +130,22 @@ public class Juego implements Comando {
     public void agrupar(String donde) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Posicion posAgrupar = new Posicion(donde);
         if (posAgrupar.getX() == -1) {
-            Juego.CONSOLA.imprimir("Error de sintaxis.");
-            return;
+            throw new ExcepcionArgumentosInternos("Error de sintaxis.");
+            
         }
         Celda celda1 = mapa.getCelda(posAgrupar);
         if (celda1 == null || celda1.isOculto(activa)) {
-            Juego.CONSOLA.imprimir("Esta celda no existe o aun no es visible!");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("Esta celda no existe o aun no es visible!");
+            
         }
         celda1.agrupar(activa);
     }
 
     @Override
-    public void manejar(String quien) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+    public void manejar(String quien) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto {
         if (!activa.getPersonajes().containsKey(quien) && !activa.getGrupos().containsKey(quien)) {
-            Juego.CONSOLA.imprimir("El personaje/grupo no existe");
-            return;
+            throw new ExcepcionNoExisteSujeto("El personaje/grupo no existe");
+            
         }
         Juego.CONSOLA.imprimir("Pulsa q para salir de este modo, a,s d, y w para desplazarte.");
         String tecla = "";
@@ -175,7 +177,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void almacenar(String almacenador, String direccion) {
+    public void almacenar(String almacenador, String direccion) throws ExcepcionNoExisteSujeto{
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
             ((Paisano) personaje2).almacenar(direccion);
@@ -183,12 +185,12 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(almacenador);
             grupo1.almacenar(direccion);
         } else {
-            Juego.CONSOLA.imprimir("Error: almacenador no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: almacenador no encontrado.");
         }
     }
 
     @Override
-    public void recolectar(String persona, String direccion) throws ExcepcionArgumentosInternos {
+    public void recolectar(String persona, String direccion) throws ExcepcionNoExisteSujeto,ExcepcionArgumentosInternos {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
             ((Paisano) personaje2).recolectar(direccion);
@@ -196,22 +198,22 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(persona);
             grupo1.recolectar(direccion);
         } else {
-            Juego.CONSOLA.imprimir("Error: sujeto a moverse no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a moverse no encontrado.");
         }
     }
 
     @Override
-    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
+    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos{
         Edificio creador = activa.getEdificios().get(edificio);
         if (creador == null || (creador instanceof Cuartel && !tipo.equals("soldado")) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
-            Juego.CONSOLA.imprimir("Comando erroneo. No se puede crear.");
-            return;
+            throw new ExcepcionArgumentosInternos("Comando erroneo. No se puede crear.");
+            
         }
         creador.crearPersonaje();
     }
 
     @Override
-    public void reparar(String reparador, String dir) {
+    public void reparar(String reparador, String dir) throws ExcepcionNoExisteSujeto {
         if (activa.getPersonajes().containsKey(reparador)) {
             Personaje personaje2 = activa.getPersonajes().get(reparador);
             ((Paisano) personaje2).reparar(personaje2.getPosicion().getAdy(dir));
@@ -219,12 +221,12 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(reparador);
             grupo1.reparar(grupo1.getPosicion().getAdy(dir));
         } else {
-            Juego.CONSOLA.imprimir("Error: reparador no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: reparador no encontrado.");
         }
     }
 
     @Override
-    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos {
+    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
             personaje1.construir(tipo, dir);
@@ -232,21 +234,21 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(constructor);
             grupo1.construir(tipo, dir);
         } else {
-            Juego.CONSOLA.imprimir("Error: constructor no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: constructor no encontrado.");
         }
     }
 
     @Override
-    public void mirar(String donde) {
+    public void mirar(String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
         Posicion posMirar = new Posicion(donde);
         if (posMirar.getX() == -1) {
-            Juego.CONSOLA.imprimir("Error de sintaxis.");
-            return;
+            throw new ExcepcionArgumentosInternos("Error de sintaxis.");
+            
         }
         Celda celda = mapa.getCelda(posMirar);
         if (celda == null || celda.isOculto(activa)) {
-            Juego.CONSOLA.imprimir("Esta celda no existe o aun no es visible!");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("Esta celda no existe o aun no es visible!");
+            
         }
         Juego.CONSOLA.imprimir("Celda de tipo " + celda.leerTipoCont());
         if (celda.getEdificio() != null) {
@@ -270,7 +272,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void describir(String sujeto) {
+    public void describir(String sujeto) throws ExcepcionNoExisteSujeto {
         if (activa.getPersonajes().containsKey(sujeto)) {
             Personaje personaje1 = activa.getPersonajes().get(sujeto);
             personaje1.describir();
@@ -284,7 +286,7 @@ public class Juego implements Comando {
             Grupo grupo1 = activa.getGrupos().get(sujeto);
             grupo1.describir();
         } else {
-            Juego.CONSOLA.imprimir("Error: sujeto a describir no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a describir no encontrado.");
         }
     }
 
@@ -309,13 +311,13 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void mover(String quien, String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+    public void mover(String quien, String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto {
         Personaje personaje = activa.getPersonajes().get(quien);
         if (personaje == null) {
             Grupo grupo = activa.getGrupos().get(quien);
             if (grupo == null) {
-                Juego.CONSOLA.imprimir("El personaje o grupo no existe");
-                return;
+                throw new ExcepcionNoExisteSujeto("El personaje o grupo no existe");
+                
             }
             grupo.mover(donde);
         } else {
