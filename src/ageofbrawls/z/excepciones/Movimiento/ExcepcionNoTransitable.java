@@ -11,4 +11,8 @@ package ageofbrawls.z.excepciones.Movimiento;
  */
 public class ExcepcionNoTransitable extends ExcepcionMovimiento {
     
+    public ExcepcionNoTransitable(String mensaje) {
+        super(mensaje);
+    }
+    
 }

@@ -61,7 +61,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void cargar(String ruta) throws ExcepcionNoExisteArchivo {
+    public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
             Loader loader = new Loader(mapa, ruta);
             activa = mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);
             mapa.imprimirCabecera();

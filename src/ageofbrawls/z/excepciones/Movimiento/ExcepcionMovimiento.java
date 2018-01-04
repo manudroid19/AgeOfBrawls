@@ -5,10 +5,16 @@
  */
 package ageofbrawls.z.excepciones.Movimiento;
 
+import ageofbrawls.z.excepciones.ExcepcionJuego;
+
 /**
  *
  * @author Santiago
  */
-public class ExcepcionMovimiento extends Exception {
+public class ExcepcionMovimiento extends ExcepcionJuego {
+    
+    public ExcepcionMovimiento(String mensaje) {
+        super(mensaje);
+    }
     
 }

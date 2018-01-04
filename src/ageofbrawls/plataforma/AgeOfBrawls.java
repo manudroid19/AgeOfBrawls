@@ -1,5 +1,7 @@
 package ageofbrawls.plataforma;
 
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.ExcepcionJuego;
 import java.util.Scanner;
 
 /**

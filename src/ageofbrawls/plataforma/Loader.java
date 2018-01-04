@@ -38,7 +38,7 @@ public class Loader {
 
     Mapa mapa;
 
-    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos {
+    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
         this.mapa = mapa;
         this.mapa.clear();
         String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
@@ -94,7 +94,7 @@ public class Loader {
 
     }
 
-    private void cargarMapa(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo {
+    private void cargarMapa(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo, ExcepcionCorrespondenciaRecursos {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -121,7 +121,7 @@ public class Loader {
         }
     }
 
-    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo {
+    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");

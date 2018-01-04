@@ -13,6 +13,7 @@ import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecole
 import ageofbrawls.z.excepciones.Movimiento.*;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.*;
 
 /**
@@ -24,7 +25,7 @@ public interface Comando {
     public void almacenar(String personaje,String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida;
     public void atacar(String personaje,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje;
     public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion;
-    public void cargar(String ruta) throws ExcepcionNoExisteArchivo;
+    public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
     public void civilizacion();
     public void construir(String constructor, String tipo, String dir) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos;
     public void crear(String edificio,String tipo) throws ExcepcionNoExisteEdificio,EscasezRecursosCreacion,ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente;

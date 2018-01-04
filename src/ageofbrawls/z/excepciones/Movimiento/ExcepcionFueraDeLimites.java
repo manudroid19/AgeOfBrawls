@@ -11,4 +11,8 @@ package ageofbrawls.z.excepciones.Movimiento;
  */
 public class ExcepcionFueraDeLimites extends ExcepcionMovimiento {
     
+    public ExcepcionFueraDeLimites(String mensaje) {
+        super(mensaje);
+    }
+    
 }
