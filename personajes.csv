@@ -1,3 +1,4 @@
-3,6;paisano;paisano1;0;100;50;50;;Romana
-0,2;soldado;soldado1;70;200;100;-1;;Romana
-0,1;paisano;paisano1;0;100;50;50;;Griega
+3,6;paisano;paisano1;0;100;50;50;;Breton
+1,1;soldado;soldado1;70;200;100;-1;;Breton
+2,0;paisano;paisano2;0;100;50;50;grupo1;Sajon
+2,0;paisano;paisano1;0;100;50;50;grupo1;Sajon
