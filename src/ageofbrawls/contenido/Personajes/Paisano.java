@@ -16,7 +16,11 @@ import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +32,7 @@ public class Paisano extends Personaje {
 
     int capRec, cantRecMadera, cantRecPiedra, cantRecComida;
 
-    public Paisano(Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Paisano(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         super(posicion, nombre, civilizacion, 100, 50);
         capRec = 50;
     }
@@ -152,7 +156,7 @@ public class Paisano extends Personaje {
         }
     }
 
-    public void almacenar(String direccion) {
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         if (getGrupo() != null) {
             System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
             return;
@@ -176,7 +180,7 @@ public class Paisano extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;
@@ -189,7 +193,7 @@ public class Paisano extends Personaje {
         construirGenerico(tipoC, dir);
     }
 
-    public void recuperarVida() {
+    public void recuperarVida() throws ExcepcionArgumentosInternos {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 50 - this.getSalud();
         if (puntosARecuperar == 0) {
@@ -208,10 +212,10 @@ public class Paisano extends Personaje {
         System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
     }
 
-    public void reparar(Posicion pos) {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         if (getGrupo() != null) {
-            System.out.println("El personaje no puede reparar por si solo ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede reparar por si solo ya que pertenece a un grupo");
+            
         }
         repararGenerico(pos);
     }
@@ -222,7 +226,7 @@ public class Paisano extends Personaje {
     }
 
     @Override
-    public void recuperar() {
+    public void recuperar() throws ExcepcionArgumentosInternos {
         super.setSalud(50, false);
     }
 }
