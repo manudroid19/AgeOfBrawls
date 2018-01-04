@@ -30,7 +30,7 @@ public interface Comando {
     public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
     public void civilizacion();
     public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos,ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaGrupo, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion;
-    public void crear(String edificio, String tipo) throws ExcepcionArgumentosValoresIncorrectos,ExcepcionNoExisteEdificio,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos;
+    public void crear(String edificio, String tipo) throws ExcepcionNoExisteMapa, ExcepcionArgumentosValoresIncorrectos,ExcepcionNoExisteEdificio,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos;
     public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente;
     public void desagrupar(String grupo) throws ExcepcionNoExisteGrupo, ExcepcionAccionRestringidaPersonaje;
     public void describir(String sujeto) throws ExcepcionNoExisteSujeto;

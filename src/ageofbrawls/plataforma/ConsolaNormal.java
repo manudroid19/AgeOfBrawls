@@ -17,19 +17,19 @@ public class ConsolaNormal implements Consola {
         sca=new Scanner(System.in);
     }
 
-    @Override
+        @Override
     public void imprimir(String mensaje) {
-        Juego.CONSOLA.imprimir(mensaje);
+        System.out.println(mensaje);
     }
 
     @Override
     public void imprimir() {
-        Juego.CONSOLA.imprimir();
+        System.out.println();
     }
 
     @Override
     public String leer(String descripcion) {
-        Juego.CONSOLA.imprimir(descripcion);
+        System.out.println(descripcion);
         return sca.nextLine();
     }
 
@@ -48,5 +48,6 @@ public class ConsolaNormal implements Consola {
     public String leer() {
         return sca.nextLine();
     }
+
 
 }

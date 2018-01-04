@@ -209,7 +209,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void crear(String edificio, String tipo) throws ExcepcionNoExisteEdificio,ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
+    public void crear(String edificio, String tipo) throws ExcepcionNoExisteEdificio,ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos, ExcepcionNoExisteMapa{
         Edificio creador = activa.getEdificios().get(edificio);
         if(creador==null){
             throw new ExcepcionNoExisteEdificio("El edificio "+edificio+" no existe.");

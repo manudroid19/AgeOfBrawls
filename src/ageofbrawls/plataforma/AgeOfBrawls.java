@@ -23,6 +23,8 @@ import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteSujeto;
 import java.util.Scanner;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteEdificio;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import static java.lang.System.exit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,10 +51,10 @@ public class AgeOfBrawls {
         Comando comando=null;
         try {
             comando = cargador.cargarJuego();
-        } catch (ExcepcionNoExisteArchivo | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
+        } catch (ExcepcionDireccionNoValida | ExcepcionNoExistePosicion | ExcepcionNoExisteMapa | ExcepcionNoExisteCivilizacion  | ExcepcionNoExisteArchivo | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
             Juego.CONSOLA.imprimir(ex.getMensaje());
             exit(0);
-        }
+        } 
 
         Juego.CONSOLA.imprimir("Bienvenido a Age Of Brawls!!");
         Juego.CONSOLA.imprimir("Por ahora es un vasto territorio inexplorado que solo habita tu fiel paisano \"paisano1\" desde su bastión \"ciudadela1\".");
@@ -145,6 +147,8 @@ public class AgeOfBrawls {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 } catch (ExcepcionAccionRestringidaGrupo ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionArgumentosValoresIncorrectos ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
                     break;
@@ -165,6 +169,10 @@ public class AgeOfBrawls {
                 } catch (ExcepcionAccionRestringidaPersonaje ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 } catch (ExcepcionAccionRestringidaGrupo ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionArgumentosValoresIncorrectos ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionDireccionNoValida ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
@@ -187,6 +195,12 @@ public class AgeOfBrawls {
                 } catch (ExcepcionNoExistePosicion ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 } catch (ExcepcionArgumentosInternos ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionNoExisteMapa ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionArgumentosValoresIncorrectos ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionNoExisteEdificio ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
@@ -358,6 +372,8 @@ public class AgeOfBrawls {
                 } catch (ExcepcionEspacioInsuficiente ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 } catch (ExcepcionAccionRestringidaGrupo ex) {
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
+                } catch (ExcepcionArgumentosValoresIncorrectos ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
