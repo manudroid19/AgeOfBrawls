@@ -16,6 +16,9 @@ import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -138,7 +141,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void setPosicion(Posicion posicion) {
+    public void setPosicion(Posicion posicion) throws ExcepcionArgumentosInternos {
         super.setPosicion(posicion);
         actualizarPosiciones();
     }
@@ -342,7 +345,7 @@ public class Grupo extends Personaje {
         }
     }
 
-    public void almacenar(String direccion) {
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         if (this.haySoldado) {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
             return;
@@ -351,7 +354,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;
@@ -364,7 +367,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void reparar(Posicion pos) {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         if (this.haySoldado) {
             System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
             return;
@@ -373,7 +376,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void defender(String direccion) throws ExcepcionArgumentosInternos {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
@@ -405,7 +408,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (!this.haySoldado) {
             System.out.println("El grupo no tiene soldados y no puede atacar");
             return;
@@ -413,7 +416,7 @@ public class Grupo extends Personaje {
         atacarGenerico(direccion);
     }
 
-    private void actualizarPosiciones() {
+    private void actualizarPosiciones() throws ExcepcionArgumentosInternos {
         for (Personaje p : personajes) {
             p.setPosicion(super.getPosicion());
         }

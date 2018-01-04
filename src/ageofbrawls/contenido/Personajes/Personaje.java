@@ -10,10 +10,15 @@ import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
 import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,7 +35,7 @@ public abstract class Personaje {
     private String nombre;
     private Grupo grupo;
 
-    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         if (posicion != null && nombre != null) {
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
@@ -40,11 +45,11 @@ public abstract class Personaje {
             defensa = 10;
             muerto = false;
         } else {
-            System.out.println("Error seteando tipo");
+            throw new ExcepcionArgumentosInternos("Error seteando personaje");
         }
     }
 
-    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion, int defensa, int salud) {
+    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion, int defensa, int salud) throws ExcepcionArgumentosInternos {
         this(posicion, nombre, civilizacion);//defensa salud
         this.defensa = defensa;
         this.salud = salud;
@@ -54,7 +59,7 @@ public abstract class Personaje {
         return salud;
     }
 
-    public void setSalud(int cant, boolean relative) {
+    public void setSalud(int cant, boolean relative) throws ExcepcionArgumentosInternos {
         if (relative) {
             if (salud + cant < 0) {
                 salud = 0;
@@ -63,8 +68,8 @@ public abstract class Personaje {
             salud += cant;
         } else {
             if (salud + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosInternos("error, seteo incorrecto");
+                
             }
             salud = cant;
         }
@@ -110,11 +115,11 @@ public abstract class Personaje {
         return posicion;
     }
 
-    public void setPosicion(Posicion posicion) {
+    public void setPosicion(Posicion posicion) throws ExcepcionArgumentosInternos {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
         } else {
-            System.out.println("Error: posicion introducida errónea");
+            throw new ExcepcionArgumentosInternos("Error: posicion introducida errónea");
         }
     }
 
@@ -135,11 +140,11 @@ public abstract class Personaje {
     }
 
     public void describir() {
-        System.out.println("Nombre del personaje: " + nombre);
-        System.out.println("Este personaje es un " + this.toString());
-        System.out.println("Salud :" + salud);
-        System.out.println("Civilizacion: " + this.civilizacion.getNombre());
-        System.out.println("Armadura :" + defensa);
+        Juego.CONSOLA.imprimir("Nombre del personaje: " + nombre);
+        Juego.CONSOLA.imprimir("Este personaje es un " + this.toString());
+        Juego.CONSOLA.imprimir("Salud :" + salud);
+        Juego.CONSOLA.imprimir("Civilizacion: " + this.civilizacion.getNombre());
+        Juego.CONSOLA.imprimir("Armadura :" + defensa);
     }
 
     public String leerGrupo() {
@@ -171,25 +176,25 @@ public abstract class Personaje {
 
     }
 
-    public void defender(String direccion) throws ExcepcionArgumentosInternos {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
-            System.out.println("No hay edificio en la posición indicada.");
-            return;
+            throw new ExcepcionArgumentosInternos("No hay edificio en la posición indicada.");
+            
         }
         if (this.civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            System.out.println("El personaje no puede entrar en el edificio de la otra civilización");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede entrar en el edificio de la otra civilización");
+            
         }
 
         if (this.grupo != null) {
-            System.out.println("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede defender por si solo el edificio ya que pertenece a un grupo");
+            
         }
 
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() == 0) {
-            System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
-            return;
+            throw new ExcepcionEspacioInsuficiente(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
+            
         }
 
         civilizacion.getMapa().getCelda(this.posicion).removePersonaje(this);
@@ -199,7 +204,7 @@ public abstract class Personaje {
         civilizacion.getMapa().imprimir(civilizacion);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-1, true);
         this.recuperarVida();
-        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
+        Juego.CONSOLA.imprimir("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
 
     }
 
@@ -207,44 +212,45 @@ public abstract class Personaje {
         return 1;
     }
 
-    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje{
-        System.out.println("Error. No puede atacar");
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida{
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede atacar");
     }
 
-    protected void vaciarCantRecComida() {
-        System.out.println("Error");
+    protected void vaciarCantRecComida() throws ExcepcionAccionRestringidaPersonaje {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de comida");
     }
 
-    protected void vaciarCantRecPiedra() {
-        System.out.println("Error");
+    protected void vaciarCantRecPiedra() throws ExcepcionAccionRestringidaPersonaje {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de piedra");
     }
 
-    protected void vaciarCantRecMadera() {
-        System.out.println("Error");
+    protected void vaciarCantRecMadera()throws ExcepcionAccionRestringidaPersonaje {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de madera");
     }
 
-    public void recuperarVida() {
-        System.out.println("Error");
+    public void recuperarVida()throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recuperar vida");
     }
 
-    public void recuperar() {
-        System.out.println("Error");
+    public void recuperar() throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recuperar toda la vida");
     }
 
-    public void recolectar(String direccion) throws ExcepcionArgumentosInternos {
-        System.out.println("Error");
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recolectar");
     }
 
-    public void almacenar(String direccion) {
-        System.out.println("Error");
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede almacenar recursos");
     }
 
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
-        System.out.println("Error");
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede construir");
+        
     }
 
-    public void reparar(Posicion pos) {
-        System.out.println("Error");
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+        throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede reparar");
     }
 
     protected void moverGenerico(Posicion posicion, int n) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
@@ -264,21 +270,21 @@ public abstract class Personaje {
         civilizacion.makeAdyVisible(posicion);
     }
 
-    protected void construirGenerico(String tipo, String dir) throws ExcepcionArgumentosInternos {
+    protected void construirGenerico(String tipo, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion,  ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("No se puede construir desde un edificio");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede construir desde un edificio");
+            
         }
         Posicion posConstruir = posicion.getAdy(dir);
         if (posConstruir.equals(posicion) || !civilizacion.getMapa().perteneceAMapa(posConstruir) || !civilizacion.getMapa().getCelda(posConstruir).esCeldaLibre(true)) { //direccion no valida
-            System.out.println("Error: No se puede contruir en la celda de destino.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error: No se puede construir en la celda de destino.");
+            
         }
         switch (tipo) {
             case "casa":
                 if (civilizacion.getMadera() < 100 || civilizacion.getPiedra() < 100) {
-                    System.out.println("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
+                    throw new EscasezRecursosConstruccion("No se puede construir! Se necesitan 100 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
+                    
                 }
                 civilizacion.setPiedra(-100, true);
                 civilizacion.setMadera(-100, true);
@@ -288,13 +294,13 @@ public abstract class Personaje {
                 civilizacion.getEdificios().put(edif.getNombre(), edif);
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Casa construida en " + posConstruir);
-                System.out.println("Coste: 100 de madera, 100 de piedra.");
+                Juego.CONSOLA.imprimir("Casa construida en " + posConstruir);
+                Juego.CONSOLA.imprimir("Coste: 100 de madera, 100 de piedra.");
                 break;
             case "cuartel":
                 if (civilizacion.getMadera() < 200 || civilizacion.getPiedra() < 200) {
-                    System.out.println("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
+                    throw new EscasezRecursosConstruccion("No se puede construir! Se necesitan 200 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
+                    
                 }
                 civilizacion.setPiedra(-200, true);
                 civilizacion.setMadera(-200, true);
@@ -304,13 +310,13 @@ public abstract class Personaje {
                 System.out.println();
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Cuartel construido en " + posConstruir);
-                System.out.println("Coste: 200 de madera, 200 de piedra.");
+                Juego.CONSOLA.imprimir("Cuartel construido en " + posConstruir);
+                Juego.CONSOLA.imprimir("Coste: 200 de madera, 200 de piedra.");
                 break;
             case "ciudadela":
                 if (civilizacion.getMadera() < 500 || civilizacion.getPiedra() < 500) {
-                    System.out.println("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
-                    return;
+                    throw new EscasezRecursosConstruccion("No se puede construir! Se necesitan 500 de madera y piedra y tienes " + civilizacion.getMadera() + " y " + civilizacion.getPiedra());
+                    
                 }
                 civilizacion.setPiedra(-500, true);
                 civilizacion.setMadera(-500, true);
@@ -321,50 +327,50 @@ public abstract class Personaje {
                 System.out.println();
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Ciudadela construida en " + posConstruir);
-                System.out.println("Coste: 500 de madera, 500 de piedra.");
+                Juego.CONSOLA.imprimir("Ciudadela construida en " + posConstruir);
+                Juego.CONSOLA.imprimir("Coste: 500 de madera, 500 de piedra.");
                 break;
             default:
-                System.out.println("Error: tipo de construccion incorrecta.");
+                throw new ExcepcionArgumentosInternos("Error: tipo de construccion incorrecta.");
         }
     }
 
-    protected void repararGenerico(Posicion pos) {
+    protected void repararGenerico(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getSalud() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
-            System.out.println("Nada que reparar.");
-            return;
+            throw new ExcepcionArgumentosInternos("Nada que reparar.");
+            
         }
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("No se puede reparar desde un edificio");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede reparar desde un edificio");
+            
         }
         int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getSalud();
         int costeMadera = (int) (puntosAReparar * 0.4);
         int costePiedra = (int) (puntosAReparar * 0.5);
         if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {
-            System.out.println("No tienes suficientes recursos disponibles!");
-            return;
+            throw new ExcepcionEscasezRecursos("No tienes suficientes recursos disponibles!");
+            
         }
         civilizacion.setMadera(-costeMadera, true);
         civilizacion.setPiedra(-costePiedra, true);
         civilizacion.getMapa().getCelda(pos).getEdificio().reparar();
-        System.out.println("Reparación completada.");
-        System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
+        Juego.CONSOLA.imprimir("Reparación completada.");
+        Juego.CONSOLA.imprimir("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
     }
 
-    protected void atacarGenerico(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    protected void atacarGenerico(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         Posicion pos = posicion.getAdy(direccion);
         if (pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos)) {
-            System.out.println("No se puede atacar a esa posición.");
-            //return;
+            throw new ExcepcionDireccionNoValida("No se puede atacar a esa posición.");
+            
         }
         if (civilizacion.getMapa().getCelda(pos).getEdificio() == null && !civilizacion.getMapa().getCelda(pos).isHayGrupo() && civilizacion.getMapa().getCelda(pos).getPersonajes().isEmpty()) {
-            System.out.println("En esa celda no hay nada a lo que se le pueda atacar");
-            //return;
+            throw new ExcepcionAccionRestringidaPersonaje("En esa celda no hay nada a lo que se le pueda atacar");
+            
         }
         if (civilizacion.getMapa().getCelda(pos).getEdificio() != null && civilizacion == civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            System.out.println("No se puede atacar a un edificio de la misma civilización");
-            //return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede atacar a un edificio de la misma civilización");
+            
         }
         int PuntosAQuitar = this.danhoAtaque();
         boolean atacanCaballeros = (!(this instanceof Grupo) && this instanceof Caballero) || (this instanceof Grupo && ((Grupo) this).estaFormadoPor(Caballero.class));
@@ -408,65 +414,65 @@ public abstract class Personaje {
                 civilizacion.getPersonajes().remove(atacado.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + atacados.get(0).getCivilizacion().getNombre() + ").");
-                System.out.println("El personaje: " + atacado.getNombre() + " ha muerto");
+                Juego.CONSOLA.imprimir("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + atacados.get(0).getCivilizacion().getNombre() + ").");
+                Juego.CONSOLA.imprimir("El personaje: " + atacado.getNombre() + " ha muerto");
             } else {
-                System.out.println("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + atacados.get(0).getCivilizacion().getNombre() + ").");
+                Juego.CONSOLA.imprimir("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + pos.toStringMapa() + " (civ " + atacados.get(0).getCivilizacion().getNombre() + ").");
             }
         }
 
         if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
             if (atacanArqueros) {
-                System.out.println("Has inflingido " + (int) ((double) PuntosAQuitar * 0.5) + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
+                Juego.CONSOLA.imprimir("Has inflingido " + (int) ((double) PuntosAQuitar * 0.5) + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
                 civilizacion.getMapa().getCelda(pos).getEdificio().danar((int) ((double) PuntosAQuitar * 0.5));
             } else {
-                System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
+                Juego.CONSOLA.imprimir("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
                 civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);
             }
         }
     }
 
-    protected void almacenarGenerico(String direccion) {
+    protected void almacenarGenerico(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         Mapa mapa = civilizacion.getMapa();
         if (mapa == null || direccion == null) {
-            System.out.println("Error en almacenar.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error en almacenar.");
+            
         }
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
         if (pos.equals(posicion)) { //error con la posicion
-            return;
+            throw new ExcepcionArgumentosInternos("La posicion no es correcta");
         }
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("No se puede almacenar desde un edificio");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar desde un edificio");
+            
         }
         if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela)) {
-            System.out.println("No se puede almacenar recursos en esa celda");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar recursos en esa celda");
+            
         }
         if (this.getCantRecTotal() <= 0) {
-            System.out.println("No se transportan recursos");
-            return;
+            throw new ExcepcionEscasezRecursos("No se transportan recursos");
+            
         }
         if (!civilizacion.puedeAlmacenar(getCantRecComida() + getCantRecMadera() + getCantRecPiedra())) {
-            System.out.println("No hay espacio suficiente en la ciudadela.");
-            return;
+            throw new ExcepcionEspacioInsuficiente("No hay espacio suficiente en la ciudadela.");
+            
         }
         if (this.getCantRecMadera() > 0) {
             civilizacion.setMadera(this.getCantRecMadera(), true);
-            System.out.println("Almacenadas " + this.getCantRecMadera() + " unidades de madera en la ciudadela");
+            Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecMadera() + " unidades de madera en la ciudadela");
             this.vaciarCantRecMadera();
         }
         if (this.getCantRecPiedra() > 0) {
             civilizacion.setPiedra(this.getCantRecPiedra(), true);
-            System.out.println("Almacenadas " + this.getCantRecPiedra() + " unidades de piedra en la ciudadela");
+            Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecPiedra() + " unidades de piedra en la ciudadela");
             this.vaciarCantRecPiedra();
         }
         if (this.getCantRecComida() > 0) {
             civilizacion.setAlimentos(this.getCantRecComida(), true);
-            System.out.println("Almacenadas " + this.getCantRecComida() + " unidades de alimento en la ciudadela");
+            Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecComida() + " unidades de alimento en la ciudadela");
             this.vaciarCantRecComida();
         }
     }

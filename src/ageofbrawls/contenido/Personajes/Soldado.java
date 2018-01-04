@@ -9,6 +9,7 @@ import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ public class Soldado extends Personaje {
 
     private int ataque;
 
-    public Soldado(Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Soldado(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         super(posicion, nombre, civilizacion, 200, 100);//defensa salud
         ataque = 70;
     }
@@ -38,7 +39,7 @@ public class Soldado extends Personaje {
         System.out.println("Ataque :" + ataque);
     }
 
-    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (super.getGrupo() != null) {
             System.out.println("El personaje no puede atacar ya que pertenece a un grupo");
             return;
@@ -52,7 +53,7 @@ public class Soldado extends Personaje {
     }
 
     @Override
-    public void recuperarVida() {
+    public void recuperarVida() throws ExcepcionArgumentosInternos {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 100 - this.getSalud();
         if (puntosARecuperar == 0) {
@@ -72,7 +73,7 @@ public class Soldado extends Personaje {
     }
 
     @Override
-    public void recuperar() {
+    public void recuperar() throws ExcepcionArgumentosInternos {
         super.setSalud(50, false);
     }
 }
