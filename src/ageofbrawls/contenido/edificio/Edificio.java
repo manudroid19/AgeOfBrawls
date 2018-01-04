@@ -129,7 +129,7 @@ public abstract class Edificio {
 
     }
 
-    public void crearPersonaje(String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion {
+    public void crearPersonaje(String tipo) throws ExcepcionAccionRestringidaEdificio,ExcepcionArgumentosInternos,ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {
         throw new ExcepcionAccionRestringidaEdificio("Este edificio no puede crear personajes");
     }
 

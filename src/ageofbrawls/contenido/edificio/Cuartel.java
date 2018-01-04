@@ -30,7 +30,7 @@ public final class Cuartel extends Edificio {
     }
 
     @Override
-    public void crearPersonaje(String tipo) throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion {
+    public void crearPersonaje(String tipo) throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos {
         Civilizacion civilizacion = super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
             throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes", civilizacion.getPersonajes().size());
