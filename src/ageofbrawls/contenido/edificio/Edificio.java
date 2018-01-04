@@ -7,6 +7,9 @@ package ageofbrawls.contenido.edificio;
 
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Recursos.Comida;
+import ageofbrawls.contenido.Recursos.Madera;
+import ageofbrawls.contenido.Recursos.Piedra;
 import ageofbrawls.contenido.Recursos.Recurso;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Juego;
@@ -130,8 +133,14 @@ public abstract class Edificio {
 
     }
 
-    public void almacenar(Recurso recurso) {
-        
+    public void almacenar(Recurso recurso) throws ExcepcionArgumentosValoresIncorrectos {
+        if (recurso instanceof Madera) {
+            civilizacion.setMadera(recurso.getCantidad(), true);
+        }else if (recurso instanceof Piedra) {
+            civilizacion.setPiedra(recurso.getCantidad(), true);
+        }else if (recurso instanceof Comida) {
+            civilizacion.setAlimentos(recurso.getCantidad(), true);
+        }
     }
 
     public Personaje crear(String tipo_personaje) throws ExcepcionAccionRestringidaEdificio, ExcepcionArgumentosInternos, ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {

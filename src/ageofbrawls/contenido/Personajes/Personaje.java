@@ -5,6 +5,10 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Soldados.Arquero;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.Personajes.Soldados.Legionario;
+import ageofbrawls.contenido.Recursos.Comida;
+import ageofbrawls.contenido.Recursos.Madera;
+import ageofbrawls.contenido.Recursos.Piedra;
+import ageofbrawls.contenido.Recursos.Recurso;
 import ageofbrawls.contenido.edificio.Casa;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
@@ -463,17 +467,17 @@ public abstract class Personaje {
         }
         
         if (this.getCantRecMadera() > 0) {
-            civilizacion.setMadera(this.getCantRecMadera(), true);
+            mapa.getCelda(pos).getEdificio().almacenar(new Madera(this.getCantRecMadera()));
             Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecMadera() + " unidades de madera en la ciudadela");
             this.vaciarCantRecMadera();
         }
         if (this.getCantRecPiedra() > 0) {
-            civilizacion.setPiedra(this.getCantRecPiedra(), true);
+            mapa.getCelda(pos).getEdificio().almacenar(new Piedra(this.getCantRecPiedra()));
             Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecPiedra() + " unidades de piedra en la ciudadela");
             this.vaciarCantRecPiedra();
         }
         if (this.getCantRecComida() > 0) {
-            civilizacion.setAlimentos(this.getCantRecComida(), true);
+            mapa.getCelda(pos).getEdificio().almacenar(new Comida(this.getCantRecPiedra()));
             Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecComida() + " unidades de alimento en la ciudadela");
             this.vaciarCantRecComida();
         }

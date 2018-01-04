@@ -112,12 +112,9 @@ public class Paisano extends Personaje {
         Mapa mapa = getCivilizacion().getMapa();
         if (mapa == null || direccion == null) {
             throw new ExcepcionDireccionNoValida("Error en recolectar.");
-            
         }
-
         if (super.getGrupo() != null) {
             throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
-            
         }
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
@@ -141,7 +138,7 @@ public class Paisano extends Personaje {
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
 
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
-        if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
+        if (contenedor.getRecurso().getCantidad() ==0 || contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).hacerPradera();
         }
         if (mapa.getCelda(pos).getContenedorRec().getRecurso() == null) { //si se ha vuelto pradera, imprimo

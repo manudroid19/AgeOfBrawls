@@ -289,7 +289,7 @@ public class Grupo extends Personaje {
             
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
-        if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
+        if (contenedor.getRecurso().getCantidad() ==0 || contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).hacerPradera();
         }
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
