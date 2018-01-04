@@ -11,4 +11,8 @@ package ageofbrawls.z.excepciones.AccionRestringida;
  */
 public class ExcepcionAccionRestringidaEdificio extends ExcepcionAccionRestringida {
     
+    public ExcepcionAccionRestringidaEdificio(String mensaje) {
+        super(mensaje);
+    }
+    
 }

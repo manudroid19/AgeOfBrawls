@@ -36,8 +36,7 @@ public abstract class Recurso {
         }
     }
 
-    @Override
-    public Recurso clone() {
+    public Recurso clonar() throws ExcepcionArgumentosInternos {
         if(this instanceof Comida){
             return (Recurso) new Comida(cantidad);
         }else if(this instanceof Piedra){

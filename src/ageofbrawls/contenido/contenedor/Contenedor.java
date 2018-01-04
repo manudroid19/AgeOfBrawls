@@ -17,7 +17,6 @@ public class Contenedor {
 
     private Recurso recurso;
     private String nombre;
-    private boolean esTransitable;
 
     public Contenedor(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         this.recurso = recurso;
@@ -33,11 +32,10 @@ public class Contenedor {
             throw new ExcepcionArgumentosInternos("El contenedor no puede ser nulo");
         }
         nombre = contenedor.nombre;
-        esTransitable = contenedor.esTransitable;
         if (contenedor.recurso == null) {
             recurso = null;
         } else {
-            recurso = contenedor.recurso.clone();
+            recurso = contenedor.recurso.clonar();
         }
     }
 
@@ -77,8 +75,8 @@ public class Contenedor {
         System.out.println("Contenedor de recurso");
     }
 
-    public Recurso procesar() {
-        return recurso.clone();
+    public Recurso procesar() throws ExcepcionArgumentosInternos{
+        return recurso.clonar();
     }
 
     public boolean esTransitable() {

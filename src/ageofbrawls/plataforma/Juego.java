@@ -7,6 +7,12 @@ import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -22,7 +28,7 @@ public class Juego implements Comando {
     Mapa mapa;
     public static final Consola CONSOLA = (Consola) new ConsolaNormal();
 
-    public Juego() {
+    public Juego() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos {
         mapa = new Mapa(20, true);
         Civilizacion romana = new Civilizacion(mapa, "Romana", new Posicion((mapa.getFilas() - 1), 0));
         Civilizacion griega = new Civilizacion(mapa, "Griega", new Posicion(0, 0));
@@ -32,7 +38,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion{
+    public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion {
         Civilizacion civ = mapa.getCivilizaciones().get(destino);
         if (civ == null) {
             throw new ExcepcionNoExisteCivilizacion("No existe la civilizacion");
@@ -49,29 +55,23 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void guardar(String ruta) {
-        try {
-            Loader loader = new Loader(mapa, ruta, true);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void guardar(String ruta) throws ExcepcionNoExisteArchivo {
+        Loader loader = new Loader(mapa, ruta, true);
+
     }
 
     @Override
-    public void cargar(String ruta) {
-        try {
+    public void cargar(String ruta) throws ExcepcionNoExisteArchivo {
             Loader loader = new Loader(mapa, ruta);
             activa = mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);
             mapa.imprimirCabecera();
             mapa.imprimir(activa);
             Juego.CONSOLA.imprimir("Archivos cargados.");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(AgeOfBrawls.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     @Override
-    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto{
+    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (activa.getPersonajes().containsKey(atacante)) {
             Personaje personaje2 = activa.getPersonajes().get(atacante);
             personaje2.atacar(direccion);
@@ -84,7 +84,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void defender(String defensor, String direccion) {
+    public void defender(String defensor, String direccion) throws ExcepcionArgumentosInternos {
         if (activa.getPersonajes().containsKey(defensor)) {
             Personaje personaje2 = activa.getPersonajes().get(defensor);
             personaje2.defender(direccion);
@@ -98,7 +98,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void desagrupar(String grupo) {
+    public void desagrupar(String grupo) throws ExcepcionAccionRestringidaPersonaje {
         if (!activa.getGrupos().containsKey(grupo)) {
             Juego.CONSOLA.imprimir("El grupo no existe");
             return;
@@ -107,7 +107,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void desligar(String desligado, String grupo) {
+    public void desligar(String desligado, String grupo) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (!activa.getGrupos().containsKey(grupo)) {
             Juego.CONSOLA.imprimir("El grupo no existe");
             return;
@@ -125,7 +125,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void agrupar(String donde) {
+    public void agrupar(String donde) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Posicion posAgrupar = new Posicion(donde);
         if (posAgrupar.getX() == -1) {
             Juego.CONSOLA.imprimir("Error de sintaxis.");
@@ -140,7 +140,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void manejar(String quien) {
+    public void manejar(String quien) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
         if (!activa.getPersonajes().containsKey(quien) && !activa.getGrupos().containsKey(quien)) {
             Juego.CONSOLA.imprimir("El personaje/grupo no existe");
             return;
@@ -188,7 +188,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void recolectar(String persona, String direccion) {
+    public void recolectar(String persona, String direccion) throws ExcepcionArgumentosInternos {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
             ((Paisano) personaje2).recolectar(direccion);
@@ -201,13 +201,13 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void crear(String edificio, String tipo) {
+    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
         Edificio creador = activa.getEdificios().get(edificio);
-        if (creador == null || (creador instanceof Cuartel  && !tipo.equals("soldado")) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
+        if (creador == null || (creador instanceof Cuartel && !tipo.equals("soldado")) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
             Juego.CONSOLA.imprimir("Comando erroneo. No se puede crear.");
             return;
         }
-        creador.crearPersonaje(activa);
+        creador.crearPersonaje();
     }
 
     @Override
@@ -224,7 +224,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void construir(String constructor, String tipo, String dir) {
+    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
             personaje1.construir(tipo, dir);
@@ -309,7 +309,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void mover(String quien, String donde) {
+    public void mover(String quien, String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
         Personaje personaje = activa.getPersonajes().get(quien);
         if (personaje == null) {
             Grupo grupo = activa.getGrupos().get(quien);

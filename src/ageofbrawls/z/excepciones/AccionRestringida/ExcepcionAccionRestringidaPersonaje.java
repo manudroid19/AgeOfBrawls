@@ -5,17 +5,14 @@
  */
 package ageofbrawls.z.excepciones.AccionRestringida;
 
-import ageofbrawls.z.excepciones.ExcepcionJuego;
-
 /**
  *
  * @author Santiago
  */
-public class ExcepcionRestringida extends ExcepcionJuego {
+public class ExcepcionAccionRestringidaPersonaje extends ExcepcionAccionRestringida {
     
-    public ExcepcionRestringida(String mensaje) {
+    public ExcepcionAccionRestringidaPersonaje(String mensaje) {
         super(mensaje);
     }
     
-
 }

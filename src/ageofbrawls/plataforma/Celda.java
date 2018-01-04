@@ -17,6 +17,7 @@ import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.edificio.Casa;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 
@@ -33,26 +34,25 @@ public class Celda {
     private ArrayList<Personaje> personajes;
     private ArrayList<Grupo> grupos;
 
-    public Celda(Contenedor contenedor, Edificio edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
+    public Celda(Contenedor contenedor, Edificio edificio, Posicion posicion, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
         } else {
-            throw new ExcepcionArgumentosInternos("El daño a un edificio no puede ser menor que 0");
+            throw new ExcepcionArgumentosInternos("Posicion de creación no valida.");
         }
         if (edificio == null) {
             this.edificio = null;
         } else {
-            this.edificio = new Edificio(edificio, posicion, nombreEdificio, civilizacion);//valida o edificio e o string
+            this.edificio = edificio;
         }
-
         this.contenedor = new Contenedor(contenedor);
         personajes = new ArrayList<>();
         grupos = new ArrayList<>();
         haygrupo = false;
     }
 
-    public Celda(int i, int j) {
-        this(new Contenedor(), 0, new Posicion(i, j), null, null);
+    public Celda(int i, int j) throws ExcepcionArgumentosInternos {
+        this(new Contenedor(), null, new Posicion(i, j), null);
     }
 
     public Contenedor getContenedorRec() {
@@ -82,7 +82,16 @@ public class Celda {
     public boolean isHayGrupo() {
         return haygrupo;
     }
-
+    public void hacerPradera(){
+        contenedor=new Contenedor();
+    }
+    public void setContenedorRecursos(Contenedor contenedor){
+        if(contenedor==null){
+            hacerPradera();
+        }else{
+            this.contenedor=contenedor;
+        }
+    }
     public void setOculto(Civilizacion civilizacion, boolean oculto) {
         civilizacion.setOculto(posicion, oculto);
     }
@@ -164,7 +173,7 @@ public class Celda {
 //        }
 //
 //    }
-    public void agrupar(Civilizacion civilizacion) {
+    public void agrupar(Civilizacion civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
             System.out.println("No se puede crear un grupo en esta situación");
             return;

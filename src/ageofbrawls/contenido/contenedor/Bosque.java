@@ -18,6 +18,10 @@ public final class Bosque extends Contenedor {
     public Bosque(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         super(recurso);
     }
+    public Bosque(Recurso recurso, String nombre) throws ExcepcionCorrespondenciaRecursos {
+        super(recurso);
+        super.setNombre(nombre);
+    }
 
     @Override
     public void describirContenedorRecurso() {

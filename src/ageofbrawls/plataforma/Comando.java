@@ -5,10 +5,14 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.*;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import ageofbrawls.z.excepciones.Movimiento.*;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import ageofbrawls.z.excepciones.noExiste.*;
 
 /**
@@ -16,18 +20,18 @@ import ageofbrawls.z.excepciones.noExiste.*;
  * @author Santiago
  */
 public interface Comando {
-    public void agrupar (String donde) throws ExcepcionNoExistePosicion;
+    public void agrupar (String donde) throws ExcepcionNoExistePosicion,ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje;
     public void almacenar(String personaje,String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida;
-    public void atacar(String personaje,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionDireccionNoValida;
+    public void atacar(String personaje,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje;
     public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion;
     public void cargar(String ruta) throws ExcepcionNoExisteArchivo;
     public void civilizacion();
-    public void construir(String constructor, String tipo, String dir) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos;
-    public void crear(String edificio,String tipo) throws ExcepcionNoExisteEdificio, ExcepcionArgumentosValoresIncorrectos;
-    public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida;
-    public void desagrupar(String grupo) throws ExcepcionNoExisteGrupo;
+    public void construir(String constructor, String tipo, String dir) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos;
+    public void crear(String edificio,String tipo) throws ExcepcionNoExisteEdificio,EscasezRecursosCreacion,ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente;
+    public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
+    public void desagrupar(String grupo) throws ExcepcionNoExisteGrupo, ExcepcionAccionRestringidaPersonaje;
     public void describir(String sujeto) throws ExcepcionNoExisteSujeto;
-    public void desligar(String desligado, String grupo) throws ExcepcionNoExisteSujeto, ExcepcionNoExisteGrupo;
+    public void desligar(String desligado, String grupo) throws ExcepcionNoExisteSujeto, ExcepcionNoExisteGrupo,ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje;
     public void guardar(String ruta)throws ExcepcionNoExisteArchivo;
     public void imprimirCabecera();
     public void imprimirMapa();
@@ -35,10 +39,10 @@ public interface Comando {
     public void listarEdificios();
     public void listarGrupos();
     public void listarPersonajes();
-    public void manejar(String quien) throws ExcepcionNoExisteSujeto;
+    public void manejar(String quien) throws ExcepcionNoExisteSujeto,  ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
     public void mirar(String donde) throws ExcepcionNoExistePosicion;
-    public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites, ExcepcionNadaQueRecolectar;
-    public void recolectar(String recolector, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida;
+    public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites, ExcepcionNadaQueRecolectar;
+    public void recolectar(String recolector, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
     public void reparar(String reparador, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida, ExcepcionEscasezRecursos;
     
 }

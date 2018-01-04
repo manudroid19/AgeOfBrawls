@@ -16,6 +16,10 @@ import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.edificio.Casa;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,7 +38,7 @@ public class Loader {
 
     Mapa mapa;
 
-    public Loader(Mapa mapa, String dir) throws FileNotFoundException {
+    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos {
         this.mapa = mapa;
         this.mapa.clear();
         String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
@@ -42,7 +46,7 @@ public class Loader {
         for (int i = 0; i < 3; i++) {
             files[i] = new File(dir + File.separator + aLeer[i] + ".csv");
             if (!files[i].exists()) {
-                throw new FileNotFoundException("No directorio especificado non están todos os arquivos");
+                throw new ExcepcionNoExisteArchivo("En el directorio especificado no están todos los archivos");
             }
         }
         cargarMapa(files[0]);
@@ -50,7 +54,7 @@ public class Loader {
         cargarEdificios(files[2]);
     }
 
-    public Loader(Mapa mapa, String dir, boolean save) throws FileNotFoundException {
+    public Loader(Mapa mapa, String dir, boolean save) throws ExcepcionNoExisteArchivo {
         try {
             this.mapa = mapa;
             String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
@@ -59,7 +63,7 @@ public class Loader {
                 files[i] = new File(dir + File.separator + aLeer[i] + ".csv");
                 files[i].createNewFile();
                 if (!files[i].canWrite()) {
-                    throw new FileNotFoundException("No se puede guardar " + files[i].getPath());
+                    throw new ExcepcionNoExisteArchivo("No se puede guardar " + files[i].getPath());
                 }
             }
             ArrayList<String> lineas = new ArrayList<>(), edificios = new ArrayList<>();
@@ -85,18 +89,18 @@ public class Loader {
             Files.write(files[1].toPath(), lineas);
             Files.write(files[2].toPath(), edificios);
         } catch (IOException ex) {
-            Logger.getLogger(Loader.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ExcepcionNoExisteArchivo(ex.getMessage());
         }
 
     }
 
-    private void cargarMapa(File file) {
+    private void cargarMapa(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
             if (linea.length == 2) {
                 if ("pradera".toLowerCase().equals(linea[1])) {
-                    mapa.getCelda(pos).setTipoCont(Celda.PRADERA);
+                    mapa.getCelda(pos).hacerPradera();
                 }
             } else {
                 switch (linea[1].toLowerCase()) {
@@ -117,7 +121,7 @@ public class Loader {
         }
     }
 
-    private void cargarPersonajes(File file) {
+    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -134,7 +138,7 @@ public class Loader {
         }
     }
 
-    private void cargarEdificios(File file) {
+    private void cargarEdificios(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -158,7 +162,7 @@ public class Loader {
         }
     }
 
-    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) {
+    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) throws ExcepcionArgumentosInternos {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
@@ -189,7 +193,7 @@ public class Loader {
 
     }
 
-    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) {
+    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
@@ -225,7 +229,7 @@ public class Loader {
         current.makeAdyVisible(pos);
     }
 
-    private void crearRecurso(Posicion pos, int tipo, String nombre, Recurso recurso) {
+    private void crearRecurso(Posicion pos, int tipo, String nombre, Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         if (tipo == 1) {
             Bosque bos = new Bosque(recurso, nombre);
         }
@@ -237,7 +241,7 @@ public class Loader {
         }
     }
 
-    private ArrayList<String[]> leer(File file) {
+    private ArrayList<String[]> leer(File file) throws ExcepcionNoExisteArchivo {
         ArrayList<String[]> lineas = new ArrayList<>();
         try {
             Scanner lector = new Scanner(file);
@@ -249,7 +253,7 @@ public class Loader {
                 }
             }
         } catch (FileNotFoundException excep) {
-            System.out.println("ERROR --> Cargar ficheiro");
+            throw new ExcepcionNoExisteArchivo("No se puede leer "+file.getName());
         }
         return lineas;
     }

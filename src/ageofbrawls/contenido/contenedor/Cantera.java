@@ -7,6 +7,7 @@ package ageofbrawls.contenido.contenedor;
 
 import ageofbrawls.contenido.Recursos.Piedra;
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 
 /**
@@ -19,6 +20,11 @@ public final class Cantera extends Contenedor {
         super(recurso);
     }
 
+    public Cantera(Recurso recurso, String nombre) throws ExcepcionCorrespondenciaRecursos {
+        super(recurso);
+        super.setNombre(nombre);
+    }
+
     @Override
     public void describirContenedorRecurso() {
         super.describirContenedorRecurso();
@@ -26,7 +32,7 @@ public final class Cantera extends Contenedor {
     }
 
     @Override
-    public Recurso procesar() {
+    public Recurso procesar() throws ExcepcionArgumentosInternos {
         Piedra rec = (Piedra) super.procesar();
         double cantidad = (double) getRecurso().getCantidad();
         double porcentajeRestante = (rec.getCantidadInicial() - cantidad) / rec.getCantidadInicial();

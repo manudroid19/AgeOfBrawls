@@ -18,6 +18,10 @@ public class Arbusto extends Contenedor {
     public Arbusto(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         super(recurso);
     }
+    public Arbusto(Recurso recurso, String nombre) throws ExcepcionCorrespondenciaRecursos {
+        super(recurso);
+        super.setNombre(nombre);
+    }
 
     @Override
     public void describirContenedorRecurso() {

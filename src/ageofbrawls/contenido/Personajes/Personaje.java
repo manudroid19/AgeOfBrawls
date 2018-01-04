@@ -12,6 +12,8 @@ import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -124,7 +126,7 @@ public abstract class Personaje {
         return grupo;
     }
 
-    public void setGrupo(Grupo grupo) {
+    public void setGrupo(Grupo grupo) throws ExcepcionAccionRestringidaPersonaje {
         this.grupo = grupo;
     }
 
@@ -148,31 +150,28 @@ public abstract class Personaje {
         }
     }
 
-    public void mover(String direccion) {
-        try {
-            Posicion posicion = this.posicion.getAdy(direccion);
-            Mapa mapa = civilizacion.getMapa();
-            Celda celdaAntigua = mapa.getCelda(this.posicion);
-            int cuantoSeMueve = this.capacidadMovimiento();
-            for (int i = 1; i < cuantoSeMueve; i++) {
-                if (!mapa.perteneceAMapa(posicion.getAdy(direccion)) || !mapa.getCelda(posicion.getAdy(direccion)).esCeldaLibre(false)) {
-                    break;
-                }
-                posicion = posicion.getAdy(direccion);
+    public void mover(String direccion) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+        Posicion posicion = this.posicion.getAdy(direccion);
+        Mapa mapa = civilizacion.getMapa();
+        Celda celdaAntigua = mapa.getCelda(this.posicion);
+        int cuantoSeMueve = this.capacidadMovimiento();
+        for (int i = 1; i < cuantoSeMueve; i++) {
+            if (!mapa.perteneceAMapa(posicion.getAdy(direccion)) || !mapa.getCelda(posicion.getAdy(direccion)).esCeldaLibre(false)) {
+                break;
             }
-            moverGenerico(posicion, 1);
-            celdaAntigua.removePersonaje(this);
-            mapa.getCelda(posicion).addPersonaje(this);
-
-            System.out.println();
-            mapa.imprimirCabecera();
-            mapa.imprimir(civilizacion);
-        } catch (Exception ex) {
-            //Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+            posicion = posicion.getAdy(direccion);
         }
+        moverGenerico(posicion, 1);
+        celdaAntigua.removePersonaje(this);
+        mapa.getCelda(posicion).addPersonaje(this);
+
+        System.out.println();
+        mapa.imprimirCabecera();
+        mapa.imprimir(civilizacion);
+
     }
 
-    public void defender(String direccion) {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             System.out.println("No hay edificio en la posición indicada.");
@@ -208,7 +207,7 @@ public abstract class Personaje {
         return 1;
     }
 
-    public void atacar(String direccion) {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje{
         System.out.println("Error. No puede atacar");
     }
 
@@ -232,7 +231,7 @@ public abstract class Personaje {
         System.out.println("Error");
     }
 
-    public void recolectar(String direccion) {
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos {
         System.out.println("Error");
     }
 
@@ -240,7 +239,7 @@ public abstract class Personaje {
         System.out.println("Error");
     }
 
-    public void construir(String tipoC, String dir) {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
         System.out.println("Error");
     }
 
@@ -248,16 +247,14 @@ public abstract class Personaje {
         System.out.println("Error");
     }
 
-    protected void moverGenerico(Posicion posicion, int n) throws Exception {
+    protected void moverGenerico(Posicion posicion, int n) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
         if (grupo != null && grupo.getPersonajes().contains(this)) {
-            System.out.println("El personaje no puede moverse por si solo ya que pertenece a un grupo");
-            throw new Exception();
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede moverse por si solo ya que pertenece a un grupo");
         }
         Mapa mapa = civilizacion.getMapa();
         Celda celdaAntigua = mapa.getCelda(this.posicion);
         if (!mapa.perteneceAMapa(posicion) || !mapa.getCelda(posicion).esCeldaLibre(false)) {
-            System.out.println("Error: No te puedes mover a esa celda.");
-            throw new Exception();
+            throw new ExcepcionAccionRestringidaPersonaje("Error: No te puedes mover a esa celda.");
         }
         if (celdaAntigua.getEdificio() != null) {
             Edificio edif = celdaAntigua.getEdificio();
@@ -267,7 +264,7 @@ public abstract class Personaje {
         civilizacion.makeAdyVisible(posicion);
     }
 
-    protected void construirGenerico(String tipo, String dir) {
+    protected void construirGenerico(String tipo, String dir) throws ExcepcionArgumentosInternos {
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             System.out.println("No se puede construir desde un edificio");
             return;
@@ -355,7 +352,7 @@ public abstract class Personaje {
         System.out.println("Coste de la reparación: " + costeMadera + " unidades de madera y " + costePiedra + " unidades de piedra de la ciudadela.");
     }
 
-    protected void atacarGenerico(String direccion) {
+    protected void atacarGenerico(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Posicion pos = posicion.getAdy(direccion);
         if (pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos)) {
             System.out.println("No se puede atacar a esa posición.");
@@ -420,8 +417,8 @@ public abstract class Personaje {
 
         if (PuntosAQuitarACadaUno == 0 && civilizacion.getMapa().getCelda(pos).getEdificio() != null && civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
             if (atacanArqueros) {
-                System.out.println("Has inflingido " + (int) ((double)PuntosAQuitar*0.5) + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
-                civilizacion.getMapa().getCelda(pos).getEdificio().danar((int) ((double)PuntosAQuitar*0.5));
+                System.out.println("Has inflingido " + (int) ((double) PuntosAQuitar * 0.5) + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
+                civilizacion.getMapa().getCelda(pos).getEdificio().danar((int) ((double) PuntosAQuitar * 0.5));
             } else {
                 System.out.println("Has inflingido " + PuntosAQuitar + " al edificio " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " de la civilizacion (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion().getNombre() + ").");
                 civilizacion.getMapa().getCelda(pos).getEdificio().danar(PuntosAQuitar);

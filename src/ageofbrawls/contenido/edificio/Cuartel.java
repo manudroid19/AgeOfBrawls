@@ -12,6 +12,7 @@ import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 
 /**
  *
@@ -24,7 +25,7 @@ public final class Cuartel extends Edificio {
     }
 
     @Override
-    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion {
+    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion {
         Civilizacion civilizacion=super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
             throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes",civilizacion.getPersonajes().size());
@@ -33,6 +34,9 @@ public final class Cuartel extends Edificio {
             throw new EscasezRecursosCreacion("No hay suficientes recursos para crear un personaje.",100-civilizacion.getAlimentos());
         }
         Posicion pos = super.getPosicion().posicionAdyacenteLibre(civilizacion.getMapa());
+        if (pos == super.getPosicion()) {
+                throw new ExcepcionNoExistePosicion("No hay posiciones adyacentes libres");
+            }
         int i = 1;
         String nombrePers = "soldado1";
         while (civilizacion.getPersonajes().containsKey(nombrePers)) {

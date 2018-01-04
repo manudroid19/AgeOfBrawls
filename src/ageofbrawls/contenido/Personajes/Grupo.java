@@ -6,7 +6,6 @@
 package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.contenido.contenedor.Contenedor;
-import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
@@ -15,6 +14,8 @@ import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.contenedor.Arbusto;
 import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -27,9 +28,9 @@ public class Grupo extends Personaje {
     private ArrayList<Personaje> personajes;
     private boolean haySoldado;
 
-    public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Grupo(ArrayList<Personaje> personajes, Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         super(posicion, nombre, civilizacion);
-        if (posicion != null && nombre != null && personajes != null && civilizacion != null) {
+        if (personajes != null) {
             this.personajes = new ArrayList<>(personajes);
             for (int i = 0; i < this.personajes.size(); i++) {
                 personajes.get(i).setGrupo(this);
@@ -38,7 +39,7 @@ public class Grupo extends Personaje {
                 }
             }
         } else {
-            System.out.println("Error creando grupo");
+            throw new ExcepcionArgumentosInternos("Error parametros en Grupo");
         }
     }
 
@@ -132,8 +133,8 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void setGrupo(Grupo grupo) {
-        System.out.println("Error");
+    public void setGrupo(Grupo grupo) throws ExcepcionAccionRestringidaPersonaje{
+        throw new ExcepcionAccionRestringidaPersonaje("Un grupo no puede estar en un grupo");
     }
 
     @Override
@@ -178,14 +179,12 @@ public class Grupo extends Personaje {
         return true;
     }
 
-    public void desligar(Personaje personaje) {
+    public void desligar(Personaje personaje) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (personaje == null) {
-            System.out.println("El personaje no existe");
-            return;
+            throw new ExcepcionArgumentosInternos("Error con argumento al desligar");
         }
         if (!this.getPersonajes().contains(personaje)) {
-            System.out.println("El personaje no pertenece al grupo seleccionado");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no está en el grupo");
         }
         Civilizacion civilizacion = getCivilizacion();
         Posicion posicion = getPosicion();
@@ -199,7 +198,7 @@ public class Grupo extends Personaje {
 
     }
 
-    public void desagrupar() {
+    public void desagrupar() throws ExcepcionAccionRestringidaPersonaje {
         Civilizacion civilizacion = getCivilizacion();
         Posicion posicion = getPosicion();
         for (Personaje p : personajes) {
@@ -236,26 +235,23 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void mover(String direccion) {
-        try {
-            Posicion posicion = getPosicion().getAdy(direccion);
-            Mapa mapa = getCivilizacion().getMapa();
-            Celda celdaAntigua = mapa.getCelda(getPosicion());
+    public void mover(String direccion) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+        Posicion posicion = getPosicion().getAdy(direccion);
+        Mapa mapa = getCivilizacion().getMapa();
+        Celda celdaAntigua = mapa.getCelda(getPosicion());
 
-            moverGenerico(posicion, personajes.size());
-            celdaAntigua.removeGrupo(this);
-            actualizarPosiciones();
-            mapa.getCelda(posicion).addGrupo(this);
+        moverGenerico(posicion, personajes.size());
+        celdaAntigua.removeGrupo(this);
+        actualizarPosiciones();
+        mapa.getCelda(posicion).addGrupo(this);
 
-            System.out.println();
-            mapa.imprimirCabecera();
-            mapa.imprimir(getCivilizacion());
-        } catch (Exception ex) {
-            //Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println();
+        mapa.imprimirCabecera();
+        mapa.imprimir(getCivilizacion());
+
     }
 
-    public void recolectar(String direccion) {
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos {
         Mapa mapa = getCivilizacion().getMapa();
         if (direccion == null) {
             System.out.println("Error en recolectar.");
@@ -286,7 +282,7 @@ public class Grupo extends Personaje {
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
-            mapa.getCelda(pos).setTipoCont(Celda.PRADERA);
+            mapa.getCelda(pos).hacerPradera();
         }
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
@@ -355,7 +351,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
         if (tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;
@@ -377,7 +373,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void defender(String direccion) {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
@@ -409,7 +405,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void atacar(String direccion) {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (!this.haySoldado) {
             System.out.println("El grupo no tiene soldados y no puede atacar");
             return;
@@ -423,7 +419,7 @@ public class Grupo extends Personaje {
         }
     }
 
-    private void revisarVacio() {
+    private void revisarVacio() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (getPersonajes().size() == 1) {
             desligar(personajes.get(0));
         } else if (this.getPersonajes().isEmpty()) {

@@ -7,6 +7,8 @@ package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +38,7 @@ public class Soldado extends Personaje {
         System.out.println("Ataque :" + ataque);
     }
 
-    public void atacar(String direccion) {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if (super.getGrupo() != null) {
             System.out.println("El personaje no puede atacar ya que pertenece a un grupo");
             return;

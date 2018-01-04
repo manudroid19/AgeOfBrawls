@@ -15,6 +15,7 @@ import ageofbrawls.contenido.contenedor.Arbusto;
 import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.edificio.Ciudadela;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class Civilizacion {
     private int capAlmacen, contCiudadelas = 0;
     public final static int CAPALMACEN = 3000;
 
-    public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) {
+    public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) throws ExcepcionArgumentosInternos {
         edificios = new HashMap<>();
         personajes = new HashMap<>();
         recursosVisibles = new HashMap<>();
@@ -75,7 +76,7 @@ public class Civilizacion {
         }
     }
 
-    public Civilizacion(Mapa mapa, String nombre) {
+    public Civilizacion(Mapa mapa, String nombre) throws ExcepcionArgumentosInternos {
         this(mapa, nombre, null);
     }
 

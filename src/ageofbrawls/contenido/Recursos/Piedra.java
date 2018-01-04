@@ -5,6 +5,8 @@
  */
 package ageofbrawls.contenido.Recursos;
 
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+
 /**
  *
  * @author Santiago
@@ -13,7 +15,7 @@ public final class Piedra extends Recurso {
 
     private final int cantidadInicial;
 
-    public Piedra(int cantidad) {
+    public Piedra(int cantidad) throws ExcepcionArgumentosInternos {
         super(cantidad);
         cantidadInicial = cantidad;
     }

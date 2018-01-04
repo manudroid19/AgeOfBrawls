@@ -12,6 +12,7 @@ import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 
 /**
  *
@@ -25,7 +26,7 @@ public final class Ciudadela extends Edificio {
     
     
     @Override
-    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion{
+    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
         Civilizacion civilizacion = super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
             throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes",civilizacion.getPersonajes().size());
@@ -35,8 +36,7 @@ public final class Ciudadela extends Edificio {
             }
             Posicion pos = super.getPosicion().posicionAdyacenteLibre(civilizacion.getMapa());
             if (pos == super.getPosicion()) {
-                System.out.println("No hay celdas adyacentes libres.");
-                return;
+                throw new ExcepcionNoExistePosicion("No hay posiciones adyacentes libres");
             }
             int i = 1;
             String nombrePers = "paisano1";
@@ -60,12 +60,11 @@ public final class Ciudadela extends Edificio {
 
     @Override
     public void describirEdificio() {
-        System.out.println("Tipo: " + this.toString());
         super.describirEdificio();
         System.out.println("Recursos: " + getCivilizacion().getMadera() + " de madera, " + getCivilizacion().getPiedra() + " de piedra y " + getCivilizacion().getAlimentos() + " de alimentos");
     }
 
-    public void danar(int dano) {
+    public void danar(int dano) throws ExcepcionArgumentosInternos {
         super.danar(dano);
         if(dano>0 && this.getSalud()-dano<=0){
             getCivilizacion().quitarCiudadela();

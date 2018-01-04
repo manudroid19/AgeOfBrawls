@@ -9,10 +9,11 @@ import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
-import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionRestringidaEdificio;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.util.ArrayList;
 
 /**
@@ -124,8 +125,8 @@ public abstract class Edificio {
 
     }
 
-    public void crearPersonaje() throws ExcepcionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion {
-        throw new ExcepcionRestringidaEdificio("Este edificio no puede crear personajes");
+    public void crearPersonaje() throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion {
+        throw new ExcepcionAccionRestringidaEdificio("Este edificio no puede crear personajes");
     }
 
     @Override

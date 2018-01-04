@@ -16,6 +16,9 @@ import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -97,7 +100,7 @@ public class Paisano extends Personaje {
         System.out.println("Cantidad de Recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
     }
 
-    public void recolectar(String direccion) {
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos{
         Mapa mapa = getCivilizacion().getMapa();
         if (mapa == null || direccion == null) {
             System.out.println("Error en recolectar.");
@@ -128,22 +131,21 @@ public class Paisano extends Personaje {
             return;
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
-        if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
-            mapa.getCelda(pos).setTipoCont(0);
-        }
+
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
+        if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
+            mapa.getCelda(pos).hacerPradera();
+        }
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
         if (contenedor instanceof Bosque) {
             System.out.println("Has recolectado " + recolectando + " unidades de madera");
             setCantRecMadera(getCantRecMadera() + recolectando);
-        }
-        else if (contenedor instanceof Arbusto) {
+        } else if (contenedor instanceof Arbusto) {
             System.out.println("Has recolectado " + recolectando + " unidades de comida");
             setCantRecComida(getCantRecComida() + recolectando);
-        }
-        else if (contenedor instanceof Cantera) {
+        } else if (contenedor instanceof Cantera) {
             System.out.println("Has recolectado " + recolectando + " unidades de piedra");
             setCantRecPiedra(getCantRecPiedra() + recolectando);
 
@@ -174,7 +176,7 @@ public class Paisano extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos {
         if (tipoC == null || dir == null) {
             System.out.println("Error en consEdif.");
             return;

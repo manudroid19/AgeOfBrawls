@@ -5,13 +5,15 @@
  */
 package ageofbrawls.contenido.Recursos;
 
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+
 /**
  *
  * @author Santiago
  */
 public final class Comida extends Recurso {
 
-    public Comida(int cantidad) {
+    public Comida(int cantidad) throws ExcepcionArgumentosInternos {
         super(cantidad);
     }
 

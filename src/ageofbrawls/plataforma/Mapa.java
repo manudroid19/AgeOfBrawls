@@ -5,6 +5,16 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.contenido.Recursos.Comida;
+import ageofbrawls.contenido.Recursos.Madera;
+import ageofbrawls.contenido.Recursos.Piedra;
+import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +50,7 @@ public class Mapa {
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
 
-    public Mapa(int filas, int columnas) {
+    public Mapa(int filas, int columnas) throws ExcepcionArgumentosInternos {
         if (filas > 0 && columnas > 0) {
             mapa = new ArrayList<>();
             civilizaciones = new HashMap<>();
@@ -58,7 +68,7 @@ public class Mapa {
         }
     }
 
-    public Mapa(int filas, boolean inicializar) { //Inicializo mapa cuadrado con elementos
+    public Mapa(int filas, boolean inicializar) throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos { //Inicializo mapa cuadrado con elementos
         this(filas, filas);
         if (inicializar) {
             for (int i = 0; i < mapa.size(); i++) { //numero de filas, i recorriendo filas,i=y
@@ -78,7 +88,7 @@ public class Mapa {
         }
     }
 
-    public Mapa() {
+    public Mapa() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos {
         this(10, true);
     }
 
@@ -133,7 +143,7 @@ public class Mapa {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 if (this.getCelda(h, k) != null) {
-                    this.getCelda(h, k).setTipoCont(Celda.PRADERA);
+                    this.getCelda(h, k).hacerPradera();
                 }
             }
         }
@@ -157,7 +167,7 @@ public class Mapa {
         this.civilizaciones.clear();
         for(ArrayList<Celda> ar : mapa){
             for(Celda celda : ar){
-                celda.setTipoCont(Celda.PRADERA);
+                celda.hacerPradera();
                 celda.setEdificio(null);
                 celda.getGrupos().clear();
                 celda.getPersonajes().clear();
@@ -165,19 +175,19 @@ public class Mapa {
             }
         }
     }
-    private void makeBloqueRec(int i, int j) {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
-        ArrayList<Integer> bloque = new ArrayList<>(4);
-        for (int k = 0; k < 4; k++) {
-            bloque.add(k);
-        }
-        Collections.shuffle(bloque); //Cada int es un recurso, aleatorizo orden
+    private void makeBloqueRec(int i, int j) throws ExcepcionCorrespondenciaRecursos, ExcepcionArgumentosInternos {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
         Random rt = new Random();
         int[] cantidad = new int[]{rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1};
+        ArrayList<Contenedor> bloque = new ArrayList<>(3);
+        bloque.add(new Bosque(new Madera(cantidad[0])));
+        bloque.add(new Cantera(new Piedra(cantidad[1])));
+        bloque.add(new Arbusto(new Comida(cantidad[2])));
+        Collections.shuffle(bloque); //Cada recurso, aleatorizo orden
         Posicion posicion = new Posicion(i, j);
-        getCelda(posicion).setTipoCont(bloque.get(0), cantidad[0]);
-        getCelda(posicion.getAdy(Posicion.ESTE)).setTipoCont(bloque.get(1), cantidad[1]);
-        getCelda(posicion.getAdy(Posicion.SUR)).setTipoCont(bloque.get(2), cantidad[2]);
-        getCelda(posicion.getAdy(Posicion.SURESTE)).setTipoCont(bloque.get(3), cantidad[3]);
+        getCelda(posicion).hacerPradera();
+        getCelda(posicion.getAdy(Posicion.ESTE)).setContenedorRecursos(bloque.get(0));
+        getCelda(posicion.getAdy(Posicion.SUR)).setContenedorRecursos(bloque.get(1));
+        getCelda(posicion.getAdy(Posicion.SURESTE)).setContenedorRecursos(bloque.get(2));
     }
 
     public void imprimir(Civilizacion activa) {
