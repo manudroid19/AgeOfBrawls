@@ -64,12 +64,7 @@ public final class Cuartel extends Edificio {
         }
         civilizacion.setAlimentos(-100, true);
         
-        Juego.CONSOLA.imprimir();
-        civilizacion.getMapa().imprimirCabecera();
-        civilizacion.getMapa().imprimir(civilizacion);
-        Juego.CONSOLA.imprimir("Coste de creacion: 100 unidades de comida");
-        Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
-        Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
+        
         return person;
     }
 

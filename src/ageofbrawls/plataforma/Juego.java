@@ -21,6 +21,8 @@ import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsufi
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,7 +86,24 @@ public class Juego implements Comando {
         } else if (activa.getGrupos().containsKey(atacante)) {
             Grupo grupo1 = activa.getGrupos().get(atacante);
             grupo1.atacar(direccion);
-        } else {
+        } else if (activa.getEdificios().containsKey(atacante)){
+            Edificio ataca = activa.getEdificios().get(atacante);
+            if(ataca.getAtaque()==0){
+                throw new ExcepcionNoExisteSujeto("No hay soldados en el edificio para atacar");
+            }
+            Posicion pos = ataca.getPosicion().getAdy(direccion);
+            ArrayList<Personaje> atacados = (ArrayList<Personaje>) mapa.getCelda(pos).getPersonajes().clone();
+            for(Grupo g : mapa.getCelda(pos).getGrupos()){
+                atacados.addAll((ArrayList<Personaje>) g.getPersonajes().clone());
+            }
+            if(atacados.size()==0){
+                throw new ExcepcionNoExisteSujeto("No hay a quien atacar");
+            }
+            Personaje[] array = (Personaje[]) atacados.toArray();
+            
+            ataca.atacar(array);
+            
+        }else{                
             throw new ExcepcionNoExisteSujeto("Error: sujeto a atacar no encontrado.");
         }
     }
@@ -226,6 +245,11 @@ public class Juego implements Comando {
         civilizacion.getPersonajes().put(person.getNombre(), person);
         civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
         civilizacion.makeAdyVisible(pos);
+        Juego.CONSOLA.imprimir();
+        civilizacion.getMapa().imprimirCabecera();
+        civilizacion.getMapa().imprimir(civilizacion);
+        Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+        Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
     }
 
     @Override

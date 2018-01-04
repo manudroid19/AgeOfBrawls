@@ -15,12 +15,14 @@ import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePersonaje;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.util.ArrayList;
 
@@ -129,8 +131,29 @@ public abstract class Edificio {
         }
     }
 
-    public void atacar(Personaje[] personajes) {
-
+    public void atacar(Personaje[] personajes) throws ExcepcionNoExistePersonaje, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+        if(personajes.length==0){
+            throw new ExcepcionNoExistePersonaje("No hay personajes a los que atacar");
+        }
+        int ataque = this.getAtaque();
+        int quitados = ataque/personajes.length;
+        for (Personaje atacado : personajes) {
+            atacado.setSalud(-quitados, true);
+            if (atacado.getSalud() <= 0) {
+                if (atacado.getGrupo() != null) {
+                    atacado.getGrupo().desligar(atacado);
+                }
+                civilizacion.getMapa().getCelda(atacado.getPosicion()).getPersonajes().remove(atacado);
+                civilizacion.getPersonajes().remove(atacado.getNombre());
+                civilizacion.getMapa().imprimirCabecera();
+                civilizacion.getMapa().imprimir(civilizacion);
+                Juego.CONSOLA.imprimir("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + atacado.getPosicion().toStringMapa() + " (civ " + atacado.getCivilizacion().getNombre() + ").");
+                Juego.CONSOLA.imprimir("El personaje: " + atacado.getNombre() + " ha muerto");
+            } else {
+                Juego.CONSOLA.imprimir("Has inflingido " + quitados + " de daño al personaje " + atacado.getNombre() + " de la celda " + atacado.getPosicion().toStringMapa() + " (civ " + atacado.getCivilizacion().getNombre() + ").");
+            }
+        }
+        
     }
 
     public void almacenar(Recurso recurso) throws ExcepcionArgumentosValoresIncorrectos {

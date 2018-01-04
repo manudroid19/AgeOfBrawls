@@ -47,12 +47,6 @@ public final class Ciudadela extends Edificio {
         }
         Personaje person = new Paisano(pos, nombrePers, civilizacion);
         civilizacion.setAlimentos(-50, true);
-        Juego.CONSOLA.imprimir();
-        civilizacion.getMapa().imprimirCabecera();
-        civilizacion.getMapa().imprimir(civilizacion);
-        Juego.CONSOLA.imprimir("Coste de creacion: 50 unidades de comida");
-        Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
-        Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
         return person;
 
     }
