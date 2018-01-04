@@ -1,8 +1,6 @@
 package ageofbrawls.plataforma;
 
-import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.ExcepcionJuego;
-import java.util.Scanner;
 
 /**
  *
@@ -14,8 +12,16 @@ public class AgeOfBrawls {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        Comando comando = (Comando) new Juego();
+        CargadorJuego cargador;
+        String cargar=Juego.CONSOLA.leerEnLinea("Deseas cargar el juego (s) o empezar uno nuevo(n)? ");
+        if(cargar.contains("s")){
+            String ruta = Juego.CONSOLA.leerEnLinea("Introduce la ruta de los archivos (mismo directorio=.) ");
+            cargador = (CargadorJuego) new CargadorArchivo(ruta); 
+        }else{
+            cargador = (CargadorJuego) new CargadorNuevo();
+        }
+            
+        Comando comando = cargador.cargarJuego();
 
         Juego.CONSOLA.imprimir("Bienvenido a Age Of Brawls!!");
         Juego.CONSOLA.imprimir("Por ahora es un vasto territorio inexplorado que solo habita tu fiel paisano \"paisano1\" desde su bastión \"ciudadela1\".");

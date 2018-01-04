@@ -35,8 +35,7 @@ public abstract class Personaje {
     private String nombre;
     private Grupo grupo;
 
-    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
-        if (posicion != null && nombre != null) {
+    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion) {
             this.posicion = new Posicion(posicion);
             this.nombre = nombre;
             this.civilizacion = civilizacion;
@@ -44,12 +43,10 @@ public abstract class Personaje {
             salud = 10;
             defensa = 10;
             muerto = false;
-        } else {
-            throw new ExcepcionArgumentosInternos("Error seteando personaje");
-        }
+
     }
 
-    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion, int defensa, int salud) throws ExcepcionArgumentosInternos {
+    public Personaje(Posicion posicion, String nombre, Civilizacion civilizacion, int defensa, int salud) {
         this(posicion, nombre, civilizacion);//defensa salud
         this.defensa = defensa;
         this.salud = salud;

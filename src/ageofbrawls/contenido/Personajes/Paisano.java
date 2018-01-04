@@ -32,7 +32,7 @@ public class Paisano extends Personaje {
 
     int capRec, cantRecMadera, cantRecPiedra, cantRecComida;
 
-    public Paisano(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
+    public Paisano(Posicion posicion, String nombre, Civilizacion civilizacion) {
         super(posicion, nombre, civilizacion, 100, 50);
         capRec = 50;
     }
@@ -134,7 +134,7 @@ public class Paisano extends Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
 
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {

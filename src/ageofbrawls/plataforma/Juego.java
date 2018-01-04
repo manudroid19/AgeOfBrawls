@@ -12,6 +12,7 @@ import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdi
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
@@ -29,8 +30,8 @@ import java.util.logging.Logger;
  */
 public class Juego implements Comando {
 
-    Civilizacion activa;
-    Mapa mapa;
+    private Civilizacion activa;
+    private Mapa mapa;
     public static final Consola CONSOLA = (Consola) new ConsolaNormal();
 
     public Juego() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos {
@@ -61,13 +62,13 @@ public class Juego implements Comando {
 
     @Override
     public void guardar(String ruta) throws ExcepcionNoExisteArchivo {
-        Loader loader = new Loader(mapa, ruta, true);
+        CargadorArchivo loader = new CargadorArchivo(mapa, ruta, true);
 
     }
 
     @Override
     public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
-            Loader loader = new Loader(mapa, ruta);
+            CargadorArchivo loader = new CargadorArchivo(ruta);
             activa = mapa.getCivilizaciones().get(mapa.getCivilizaciones().keySet().toArray()[0]);
             mapa.imprimirCabecera();
             mapa.imprimir(activa);
@@ -205,13 +206,16 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos{
+    public void crear(String edificio, String tipo) throws ExcepcionNoExisteEdificio,ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
         Edificio creador = activa.getEdificios().get(edificio);
-        if (creador == null || (creador instanceof Cuartel && !tipo.equals("soldado")) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
-            throw new ExcepcionArgumentosInternos("Comando erroneo. No se puede crear.");
+        if(creador==null){
+            throw new ExcepcionNoExisteEdificio("El edificio "+edificio+" no existe.");
+        }
+        if ((creador instanceof Cuartel && !(tipo.equals("caballero") || tipo.equals("arquero") || tipo.equals("legionario") )) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
+            throw new ExcepcionArgumentosValoresIncorrectos("Comando erroneo. No existe ese tipo de personaje.");
             
         }
-        creador.crearPersonaje();
+        creador.crearPersonaje(tipo);
     }
 
     @Override
@@ -326,7 +330,9 @@ public class Juego implements Comando {
             personaje.mover(donde);
         }
     }
-
+    public Mapa getMapa(){
+        return mapa;
+    }
     @Override
     public void imprimirCabecera() {
         mapa.imprimirCabecera();

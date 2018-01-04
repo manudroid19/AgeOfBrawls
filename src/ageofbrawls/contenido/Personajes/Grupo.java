@@ -283,7 +283,7 @@ public class Grupo extends Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).hacerPradera();
         }

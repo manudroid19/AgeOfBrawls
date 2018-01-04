@@ -16,11 +16,11 @@ import java.util.ArrayList;
  *
  * @author mprad
  */
-public class Soldado extends Personaje {
+public abstract class Soldado extends Personaje {
 
     private int ataque;
 
-    public Soldado(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
+    public Soldado(Posicion posicion, String nombre, Civilizacion civilizacion) {
         super(posicion, nombre, civilizacion, 200, 100);//defensa salud
         ataque = 70;
     }

@@ -6,6 +6,7 @@ import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.Personajes.Soldado;
+import ageofbrawls.contenido.Personajes.Soldados.Legionario;
 import ageofbrawls.contenido.Recursos.Comida;
 import ageofbrawls.contenido.Recursos.Madera;
 import ageofbrawls.contenido.Recursos.Piedra;
@@ -34,12 +35,19 @@ import java.util.logging.Logger;
  *
  * @author mprad
  */
-public class Loader {
+public class CargadorArchivo implements CargadorJuego{
 
     Mapa mapa;
+    String dir;
 
-    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
-        this.mapa = mapa;
+    public CargadorArchivo(String dir) {
+        this.dir = dir;
+    }
+
+    @Override
+    public Juego cargarJuego() throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
+        Juego juego = new Juego();
+        this.mapa = juego.getMapa();
         this.mapa.clear();
         String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
         File files[] = new File[3];
@@ -52,9 +60,10 @@ public class Loader {
         cargarMapa(files[0]);
         cargarPersonajes(files[1]);
         cargarEdificios(files[2]);
+        return juego;
     }
 
-    public Loader(Mapa mapa, String dir, boolean save) throws ExcepcionNoExisteArchivo {
+    public CargadorArchivo(Mapa mapa, String dir, boolean save) throws ExcepcionNoExisteArchivo {
         try {
             this.mapa = mapa;
             String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
@@ -206,7 +215,7 @@ public class Loader {
             ((Paisano) personaje).setCapRec(capacidad);
 
         } else {
-            personaje = new Soldado(pos, nombre, current);
+            personaje = new Legionario(pos, nombre, current);
             personaje.setSalud(salud, false);
             personaje.setDefensa(defensa);
             ((Soldado) personaje).setAtaque(ataque);
@@ -253,7 +262,7 @@ public class Loader {
                 }
             }
         } catch (FileNotFoundException excep) {
-            throw new ExcepcionNoExisteArchivo("No se puede leer "+file.getName());
+            throw new ExcepcionNoExisteArchivo("No se puede leer " + file.getName());
         }
         return lineas;
     }
