@@ -22,7 +22,7 @@ public final class Casa extends Edificio {
     }
      
     @Override
-    public int getMaxVida() {
+    public int MaxVida() {
         return 1000;
     }
     

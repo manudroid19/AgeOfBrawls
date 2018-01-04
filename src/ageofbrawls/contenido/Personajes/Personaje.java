@@ -336,7 +336,7 @@ public abstract class Personaje {
     }
 
     protected void repararGenerico(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos {
-        if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getSalud() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
+        if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getSalud() == civilizacion.getMapa().getCelda(pos).getEdificio().MaxVida()) {
             throw new ExcepcionArgumentosInternos("Nada que reparar.");
             
         }
@@ -344,7 +344,7 @@ public abstract class Personaje {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede reparar desde un edificio");
             
         }
-        int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getSalud();
+        int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().MaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getSalud();
         int costeMadera = (int) (puntosAReparar * 0.4);
         int costePiedra = (int) (puntosAReparar * 0.5);
         if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {

@@ -101,7 +101,7 @@ public abstract class Edificio {
         return nombre;
     }
 
-    public abstract int getMaxVida();
+    public abstract int MaxVida();
 
     public void setCapAloj(int aloj, boolean relative) throws ExcepcionArgumentosInternos {
         if (relative) {
@@ -129,7 +129,7 @@ public abstract class Edificio {
 
     }
 
-    public void crearPersonaje(String tipo) throws ExcepcionAccionRestringidaEdificio,ExcepcionArgumentosInternos,ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {
+    public Personaje crear(String tipo_personaje) throws ExcepcionAccionRestringidaEdificio,ExcepcionArgumentosInternos,ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {
         throw new ExcepcionAccionRestringidaEdificio("Este edificio no puede crear personajes");
     }
 
@@ -168,7 +168,7 @@ public abstract class Edificio {
     }
 
     public void reparar() {
-        salud = getMaxVida();
+        salud = MaxVida();
     }
 
 }

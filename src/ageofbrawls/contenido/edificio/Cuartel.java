@@ -30,7 +30,7 @@ public final class Cuartel extends Edificio {
     }
 
     @Override
-    public void crearPersonaje(String tipo) throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos {
+    public Personaje crear(String tipo) throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos {
         Civilizacion civilizacion = super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
             throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes", civilizacion.getPersonajes().size());
@@ -62,21 +62,19 @@ public final class Cuartel extends Edificio {
                 person = null;
                 break;
         }
-        civilizacion.getMapa().getCelda(pos).addPersonaje(person);
-        civilizacion.getPersonajes().put(person.getNombre(), person);
-        civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
         civilizacion.setAlimentos(-100, true);
-        civilizacion.makeAdyVisible(pos);
+        
         Juego.CONSOLA.imprimir();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
         Juego.CONSOLA.imprimir("Coste de creacion: 100 unidades de comida");
         Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
         Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
+        return person;
     }
 
     @Override
-    public int getMaxVida() {
+    public int MaxVida() {
         return 500;
     }
 
