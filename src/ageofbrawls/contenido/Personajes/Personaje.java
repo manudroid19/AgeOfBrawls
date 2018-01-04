@@ -453,7 +453,7 @@ public abstract class Personaje {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar desde un edificio");
             
         }
-        if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela)) {
+        if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela) && mapa.getCelda(posicion).getEdificio().getCivilizacion()!= this.civilizacion) {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede almacenar recursos en esa celda");
             
         }
