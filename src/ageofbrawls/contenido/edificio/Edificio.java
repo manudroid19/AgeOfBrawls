@@ -7,6 +7,7 @@ package ageofbrawls.contenido.edificio;
 
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Recursos.Recurso;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
@@ -129,7 +130,11 @@ public abstract class Edificio {
 
     }
 
-    public Personaje crear(String tipo_personaje) throws ExcepcionAccionRestringidaEdificio,ExcepcionArgumentosInternos,ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {
+    public void almacenar(Recurso recurso) {
+        
+    }
+
+    public Personaje crear(String tipo_personaje) throws ExcepcionAccionRestringidaEdificio, ExcepcionArgumentosInternos, ExcepcionNoExisteMapa, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosValoresIncorrectos {
         throw new ExcepcionAccionRestringidaEdificio("Este edificio no puede crear personajes");
     }
 

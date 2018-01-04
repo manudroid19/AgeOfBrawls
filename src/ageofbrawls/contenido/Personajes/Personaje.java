@@ -461,6 +461,7 @@ public abstract class Personaje {
             throw new ExcepcionEspacioInsuficiente("No hay espacio suficiente en la ciudadela.");
             
         }
+        
         if (this.getCantRecMadera() > 0) {
             civilizacion.setMadera(this.getCantRecMadera(), true);
             Juego.CONSOLA.imprimir("Almacenadas " + this.getCantRecMadera() + " unidades de madera en la ciudadela");

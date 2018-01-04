@@ -284,7 +284,7 @@ public class Grupo extends Personaje {
             throw new ExcepcionAccionRestringidaGrupo(this.getNombre() + " no puede recolectar más");
             
         }
-        if (contenedor == null) {
+        if (contenedor.getRecurso() == null) {
             throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
             
         }

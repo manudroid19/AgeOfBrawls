@@ -56,7 +56,7 @@ public final class Ciudadela extends Edificio {
         return person;
 
     }
-
+    
     @Override
     public void describirEdificio() {
         super.describirEdificio();

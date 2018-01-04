@@ -107,6 +107,7 @@ public class Paisano extends Personaje {
         System.out.println("Cantidad de Recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
     }
 
+    @Override
     public void recolectar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos,ExcepcionNadaQueRecolectar, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaPersonaje{
         Mapa mapa = getCivilizacion().getMapa();
         if (mapa == null || direccion == null) {
@@ -133,7 +134,7 @@ public class Paisano extends Personaje {
             throw new ExcepcionAccionRestringidaPersonaje(this.getNombre() + " no puede recolectar más");
             
         }
-        if (contenedor == null) {
+        if (contenedor.getRecurso() == null) {
             throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
             
         }
