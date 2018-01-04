@@ -1,6 +1,12 @@
 package ageofbrawls.plataforma;
 
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.ExcepcionJuego;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,15 +19,20 @@ public class AgeOfBrawls {
      */
     public static void main(String[] args) {
         CargadorJuego cargador;
-        String cargar=Juego.CONSOLA.leerEnLinea("Deseas cargar el juego (s) o empezar uno nuevo(n)? ");
-        if(cargar.contains("s")){
+        String cargar = Juego.CONSOLA.leerEnLinea("Deseas cargar el juego (s) o empezar uno nuevo(n)? ");
+        if (cargar.contains("s")) {
             String ruta = Juego.CONSOLA.leerEnLinea("Introduce la ruta de los archivos (mismo directorio=.) ");
-            cargador = (CargadorJuego) new CargadorArchivo(ruta); 
-        }else{
+            cargador = (CargadorJuego) new CargadorArchivo(ruta);
+        } else {
             cargador = (CargadorJuego) new CargadorNuevo();
         }
-            
-        Comando comando = cargador.cargarJuego();
+
+        Comando comando;
+        try {
+            comando = cargador.cargarJuego();
+        } catch (ExcepcionNoExisteArchivo | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
+            Juego.CONSOLA.imprimir(ex.getMensaje());
+        }
 
         Juego.CONSOLA.imprimir("Bienvenido a Age Of Brawls!!");
         Juego.CONSOLA.imprimir("Por ahora es un vasto territorio inexplorado que solo habita tu fiel paisano \"paisano1\" desde su bastión \"ciudadela1\".");
@@ -30,7 +41,7 @@ public class AgeOfBrawls {
         Juego.CONSOLA.imprimir();
         comando.imprimirCabecera();
         comando.imprimirMapa();
-        
+
         String orden = "";
         while (!"salir".equals(orden)) {
             orden = Juego.CONSOLA.leerEnLinea("Introduce orden: ");
