@@ -11,6 +11,10 @@ import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.contenido.edificio.Ciudadela;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,7 +63,7 @@ public class Civilizacion {
         if (posCiudadela != null) {
             mapa.makeAdyPrad(posCiudadela);
             String nomCiud = "ciudadela1";
-            Edificio ciud = new Edificio(Edificio.CIUDADELA, posCiudadela, nomCiud, this);
+            Ciudadela ciud = new Ciudadela(posCiudadela, nomCiud, this);
             anadirCiudadela();
             mapa.getCelda(posCiudadela).setEdificio(ciud);
             edificios.put(nomCiud, ciud);
@@ -107,17 +111,18 @@ public class Civilizacion {
         return nombre;
     }
 
-    public int getContador(int tipo) {
-        switch (tipo) {
-            case Contenedor.BOSQUE:
-                return bosques++;
-            case Contenedor.CANTERA:
-                return canteras++;
-            case Contenedor.ARBUSTO:
-                return arbustos++;
-            default:
-                return -1;
+    public int getContador(Contenedor clase) {
+
+        if (clase instanceof Bosque) {
+            return bosques++;
+        } else if (clase instanceof Cantera) {
+            return canteras++;
+        } else if (clase instanceof Arbusto) {
+            return arbustos++;
+        } else {
+            return -1;
         }
+
     }
 
     public HashMap<String, Contenedor> getContenedoresRecurso() {
@@ -224,13 +229,13 @@ public class Civilizacion {
         for (int h = i - 1; h < i + 2; h++) {
             for (int k = j - 1; k < j + 2; k++) {
                 Celda c = mapa.getCelda(h, k);
-                if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio().getTipo() == Edificio.CIUDADELA))) {
+                if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio() instanceof Ciudadela))) {
                     c.setOculto(this, false);
                     if (c.getContenedorRec() != null) {
                         if (c.getContenedorRec().getNombre() == null || "".equals(c.getContenedorRec().getNombre())) {
-                            int n = getContador(c.getContenedorRec().getTipo());
+                            int n = getContador(c.getContenedorRec());
                             while (recursosVisibles.containsKey(c.getContenedorRec().toString() + n)) {
-                                n = getContador(c.getContenedorRec().getTipo());
+                                n = getContador(c.getContenedorRec());
                             }
                             c.getContenedorRec().setNombre(c.getContenedorRec().toString() + n);
                         }
@@ -253,7 +258,7 @@ public class Civilizacion {
         }
     }
 
-    public int contarEdificios(Class <? extends Edificio> clase) {
+    public int contarEdificios(Class<? extends Edificio> clase) {
         int n = 0;
         if (clase != null) {
             Collection<Edificio> edifs = this.getEdificios().values();

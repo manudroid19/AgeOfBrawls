@@ -6,15 +6,16 @@
 package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.contenido.contenedor.Contenedor;
-import ageofbrawls.contenido.ContenedorRecurso;
 import ageofbrawls.contenido.Recursos.Comida;
 import ageofbrawls.contenido.Recursos.Madera;
 import ageofbrawls.contenido.Recursos.Piedra;
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
-
 
 /**
  *
@@ -34,11 +35,11 @@ public class Paisano extends Personaje {
     }
 
     public void setCantRec(Class<? extends Recurso> clase, int valor) {
-        if(Comida.class.equals(clase)){
+        if (Comida.class.equals(clase)) {
             setCantRecComida(valor);
-        }else if(Madera.class.equals(clase)){
+        } else if (Madera.class.equals(clase)) {
             setCantRecMadera(valor);
-        }else if(Piedra.class.equals(clase)){
+        } else if (Piedra.class.equals(clase)) {
             setCantRecPiedra(valor);
         }
     }
@@ -126,7 +127,7 @@ public class Paisano extends Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad()), tipoC = contenedor.getTipo();
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).setTipoCont(0);
         }
@@ -134,19 +135,18 @@ public class Paisano extends Personaje {
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
-        switch (tipoC) {
-            case Contenedor.BOSQUE:
-                System.out.println("Has recolectado " + recolectando + " unidades de madera");
-                setCantRecMadera(getCantRecMadera() + recolectando);
-                break;
-            case Contenedor.ARBUSTO:
-                System.out.println("Has recolectado " + recolectando + " unidades de comida");
-                setCantRecComida(getCantRecComida() + recolectando);
-                break;
-            case Contenedor.CANTERA:
-                System.out.println("Has recolectado " + recolectando + " unidades de piedra");
-                setCantRecPiedra(getCantRecPiedra() + recolectando);
-                break;
+        if (contenedor instanceof Bosque) {
+            System.out.println("Has recolectado " + recolectando + " unidades de madera");
+            setCantRecMadera(getCantRecMadera() + recolectando);
+        }
+        else if (contenedor instanceof Arbusto) {
+            System.out.println("Has recolectado " + recolectando + " unidades de comida");
+            setCantRecComida(getCantRecComida() + recolectando);
+        }
+        else if (contenedor instanceof Cantera) {
+            System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+            setCantRecPiedra(getCantRecPiedra() + recolectando);
+
         }
     }
 

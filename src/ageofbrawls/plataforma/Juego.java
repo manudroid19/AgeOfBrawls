@@ -5,6 +5,8 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.edificio.Ciudadela;
+import ageofbrawls.contenido.edificio.Cuartel;
 import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -201,7 +203,7 @@ public class Juego implements Comando {
     @Override
     public void crear(String edificio, String tipo) {
         Edificio creador = activa.getEdificios().get(edificio);
-        if (creador == null || (creador.getTipo() == Edificio.CUARTEL && !tipo.equals("soldado")) || (creador.getTipo() == Edificio.CIUDADELA && !tipo.equals("paisano"))) {
+        if (creador == null || (creador instanceof Cuartel  && !tipo.equals("soldado")) || (creador instanceof Ciudadela && !tipo.equals("paisano"))) {
             Juego.CONSOLA.imprimir("Comando erroneo. No se puede crear.");
             return;
         }

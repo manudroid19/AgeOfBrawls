@@ -20,7 +20,7 @@
 0,19;pradera;
 1,0;pradera;
 1,1;pradera;
-1,2;bosque;bosque21;36
+1,2;pradera;
 1,3;cantera;cantera17;16
 1,4;pradera;
 1,5;pradera;
@@ -38,8 +38,8 @@
 1,17;pradera;
 1,18;pradera;
 1,19;pradera;
-2,0;bosque;bosque22;33
-2,1;cantera;cantera18;7
+2,0;pradera;
+2,1;pradera;
 2,2;pradera;
 2,3;pradera;
 2,4;arbusto;arbusto14;87
@@ -58,7 +58,7 @@
 2,17;cantera;cantera1;49
 2,18;pradera;
 2,19;pradera;
-3,0;arbusto;;16
+3,0;arbusto;arbusto1;16
 3,1;pradera;
 3,2;pradera;
 3,3;pradera;

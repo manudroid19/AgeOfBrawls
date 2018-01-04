@@ -10,6 +10,13 @@ import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
+import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.contenido.edificio.Casa;
+import ageofbrawls.contenido.edificio.Ciudadela;
+import ageofbrawls.contenido.edificio.Cuartel;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +33,7 @@ public class Celda {
     private ArrayList<Personaje> personajes;
     private ArrayList<Grupo> grupos;
 
-    public Celda(int tipo, int cantidadRecurso, int edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) {
+    public Celda(Contenedor contenedor, int edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
         } else {
@@ -40,7 +47,7 @@ public class Celda {
         if (tipo == PRADERA) {
             contenedor.setRecurso(null);
         } else {
-            contenedor = new Contenedor(recurso, cantidadRecurso);//valida tipo e cantRecurso
+            this.contenedor = new Contenedor(contenedor.getRecurso(),contenedor.getNombre() );//valida tipo e cantRecurso
         }
         personajes = new ArrayList<>();
         grupos = new ArrayList<>();
@@ -87,36 +94,12 @@ public class Celda {
         this.haygrupo = haygrupo;
     }
 
-    public void setTipoCont(int tipo) {
-        if (tipo == PRADERA) {
-            contenedor = null;
-        } else {
-            if (contenedor == null) {
-                contenedor = new Contenedor(tipo, 0);
-            } else {
-                recurso.setTipo(tipo);
-            }
-        }
-    }
-
-    public void setTipoCont(int tipo, int cantidad) {
-        if (tipo == PRADERA) {
-            recurso = null;
-        } else {
-            if (recurso == null) {
-                recurso = new Contenedor(tipo, cantidad);
-            } else {
-                recurso.set(tipo, cantidad);
-            }
-        }
-    }
-
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {
             contenedor = null;
             this.edificio = edificio;
         } else {
-            this.edificio =null;
+            this.edificio = null;
         }
     }
 
@@ -154,15 +137,15 @@ public class Celda {
         if (contenedor == null) {
             return "pradera";
         }
-        switch (this.recurso.getTipo()) {
-            case Contenedor.BOSQUE:
-                return "bosque";
-            case Contenedor.CANTERA:
-                return "cantera";
-            case Contenedor.ARBUSTO:
-                return "arbusto";
-            default:
-                return null;
+        if (contenedor instanceof Bosque) {
+
+            return "bosque";
+        } else if (contenedor instanceof Cantera) {
+            return "cantera";
+        } else if (contenedor instanceof Arbusto) {
+            return "arbusto";
+        } else {
+            return null;
         }
     }
 
@@ -184,26 +167,25 @@ public class Celda {
 //        }
 //
 //    }
-
     public void agrupar(Civilizacion civilizacion) {
         if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
             System.out.println("No se puede crear un grupo en esta situación");
             return;
         }
         ArrayList<Personaje> pers = new ArrayList<>();
-        if(haygrupo){
-        for (int i = 0; i < this.getGrupos().size(); i++) {
-            for (int j = 0; j < this.getGrupos().get(i).getPersonajes().size(); j++) {
-                pers.add(this.getGrupos().get(i).getPersonajes().get(j));
+        if (haygrupo) {
+            for (int i = 0; i < this.getGrupos().size(); i++) {
+                for (int j = 0; j < this.getGrupos().get(i).getPersonajes().size(); j++) {
+                    pers.add(this.getGrupos().get(i).getPersonajes().get(j));
+                }
             }
-        }
-        
+
         }
         for (int i = 0; i < this.getPersonajes().size(); i++) {
             pers.add(this.getPersonajes().get(i));
         }
-        for(int i=1;i<pers.size();i++){
-            if(!pers.get(i).getCivilizacion().equals(pers.get(i-1).getCivilizacion())){
+        for (int i = 1; i < pers.size(); i++) {
+            if (!pers.get(i).getCivilizacion().equals(pers.get(i - 1).getCivilizacion())) {
                 System.out.println("No puedes agrupar personajes de distintas civilizaciones!");
                 return;
             }
@@ -215,7 +197,7 @@ public class Celda {
         }
 
         Grupo group = new Grupo(pers, this.getPosicion().inversa(), nombreGrupo, civilizacion);
-        this.haygrupo=true;
+        this.haygrupo = true;
         this.personajes.clear();
         this.grupos.clear();
         this.addGrupo(group);
@@ -250,57 +232,59 @@ public class Celda {
             } else if ((this.personajes.size() > 1 && !this.haygrupo) && this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*";
             } else if (this.edificio != null) {
-                switch (this.edificio.getTipo()) {
-                    case Edificio.CIUDADELA:
-                        return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
-                    case Edificio.CASA:
-                        return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
-                    case Edificio.CUARTEL:
-                        return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
-                    default:
-                        break;
+                if (this.edificio instanceof Ciudadela) {
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+
+                } else if (this.edificio instanceof Casa) {
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+
+                } else if (this.edificio instanceof Cuartel) {
+                    return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
                 }
+
             }
         }
         if (this.haygrupo && this.edificio == null) {
             if (this.grupos.size() == 1) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G ";
-            } else if (((this.getPersonajes().size()>=1 && this.grupos.size()>=1)||this.grupos.size() > 1 )&& this.edificio == null) {
+            } else if (((this.getPersonajes().size() >= 1 && this.grupos.size() >= 1) || this.grupos.size() > 1) && this.edificio == null) {
                 return Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " G*";
             }
         }
         if (this.haygrupo && this.edificio != null) {
-            switch (this.edificio.getTipo()) {
-                case Edificio.CIUDADELA:
-                    return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
-                case Edificio.CASA:
-                    return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
-                case Edificio.CUARTEL:
-                    return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
-                default:
-                    break;
+            if (this.edificio instanceof Ciudadela) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+
+            } else if (this.edificio instanceof Casa) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+
+            } else if (this.edificio instanceof Cuartel) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
             }
         }
-        if (this.recurso == null) {
+
+        if (this.contenedor == null) {
             if (this.edificio == null) {
                 return Mapa.ANSI_GREEN_BACKGROUND + "   ";
-            } else if (this.edificio.getTipo() == Edificio.CIUDADELA) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " U ";
-            } else if (this.edificio.getTipo() == Edificio.CASA) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " K ";
-            } else if (this.edificio.getTipo() == Edificio.CUARTEL) {
-                return Mapa.ANSI_PURPLE_BACKGROUND + " Z ";
+            } else if (this.edificio instanceof Ciudadela) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " U*";
+
+            } else if (this.edificio instanceof Casa) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " K*";
+
+            } else if (this.edificio instanceof Cuartel) {
+                return Mapa.ANSI_PURPLE_BACKGROUND + " Z*";
             }
         }
-        switch (this.recurso.getTipo()) {
-            case Contenedor.BOSQUE:
-                return Mapa.ANSI_CYAN_BACKGROUND + " B ";
-            case Contenedor.CANTERA:
-                return Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C ";
-            case Contenedor.ARBUSTO:
-                return Mapa.ANSI_YELLOW_BACKGROUND + " A ";
-            default:
-                return " ";
+        if (contenedor instanceof Bosque) {
+            return Mapa.ANSI_CYAN_BACKGROUND + " B ";
+        } else if (contenedor instanceof Cantera) {
+            return Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C ";
+        } else if (contenedor instanceof Arbusto) {
+            return Mapa.ANSI_YELLOW_BACKGROUND + " A ";
+        } else {
+            return " ";
         }
     }
+
 }

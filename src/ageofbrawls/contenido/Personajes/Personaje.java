@@ -2,10 +2,12 @@ package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.contenido.contenedor.Contenedor;
 import ageofbrawls.contenido.edificio.Edificio;
-import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Soldados.Arquero;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.Personajes.Soldados.Legionario;
+import ageofbrawls.contenido.edificio.Casa;
+import ageofbrawls.contenido.edificio.Ciudadela;
+import ageofbrawls.contenido.edificio.Cuartel;
 import ageofbrawls.plataforma.Celda;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
@@ -283,7 +285,7 @@ public abstract class Personaje {
                 }
                 civilizacion.setPiedra(-100, true);
                 civilizacion.setMadera(-100, true);
-                Edificio edif = new Edificio(Edificio.CASA, posConstruir, "casa" + (civilizacion.contarEdificios(Edificio.CASA) + 1), civilizacion);
+                Casa edif = new Casa(posConstruir, "casa" + (civilizacion.contarEdificios(Casa.class) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(edif);
                 System.out.println();
                 civilizacion.getEdificios().put(edif.getNombre(), edif);
@@ -299,7 +301,7 @@ public abstract class Personaje {
                 }
                 civilizacion.setPiedra(-200, true);
                 civilizacion.setMadera(-200, true);
-                Edificio cuart = new Edificio(Edificio.CUARTEL, posConstruir, "cuartel" + (civilizacion.contarEdificios(Edificio.CUARTEL) + 1), civilizacion);
+                Cuartel cuart = new Cuartel(posConstruir, "cuartel" + (civilizacion.contarEdificios(Cuartel.class) + 1), civilizacion);
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(cuart);
                 civilizacion.getEdificios().put(cuart.getNombre(), cuart);
                 System.out.println();
@@ -315,7 +317,7 @@ public abstract class Personaje {
                 }
                 civilizacion.setPiedra(-500, true);
                 civilizacion.setMadera(-500, true);
-                Edificio ciud = new Edificio(Edificio.CIUDADELA, posConstruir, "ciudadela" + (civilizacion.contarEdificios(Edificio.CIUDADELA) + 1), civilizacion);
+                Ciudadela ciud = new Ciudadela(posConstruir, "ciudadela" + (civilizacion.contarEdificios(Ciudadela.class) + 1), civilizacion);
                 civilizacion.anadirCiudadela();
                 civilizacion.getMapa().getCelda(posConstruir).setEdificio(ciud);
                 civilizacion.getEdificios().put(ciud.getNombre(), ciud);
@@ -443,7 +445,7 @@ public abstract class Personaje {
             System.out.println("No se puede almacenar desde un edificio");
             return;
         }
-        if (mapa.getCelda(pos).getEdificio() == null || mapa.getCelda(pos).getEdificio().getTipo() != Edificio.CIUDADELA) {
+        if (mapa.getCelda(pos).getEdificio() == null || !(mapa.getCelda(pos).getEdificio() instanceof Ciudadela)) {
             System.out.println("No se puede almacenar recursos en esa celda");
             return;
         }
