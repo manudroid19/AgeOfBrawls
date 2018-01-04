@@ -1,5 +1,7 @@
 package ageofbrawls.contenido.Personajes;
 
+import ageofbrawls.contenido.contenedor.Contenedor;
+import ageofbrawls.contenido.edificio.Edificio;
 import ageofbrawls.contenido.Edificio;
 import ageofbrawls.contenido.Personajes.Soldados.Arquero;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
