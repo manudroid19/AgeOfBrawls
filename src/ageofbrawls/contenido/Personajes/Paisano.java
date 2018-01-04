@@ -119,6 +119,9 @@ public class Paisano extends Personaje {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
+        if(mapa.getCelda(pos)==null){
+            throw new ExcepcionDireccionNoValida("No puedes recolectar de ahí");
+        }
         Contenedor contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
             throw new ExcepcionArgumentosInternos("La posición no es válida");
@@ -133,7 +136,6 @@ public class Paisano extends Personaje {
         }
         if (contenedor.getRecurso() == null) {
             throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
-            
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
 

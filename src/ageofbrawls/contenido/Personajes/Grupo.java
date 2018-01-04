@@ -286,7 +286,6 @@ public class Grupo extends Personaje {
         }
         if (contenedor.getRecurso() == null) {
             throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
-            
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
         if (contenedor.getRecurso().getCantidad() ==0 || contenedor.getRecurso().getCantidad() - recolectando == 0) {
