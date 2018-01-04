@@ -175,8 +175,8 @@ public class Celda {
 //    }
     public void agrupar(Civilizacion civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
-            System.out.println("No se puede crear un grupo en esta situación");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("No se puede crear un grupo en esta situación");
+            
         }
         ArrayList<Personaje> pers = new ArrayList<>();
         if (haygrupo) {
@@ -192,8 +192,8 @@ public class Celda {
         }
         for (int i = 1; i < pers.size(); i++) {
             if (!pers.get(i).getCivilizacion().equals(pers.get(i - 1).getCivilizacion())) {
-                System.out.println("No puedes agrupar personajes de distintas civilizaciones!");
-                return;
+                throw new ExcepcionAccionRestringidaPersonaje("No puedes agrupar personajes de distintas civilizaciones!");
+                
             }
         }
         int k = 1;
@@ -210,9 +210,9 @@ public class Celda {
         civilizacion.getGrupos().put(nombreGrupo, group);
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println("Se ha creado el " + group.getNombre() + " con los personajes: ");
+        Juego.CONSOLA.imprimir("Se ha creado el " + group.getNombre() + " con los personajes: ");
         for (Personaje person : group.getPersonajes()) {
-            System.out.println(person.getNombre());
+            Juego.CONSOLA.imprimir(person.getNombre());
         }
     }
 

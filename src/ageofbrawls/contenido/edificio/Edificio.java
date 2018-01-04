@@ -8,11 +8,15 @@ package ageofbrawls.contenido.edificio;
 import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.util.ArrayList;
 
@@ -135,13 +139,13 @@ public abstract class Edificio {
     }
 
     public void describirEdificio() {
-        System.out.println("Tipo: " + this.toString());
-        System.out.println("Salud: " + salud);
-        System.out.println("Capacidad de Alojamiento para defenderlo " + capAlojDef);
-        System.out.println("Capacidad de ataque: " + getAtaque());
-        System.out.println("Capacidad de defensa: " + getDefensa());
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Civilizacion: " + civilizacion.getNombre());
+        Juego.CONSOLA.imprimir("Tipo: " + this.toString());
+        Juego.CONSOLA.imprimir("Salud: " + salud);
+        Juego.CONSOLA.imprimir("Capacidad de Alojamiento para defenderlo " + capAlojDef);
+        Juego.CONSOLA.imprimir("Capacidad de ataque: " + getAtaque());
+        Juego.CONSOLA.imprimir("Capacidad de defensa: " + getDefensa());
+        Juego.CONSOLA.imprimir("Nombre: " + nombre);
+        Juego.CONSOLA.imprimir("Civilizacion: " + civilizacion.getNombre());
     }
 
     public void danar(int dano) throws ExcepcionArgumentosInternos {
@@ -155,7 +159,7 @@ public abstract class Edificio {
                 civilizacion.getEdificios().remove(this.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
                 civilizacion.getMapa().imprimir(civilizacion);
-                System.out.println("El edificio " + this.getNombre() + " ha sido destruido");
+                Juego.CONSOLA.imprimir("El edificio " + this.getNombre() + " ha sido destruido");
 
             }
         } else {

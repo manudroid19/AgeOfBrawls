@@ -16,6 +16,9 @@ import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,7 +44,7 @@ public class Civilizacion {
     private int capAlmacen, contCiudadelas = 0;
     public final static int CAPALMACEN = 3000;
 
-    public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) throws ExcepcionArgumentosInternos {
+    public Civilizacion(Mapa mapa, String nombre, Posicion posCiudadela) throws ExcepcionArgumentosInternos, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa {
         edificios = new HashMap<>();
         personajes = new HashMap<>();
         recursosVisibles = new HashMap<>();
@@ -76,7 +79,7 @@ public class Civilizacion {
         }
     }
 
-    public Civilizacion(Mapa mapa, String nombre) throws ExcepcionArgumentosInternos {
+    public Civilizacion(Mapa mapa, String nombre) throws ExcepcionArgumentosInternos, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa {
         this(mapa, nombre, null);
     }
 
@@ -140,49 +143,49 @@ public class Civilizacion {
         return oculto.get(posicion.getY()).get(posicion.getX());
     }
 
-    public void setPiedra(int cant, boolean relative) {
+    public void setPiedra(int cant, boolean relative)throws ExcepcionArgumentosValoresIncorrectos {
         if (relative) {
             if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de piedra no puede ser menor que 0");
+                
             }
             piedra += cant;
         } else {
             if (piedra + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de piedra no puede ser menor que 0");
+                
             }
             piedra = cant;
         }
     }
 
-    public void setAlimentos(int cant, boolean relative) {
+    public void setAlimentos(int cant, boolean relative)throws ExcepcionArgumentosValoresIncorrectos {
         if (relative) {
             if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de comida no puede ser menor que 0");
+                
             }
             alimentos += cant;
         } else {
             if (alimentos + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de comida no puede ser menor que 0");
+                
             }
             alimentos = cant;
         }
     }
 
-    public void setMadera(int cant, boolean relative) {
+    public void setMadera(int cant, boolean relative) throws ExcepcionArgumentosValoresIncorrectos {
         if (relative) {
             if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de madera no puede ser menor que 0");
+                
             }
             madera += cant;
         } else {
             if (madera + cant < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosValoresIncorrectos("La cantidad de madera no puede ser menor que 0");
+                
             }
             madera = cant;
         }
@@ -197,14 +200,14 @@ public class Civilizacion {
     public void listarPersonajes() {
         Set<Map.Entry<String, Personaje>> pers = personajes.entrySet();
         for (Map.Entry<String, Personaje> entry : pers) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
+            Juego.CONSOLA.imprimir(entry.getKey() + "\t" + entry.getValue().getPosicion());
         }
     }
 
     public void listarEdificios() {
         Set<Map.Entry<String, Edificio>> edif = edificios.entrySet();
         for (Map.Entry<String, Edificio> entry : edif) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
+            Juego.CONSOLA.imprimir(entry.getKey() + "\t" + entry.getValue().getPosicion());
 
         }
     }
@@ -212,7 +215,7 @@ public class Civilizacion {
     public void listarGrupos() {
         Set<Map.Entry<String, Grupo>> group = grupos.entrySet();
         for (Map.Entry<String, Grupo> entry : group) {
-            System.out.println(entry.getKey() + "\t" + entry.getValue().getPosicion());
+            Juego.CONSOLA.imprimir(entry.getKey() + "\t" + entry.getValue().getPosicion());
 
         }
     }
@@ -253,12 +256,12 @@ public class Civilizacion {
     public void quitarCiudadela() {
         contCiudadelas--;
         if (contCiudadelas == 0) {
-            System.out.println("La última ciudadela de " + nombre + " ha sido destruida. Game Over.");
+            Juego.CONSOLA.imprimir("La última ciudadela de " + nombre + " ha sido destruida. Game Over.");
             System.exit(0);
         }
     }
 
-    public int contarEdificios(Class<? extends Edificio> clase) {
+    public int contarEdificios(Class<? extends Edificio> clase) throws ExcepcionArgumentosInternos{
         int n = 0;
         if (clase != null) {
             Collection<Edificio> edifs = this.getEdificios().values();
@@ -269,9 +272,9 @@ public class Civilizacion {
             }
             return n;
         } else {
-            System.out.println("Error: clase incorrecta.");
+            throw new ExcepcionArgumentosInternos("La clase introducida es incorrecta");
         }
-        return -1;
+        
     }
 
     @Override

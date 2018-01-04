@@ -5,6 +5,8 @@
  */
 package ageofbrawls.plataforma;
 
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -68,7 +70,7 @@ public class Posicion {
         return y;
     }
 
-    public Posicion getAdy(int pos) {
+    public Posicion getAdy(int pos) throws ExcepcionDireccionNoValida {
         switch (pos) {
             case Posicion.ESTE:
                 return new Posicion(x + 1, y);
@@ -83,15 +85,15 @@ public class Posicion {
             case Posicion.SURESTE:
                 return new Posicion(x + 1, y + 1);
             default:
-                System.out.println("Error: posicion no valida.");
-                return this;
+                throw new ExcepcionDireccionNoValida("La dirección introducida no es válida");
+                
         }
     }
 
-    public Posicion getAdy(String direccion) {
+    public Posicion getAdy(String direccion) throws ExcepcionDireccionNoValida {
         if (direccion == null) {
-            System.out.println("Error: direccion no valida.");
-            return this;
+            throw new ExcepcionDireccionNoValida("La dirección introducida no es válida");
+            
         }
         switch (direccion.toLowerCase()) {
             case "norte":
@@ -103,8 +105,8 @@ public class Posicion {
             case "oeste":
                 return getAdy(Posicion.OESTE);
             default:
-                System.out.println("Error: direccion no valida.");
-                return this;
+                throw new ExcepcionDireccionNoValida("La dirección introducida no es válida");
+                
         }
     }
     
@@ -112,10 +114,10 @@ public class Posicion {
         return new Posicion(y,x);
     }
     
-    public Posicion posicionAdyacenteLibre(Mapa mapa) {
+    public Posicion posicionAdyacenteLibre(Mapa mapa) throws ExcepcionNoExisteMapa {
         if (mapa == null) {
-            System.out.println("Error.");
-            return null;
+            throw new ExcepcionNoExisteMapa("El mapa no existe");
+            
         }
         int i = x;
         int j = y;

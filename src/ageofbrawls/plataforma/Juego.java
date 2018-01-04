@@ -9,6 +9,7 @@ import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringida;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaEdificio;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaGrupo;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
@@ -18,6 +19,7 @@ import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstru
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.*;
 import java.io.FileNotFoundException;
@@ -34,7 +36,7 @@ public class Juego implements Comando {
     private Mapa mapa;
     public static final Consola CONSOLA = (Consola) new ConsolaNormal();
 
-    public Juego() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos {
+    public Juego() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionDireccionNoValida {
         mapa = new Mapa(20, true);
         Civilizacion romana = new Civilizacion(mapa, "Romana", new Posicion((mapa.getFilas() - 1), 0));
         Civilizacion griega = new Civilizacion(mapa, "Griega", new Posicion(0, 0));
@@ -77,7 +79,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void atacar(String atacante, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo {
         if (activa.getPersonajes().containsKey(atacante)) {
             Personaje personaje2 = activa.getPersonajes().get(atacante);
             personaje2.atacar(direccion);
@@ -90,7 +92,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void defender(String defensor, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente {
+    public void defender(String defensor, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo {
         if (activa.getPersonajes().containsKey(defensor)) {
             Personaje personaje2 = activa.getPersonajes().get(defensor);
             personaje2.defender(direccion);
@@ -180,7 +182,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void almacenar(String almacenador, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos{
+    public void almacenar(String almacenador, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaGrupo{
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
             ((Paisano) personaje2).almacenar(direccion);
@@ -193,7 +195,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void recolectar(String persona, String direccion) throws ExcepcionNoExisteSujeto,ExcepcionArgumentosInternos {
+    public void recolectar(String persona, String direccion) throws ExcepcionNoExisteSujeto,ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos, ExcepcionNadaQueRecolectar, ExcepcionAccionRestringidaPersonaje {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
             ((Paisano) personaje2).recolectar(direccion);
@@ -219,7 +221,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void reparar(String reparador, String dir) throws ExcepcionNoExisteSujeto, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void reparar(String reparador, String dir) throws ExcepcionNoExisteSujeto, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionAccionRestringidaGrupo {
         if (activa.getPersonajes().containsKey(reparador)) {
             Personaje personaje2 = activa.getPersonajes().get(reparador);
             ((Paisano) personaje2).reparar(personaje2.getPosicion().getAdy(dir));
@@ -232,7 +234,7 @@ public class Juego implements Comando {
     }
 
     @Override
-    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion {
+    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion, ExcepcionAccionRestringidaGrupo {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
             personaje1.construir(tipo, dir);

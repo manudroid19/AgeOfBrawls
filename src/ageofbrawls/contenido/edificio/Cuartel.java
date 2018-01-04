@@ -10,10 +10,13 @@ import ageofbrawls.contenido.Personajes.Soldados.Arquero;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.Personajes.Soldados.Legionario;
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 
 /**
@@ -64,12 +67,12 @@ public final class Cuartel extends Edificio {
         civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
         civilizacion.setAlimentos(-100, true);
         civilizacion.makeAdyVisible(pos);
-        System.out.println();
+        Juego.CONSOLA.imprimir();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println("Coste de creacion: 100 unidades de comida");
-        System.out.println("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
-        System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
+        Juego.CONSOLA.imprimir("Coste de creacion: 100 unidades de comida");
+        Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+        Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
     }
 
     @Override

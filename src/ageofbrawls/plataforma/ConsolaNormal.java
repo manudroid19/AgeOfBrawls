@@ -19,17 +19,17 @@ public class ConsolaNormal implements Consola {
 
     @Override
     public void imprimir(String mensaje) {
-        System.out.println(mensaje);
+        Juego.CONSOLA.imprimir(mensaje);
     }
 
     @Override
     public void imprimir() {
-        System.out.println();
+        Juego.CONSOLA.imprimir();
     }
 
     @Override
     public String leer(String descripcion) {
-        System.out.println(descripcion);
+        Juego.CONSOLA.imprimir(descripcion);
         return sca.nextLine();
     }
 

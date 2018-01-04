@@ -14,13 +14,16 @@ import ageofbrawls.contenido.contenedor.Arbusto;
 import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +44,7 @@ public class Paisano extends Personaje {
         this.capRec = capRec;
     }
 
-    public void setCantRec(Class<? extends Recurso> clase, int valor) {
+    public void setCantRec(Class<? extends Recurso> clase, int valor) throws ExcepcionArgumentosValoresIncorrectos {
         if (Comida.class.equals(clase)) {
             setCantRecComida(valor);
         } else if (Madera.class.equals(clase)) {
@@ -51,27 +54,27 @@ public class Paisano extends Personaje {
         }
     }
 
-    public void setCantRecMadera(int valor) {
+    public void setCantRecMadera(int valor) throws ExcepcionArgumentosValoresIncorrectos {
         if (valor >= 0) {
             cantRecMadera = valor;
         } else {
-            System.out.println("Error: capacidad introducida errónea");
+            throw new ExcepcionArgumentosValoresIncorrectos("La cantidad no puede ser negativa");
         }
     }
 
-    public void setCantRecPiedra(int valor) {
+    public void setCantRecPiedra(int valor) throws ExcepcionArgumentosValoresIncorrectos {
         if (valor >= 0) {
             cantRecPiedra = valor;
         } else {
-            System.out.println("Error: capacidad introducida errónea");
+            throw new ExcepcionArgumentosValoresIncorrectos("La cantidad no puede ser negativa");
         }
     }
 
-    public void setCantRecComida(int valor) {
+    public void setCantRecComida(int valor) throws ExcepcionArgumentosValoresIncorrectos {
         if (valor >= 0) {
             cantRecComida = valor;
         } else {
-            System.out.println("Error: capacidad introducida errónea");
+            throw new ExcepcionArgumentosValoresIncorrectos("La cantidad no puede ser negativa");
         }
     }
 
@@ -104,35 +107,35 @@ public class Paisano extends Personaje {
         System.out.println("Cantidad de Recursos que lleva: " + (cantRecMadera + cantRecComida + cantRecPiedra));
     }
 
-    public void recolectar(String direccion) throws ExcepcionArgumentosInternos{
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos,ExcepcionNadaQueRecolectar, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaPersonaje{
         Mapa mapa = getCivilizacion().getMapa();
         if (mapa == null || direccion == null) {
-            System.out.println("Error en recolectar.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error en recolectar.");
+            
         }
 
         if (super.getGrupo() != null) {
-            System.out.println("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede recolectar por si solo ya que pertenece a un grupo");
+            
         }
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
         Contenedor contenedor = mapa.getCelda(pos).getContenedorRec();
         if (pos.equals(posicion)) { //error con la posicion
-            return;
+            throw new ExcepcionArgumentosInternos("La posición no es válida");
         }
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("El personaje está en un edificio y por tanto no puede recolectar");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje está en un edificio y por tanto no puede recolectar");
+            
         }
         if (this.getCantRecTotal() == this.capRec) {
-            System.out.println(this.getNombre() + " no puede recolectar más");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje(this.getNombre() + " no puede recolectar más");
+            
         }
         if (contenedor == null) {
-            System.out.println("Error: La celda destino no es un contenedor de recursos.");
-            return;
+            throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
+            
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.procesar().getCantidad());
 
@@ -144,61 +147,61 @@ public class Paisano extends Personaje {
             mapa.imprimir(civilizacion);
         }
         if (contenedor instanceof Bosque) {
-            System.out.println("Has recolectado " + recolectando + " unidades de madera");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de madera");
             setCantRecMadera(getCantRecMadera() + recolectando);
         } else if (contenedor instanceof Arbusto) {
-            System.out.println("Has recolectado " + recolectando + " unidades de comida");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de comida");
             setCantRecComida(getCantRecComida() + recolectando);
         } else if (contenedor instanceof Cantera) {
-            System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de piedra");
             setCantRecPiedra(getCantRecPiedra() + recolectando);
 
         }
     }
 
-    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos {
         if (getGrupo() != null) {
-            System.out.println("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede almacenar por si solo ya que pertenece a un grupo");
+            
         }
         almacenarGenerico(direccion);
     }
 
     @Override
-    protected void vaciarCantRecMadera() {
+    protected void vaciarCantRecMadera() throws ExcepcionArgumentosValoresIncorrectos {
         setCantRecMadera(0);
     }
 
     @Override
-    protected void vaciarCantRecComida() {
+    protected void vaciarCantRecComida() throws ExcepcionArgumentosValoresIncorrectos {
         setCantRecComida(0);
     }
 
     @Override
-    protected void vaciarCantRecPiedra() {
+    protected void vaciarCantRecPiedra() throws ExcepcionArgumentosValoresIncorrectos {
         setCantRecPiedra(0);
     }
 
     @Override
     public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (tipoC == null || dir == null) {
-            System.out.println("Error en consEdif.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error en consEdif.");
+           
         }
         Grupo grupo = super.getGrupo();
         if (grupo != null) {
-            System.out.println("El personaje no puede construir por si solo ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede construir por si solo ya que pertenece a un grupo");
+            
         }
         construirGenerico(tipoC, dir);
     }
 
-    public void recuperarVida() throws ExcepcionArgumentosInternos {
+    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 50 - this.getSalud();
         if (puntosARecuperar == 0) {
-            System.out.println("El personaje tiene toda la vida");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje tiene toda la vida");
+            
         }
         int costeAlimento = (int) (puntosARecuperar * 0.8);
         if (civilizacion.getAlimentos() < costeAlimento) {
@@ -209,7 +212,7 @@ public class Paisano extends Personaje {
         }
         civilizacion.setAlimentos(-costeAlimento, true);
         this.recuperar();
-        System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
+        Juego.CONSOLA.imprimir("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
     }
 
     public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {

@@ -13,12 +13,15 @@ import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaGrupo;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -152,7 +155,7 @@ public abstract class Personaje {
         }
     }
 
-    public void mover(String direccion) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+    public void mover(String direccion) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida {
         Posicion posicion = this.posicion.getAdy(direccion);
         Mapa mapa = civilizacion.getMapa();
         Celda celdaAntigua = mapa.getCelda(this.posicion);
@@ -173,7 +176,7 @@ public abstract class Personaje {
 
     }
 
-    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionAccionRestringidaPersonaje,ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             throw new ExcepcionArgumentosInternos("No hay edificio en la posición indicada.");
@@ -209,19 +212,19 @@ public abstract class Personaje {
         return 1;
     }
 
-    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida{
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida{
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede atacar");
     }
 
-    protected void vaciarCantRecComida() throws ExcepcionAccionRestringidaPersonaje {
+    protected void vaciarCantRecComida() throws ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaPersonaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de comida");
     }
 
-    protected void vaciarCantRecPiedra() throws ExcepcionAccionRestringidaPersonaje {
+    protected void vaciarCantRecPiedra() throws ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaPersonaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de piedra");
     }
 
-    protected void vaciarCantRecMadera()throws ExcepcionAccionRestringidaPersonaje {
+    protected void vaciarCantRecMadera()throws ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaPersonaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de madera");
     }
 
@@ -233,20 +236,20 @@ public abstract class Personaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recuperar toda la vida");
     }
 
-    public void recolectar(String direccion) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje {
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje,ExcepcionAccionRestringidaGrupo,ExcepcionArgumentosValoresIncorrectos,ExcepcionDireccionNoValida, ExcepcionNadaQueRecolectar {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recolectar");
     }
 
-    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida,ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede almacenar recursos");
     }
 
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede construir");
         
     }
 
-    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede reparar");
     }
 
@@ -267,7 +270,7 @@ public abstract class Personaje {
         civilizacion.makeAdyVisible(posicion);
     }
 
-    protected void construirGenerico(String tipo, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion,  ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    protected void construirGenerico(String tipo, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion,  ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos {
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede construir desde un edificio");
             
@@ -332,7 +335,7 @@ public abstract class Personaje {
         }
     }
 
-    protected void repararGenerico(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    protected void repararGenerico(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos {
         if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getSalud() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
             throw new ExcepcionArgumentosInternos("Nada que reparar.");
             
@@ -429,7 +432,7 @@ public abstract class Personaje {
         }
     }
 
-    protected void almacenarGenerico(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    protected void almacenarGenerico(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos {
         Mapa mapa = civilizacion.getMapa();
         if (mapa == null || direccion == null) {
             throw new ExcepcionDireccionNoValida("Error en almacenar.");
