@@ -41,6 +41,7 @@ public abstract class Soldado extends Personaje {
         Juego.CONSOLA.imprimir("Ataque :" + ataque);
     }
 
+    @Override
     public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (super.getGrupo() != null) {
             throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede atacar ya que pertenece a un grupo");

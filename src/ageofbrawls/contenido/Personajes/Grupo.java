@@ -87,6 +87,7 @@ public class Grupo extends Personaje {
         return valor;
     }
 
+    @Override
     public int capacidadMovimiento() {
         for (Personaje p : personajes) {
             if (!(p instanceof Caballero)) {
@@ -247,7 +248,14 @@ public class Grupo extends Personaje {
         Posicion posicion = getPosicion().getAdy(direccion);
         Mapa mapa = getCivilizacion().getMapa();
         Celda celdaAntigua = mapa.getCelda(getPosicion());
-
+        int cuantoSeMueve = this.capacidadMovimiento();
+        for (int i = 1; i < cuantoSeMueve; i++) {
+            if (!mapa.perteneceAMapa(posicion.getAdy(direccion)) || !mapa.getCelda(posicion.getAdy(direccion)).esCeldaLibre(false)) {
+                break;
+            }
+            posicion = posicion.getAdy(direccion);
+        }
+        
         moverGenerico(posicion, personajes.size());
         celdaAntigua.removeGrupo(this);
         actualizarPosiciones();
