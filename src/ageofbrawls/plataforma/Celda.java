@@ -17,6 +17,7 @@ import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.edificio.Casa;
 import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,6 @@ import java.util.ArrayList;
  */
 public class Celda {
 
-    public static final int PRADERA = 0;
     private Edificio edificio;
     private Contenedor contenedor;
     private Posicion posicion;
@@ -33,29 +33,26 @@ public class Celda {
     private ArrayList<Personaje> personajes;
     private ArrayList<Grupo> grupos;
 
-    public Celda(Contenedor contenedor, int edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) {
+    public Celda(Contenedor contenedor, Edificio edificio, Posicion posicion, String nombreEdificio, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         if (posicion != null) {
             this.posicion = new Posicion(posicion);
         } else {
-            this.posicion = new Posicion();
+            throw new ExcepcionArgumentosInternos("El daño a un edificio no puede ser menor que 0");
         }
-        if (edificio == 0) {
+        if (edificio == null) {
             this.edificio = null;
         } else {
             this.edificio = new Edificio(edificio, posicion, nombreEdificio, civilizacion);//valida o edificio e o string
         }
-        if (tipo == PRADERA) {
-            contenedor.setRecurso(null);
-        } else {
-            this.contenedor = new Contenedor(contenedor.getRecurso(),contenedor.getNombre() );//valida tipo e cantRecurso
-        }
+
+        this.contenedor = new Contenedor(contenedor);
         personajes = new ArrayList<>();
         grupos = new ArrayList<>();
         haygrupo = false;
     }
 
     public Celda(int i, int j) {
-        this(PRADERA, 0, 0, new Posicion(i, j), null, null);
+        this(new Contenedor(), 0, new Posicion(i, j), null, null);
     }
 
     public Contenedor getContenedorRec() {

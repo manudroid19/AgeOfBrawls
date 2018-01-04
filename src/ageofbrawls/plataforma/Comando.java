@@ -6,8 +6,8 @@
 package ageofbrawls.plataforma;
 
 import ageofbrawls.z.excepciones.Argumentos.*;
-import ageofbrawls.z.excepciones.EscasezRecursos.ExcepcionEscasezRecursos;
-import ageofbrawls.z.excepciones.EscasezRecursos.ExcepcionNadaQueRecolectar;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import ageofbrawls.z.excepciones.Movimiento.*;
 import ageofbrawls.z.excepciones.noExiste.*;
 

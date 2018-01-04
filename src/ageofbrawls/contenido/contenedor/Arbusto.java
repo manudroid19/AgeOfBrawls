@@ -5,7 +5,9 @@
  */
 package ageofbrawls.contenido.contenedor;
 
+import ageofbrawls.contenido.Recursos.Comida;
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 
 /**
  *
@@ -13,29 +15,31 @@ import ageofbrawls.contenido.Recursos.Recurso;
  */
 public class Arbusto extends Contenedor {
 
-    public Arbusto(Recurso recurso, String nombre) {
-        super(recurso, nombre);
+    public Arbusto(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
+        super(recurso);
     }
 
-    public Arbusto(int parseInt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-   
+    @Override
     public void describirContenedorRecurso() {
         super.describirContenedorRecurso();
         System.out.println("Cantidad de comida: " + this.getRecurso().getCantidad());
     }
-    
+
+    @Override
+    protected void checkTipoRecurso() throws ExcepcionCorrespondenciaRecursos {
+        if (!(super.getRecurso() instanceof Comida)) {
+            throw new ExcepcionCorrespondenciaRecursos("No corresponde el contenedor " + toString() + " con el recurso insertado");
+        }
+    }
+
     @Override
     public boolean esTransitable() {
         return false;
     }
-    
+
     @Override
     public String toString() {
         return "arbusto";
     }
-    
+
 }

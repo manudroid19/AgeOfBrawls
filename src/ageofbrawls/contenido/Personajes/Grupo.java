@@ -389,8 +389,8 @@ public class Grupo extends Personaje {
             System.out.println("El grupo no puede entrar en el edificio de la otra civilización");
             return;
         }
-        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() < this.getPersonajes().size()) {
-            System.out.println("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
+        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() < this.getPersonajes().size()) {
+            System.out.println("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
             return;
         }
 
@@ -402,7 +402,7 @@ public class Grupo extends Personaje {
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");
+        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
         for (int i = 0; i < this.getPersonajes().size(); i++) {
             this.getPersonajes().get(i).recuperarVida();
         }

@@ -5,10 +5,16 @@
  */
 package ageofbrawls.z.excepciones.Argumentos;
 
+import ageofbrawls.z.excepciones.ExcepcionJuego;
+
 /**
  *
  * @author Santiago
  */
-public class ExcepcionArgumentos extends Exception {
+public class ExcepcionArgumentos extends ExcepcionJuego {
+    
+    public ExcepcionArgumentos(String mensaje) {
+        super(mensaje);
+    }
     
 }

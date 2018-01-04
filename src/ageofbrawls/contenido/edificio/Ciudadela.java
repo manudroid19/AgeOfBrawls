@@ -9,31 +9,29 @@ import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 
 /**
  *
  * @author Santiago
  */
-public class Ciudadela extends Edificio {
+public final class Ciudadela extends Edificio {
 
-    public Ciudadela(Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Ciudadela(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         super(posicion, nombre, civilizacion, 1000, 10);
     }
     
     
     @Override
-    public void crearPersonaje(Civilizacion civilizacion){
-        if (civilizacion == null) {
-            System.out.println("Error.");
-            return;
-        }
+    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion{
+        Civilizacion civilizacion = super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
-            System.out.println("Error: no hay suficiente espacio para crear.");
-            return;
+            throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes",civilizacion.getPersonajes().size());
         }
         if (civilizacion.getAlimentos() < 50) {
-                System.out.println("Error: no hay suficiente alimento disponible.");
-                return;
+                throw new EscasezRecursosCreacion("No hay suficientes recursos para crear un personaje.",50-civilizacion.getAlimentos());
             }
             Posicion pos = super.getPosicion().posicionAdyacenteLibre(civilizacion.getMapa());
             if (pos == super.getPosicion()) {
@@ -69,7 +67,7 @@ public class Ciudadela extends Edificio {
 
     public void danar(int dano) {
         super.danar(dano);
-        if(dano>0 && this.getPs()-dano<=0){
+        if(dano>0 && this.getSalud()-dano<=0){
             getCivilizacion().quitarCiudadela();
         }
 

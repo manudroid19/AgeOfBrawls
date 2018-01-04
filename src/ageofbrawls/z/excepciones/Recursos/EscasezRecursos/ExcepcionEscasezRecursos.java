@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.Argumentos;
+package ageofbrawls.z.excepciones.Recursos.EscasezRecursos;
+
+import ageofbrawls.z.excepciones.ExcepcionJuego;
 
 /**
  *
  * @author Santiago
  */
-public class ExcepcionDireccionNoValida extends ExcepcionArgumentos{
+public class ExcepcionEscasezRecursos extends ExcepcionJuego {
     
-    public ExcepcionDireccionNoValida(String mensaje) {
+    public ExcepcionEscasezRecursos(String mensaje) {
         super(mensaje);
     }
     

@@ -11,4 +11,8 @@ package ageofbrawls.z.excepciones.Argumentos;
  */
 public class ExcepcionArgumentosValoresIncorrectos extends ExcepcionArgumentos {
     
+    public ExcepcionArgumentosValoresIncorrectos(String mensaje) {
+        super(mensaje);
+    }
+    
 }

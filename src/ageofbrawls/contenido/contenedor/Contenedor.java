@@ -6,25 +6,43 @@
 package ageofbrawls.contenido.contenedor;
 
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 
 /**
  *
  * @author mprad
  */
-public abstract class Contenedor {
+public class Contenedor {
 
     private Recurso recurso;
     private String nombre;
     private boolean esTransitable;
 
-    public Contenedor(Recurso recurso, String nombre) {
+    public Contenedor(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
+        this.recurso = recurso;
+        checkTipoRecurso();
+    }
 
-        if (nombre != null) {
-            this.recurso = recurso;
-            this.nombre = nombre;
-        } else {
-            System.out.println("Error: tipo de CR no valido.");
+    public Contenedor() {
+        recurso = null;
+    }
+
+    public Contenedor(Contenedor contenedor) throws ExcepcionArgumentosInternos {
+        if(contenedor==null){
+            throw new ExcepcionArgumentosInternos("El contenedor no puede ser nulo");
         }
+        nombre = contenedor.nombre;
+        esTransitable = contenedor.esTransitable;
+        if (contenedor.recurso == null) {
+            recurso = null;
+        } else {
+            recurso = contenedor.recurso.clone();
+        }
+    }
+
+    protected void checkTipoRecurso() throws ExcepcionCorrespondenciaRecursos {
+        
     }
 
     public String getNombre() {
@@ -48,21 +66,19 @@ public abstract class Contenedor {
         }
     }
 
-    public void setRecurso(Recurso recurso) {
+    public void setRecurso(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         if (recurso != null) {
             this.recurso = recurso;
+            checkTipoRecurso();
         }
     }
 
     public void describirContenedorRecurso() {
-
         System.out.println("Contenedor de recurso");
-
     }
-    
-    public Recurso procesar(){
-        
-   
+
+    public Recurso procesar() {
+        return recurso.clone();
     }
 
     public boolean esTransitable() {

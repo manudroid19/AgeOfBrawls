@@ -9,32 +9,29 @@ import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.Personajes.Soldado;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 
 /**
  *
  * @author Santiago
  */
-public class Cuartel extends Edificio {
+public final class Cuartel extends Edificio {
 
-    public Cuartel(Posicion posicion, String nombre, Civilizacion civilizacion) {
-        super(posicion, nombre, civilizacion, 500, 5);
+    public Cuartel(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
+        super(posicion, nombre, civilizacion, 500, 5);//salud, capaloj
     }
 
     @Override
-    public void crearPersonaje(Civilizacion civilizacion) {
-        if (civilizacion == null) {
-            System.out.println("Error.");
-            return;
-        }
+    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion {
+        Civilizacion civilizacion=super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
-            System.out.println("Error: no hay suficiente espacio para crear.");
-            return;
+            throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes",civilizacion.getPersonajes().size());
         }
         if (civilizacion.getAlimentos() < 100) {
-            System.out.println("Error: no hay suficiente alimento disponible.");
-            return;
+            throw new EscasezRecursosCreacion("No hay suficientes recursos para crear un personaje.",100-civilizacion.getAlimentos());
         }
-
         Posicion pos = super.getPosicion().posicionAdyacenteLibre(civilizacion.getMapa());
         int i = 1;
         String nombrePers = "soldado1";
@@ -53,14 +50,6 @@ public class Cuartel extends Edificio {
         System.out.println("Coste de creacion: 100 unidades de comida");
         System.out.println("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
         System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
-
-    }
-
-    @Override
-    public void describirEdificio() {
-        System.out.println("Tipo: " + this.toString());
-        super.describirEdificio();
-
     }
 
     @Override

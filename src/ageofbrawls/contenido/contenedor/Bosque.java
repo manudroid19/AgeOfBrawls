@@ -5,7 +5,9 @@
  */
 package ageofbrawls.contenido.contenedor;
 
+import ageofbrawls.contenido.Recursos.Madera;
 import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 
 /**
  *
@@ -13,23 +15,31 @@ import ageofbrawls.contenido.Recursos.Recurso;
  */
 public final class Bosque extends Contenedor {
 
-    public Bosque(Recurso recurso, String nombre) {
-        super(recurso, nombre);
+    public Bosque(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
+        super(recurso);
     }
-    
+
+    @Override
     public void describirContenedorRecurso() {
         super.describirContenedorRecurso();
         System.out.println("Cantidad de madera: " + this.getRecurso().getCantidad());
     }
-    
+
+    @Override
+    protected void checkTipoRecurso() throws ExcepcionCorrespondenciaRecursos {
+        if (!(super.getRecurso() instanceof Madera)) {
+            throw new ExcepcionCorrespondenciaRecursos("No corresponde el contenedor " + toString() + " con el recurso insertado");
+        }
+    }
+
     @Override
     public boolean esTransitable() {
         return false;
     }
-    
+
     @Override
     public String toString() {
         return "bosque";
     }
-    
+
 }

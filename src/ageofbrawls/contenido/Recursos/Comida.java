@@ -14,9 +14,7 @@ public final class Comida extends Recurso {
     public Comida(int cantidad) {
         super(cantidad);
     }
-    
-    
-    
+
     @Override
     public String toString() {
         return "comida";

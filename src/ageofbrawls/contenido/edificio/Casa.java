@@ -7,27 +7,20 @@ package ageofbrawls.contenido.edificio;
 
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 
 /**
  *
  * @author Santiago
  */
-public class Casa extends Edificio {
+public final class Casa extends Edificio {
 
     public final static int CAPALOJ = 10;
 
-    public Casa(Posicion posicion, String nombre, Civilizacion civilizacion) {
+    public Casa(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
         super(posicion, nombre, civilizacion, 200, 7);
-
     }
-    
-    @Override
-    public void describirEdificio() {
-        System.out.println("Tipo: " +this.toString());
-        super.describirEdificio();
-        
-    }
-    
+     
     @Override
     public int getMaxVida() {
         return 1000;

@@ -5,13 +5,14 @@
  */
 package ageofbrawls.contenido.edificio;
 
-import ageofbrawls.contenido.edificio.Casa;
 import ageofbrawls.contenido.Personajes.Grupo;
-import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
-import ageofbrawls.contenido.Personajes.Soldado;
 import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Posicion;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionRestringidaEdificio;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import java.util.ArrayList;
 
 /**
@@ -23,46 +24,39 @@ public abstract class Edificio {
     private Posicion posicion;
     private Civilizacion civilizacion;
     private int capAlojDef;
-    private int ps;
+    private int salud;
     private boolean destruido;
     private String nombre;
 
-    public Edificio(Posicion posicion, String nombre, Civilizacion civilizacion) {
-        if (nombre != null && civilizacion != null) {
-
+    public Edificio(Posicion posicion, String nombre, Civilizacion civilizacion) throws ExcepcionArgumentosInternos {
+        if (nombre != null && civilizacion != null && posicion != null) {
             this.civilizacion = civilizacion;
-            if (posicion != null) {
-                this.posicion = new Posicion(posicion);
-            } else {
-                this.posicion = new Posicion();
-            }
+            this.posicion = new Posicion(posicion);
             this.nombre = nombre;
-
         } else {
-            System.out.println("Error seteando tipo");
+            throw new ExcepcionArgumentosInternos("La cantidad de un recurso no puede ser menor que 0");
         }
     }
 
-    public Edificio(Posicion posicion, String nombre, Civilizacion civilizacion, int salud, int capAloj) {
+    public Edificio(Posicion posicion, String nombre, Civilizacion civilizacion, int salud, int capAloj) throws ExcepcionArgumentosInternos {
         this(posicion, nombre, civilizacion);
-        this.ps = salud;
+        this.salud = salud;
         this.capAlojDef = capAloj;
-
     }
 
     public Posicion getPosicion() {
         return new Posicion(posicion);
     }
 
-    public int getPs() {
-        return ps;
+    public int getSalud() {
+        return salud;
     }
 
     public Civilizacion getCivilizacion() {
         return civilizacion;
     }
 
-    public int getCapAloj1() {
+    public int getCapAloj() {
         return capAlojDef;
     }
 
@@ -102,50 +96,46 @@ public abstract class Edificio {
         return nombre;
     }
 
-    public int getMaxVida() {
-        return -1;
-    }
+    public abstract int getMaxVida();
 
-    public void setCapAloj(int aloj, boolean relative) {
+    public void setCapAloj(int aloj, boolean relative) throws ExcepcionArgumentosInternos {
         if (relative) {
             if (capAlojDef + aloj < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+                throw new ExcepcionArgumentosInternos("La capacidad de alojamiento no puede ser menor que 0");
             }
             capAlojDef += aloj;
         } else {
-            if (capAlojDef + aloj < 0) {
-                System.out.println("error, seteo incorrecto");
-                return;
+            if (aloj < 0) {
+                throw new ExcepcionArgumentosInternos("La capacidad de alojamiento no puede ser menor que 0");
             }
             capAlojDef = aloj;
         }
     }
 
-    public void setPs(int valor) {
+    public void setSalud(int valor) throws ExcepcionArgumentosInternos {
         if (valor < 0) {
-            System.out.println("Setteo incorrecto");
+            throw new ExcepcionArgumentosInternos("La salud no puede ser menor que 0");
         } else {
-            this.ps = valor;
+            this.salud = valor;
         }
     }
-    
-     public void crearPersonaje(Civilizacion civilizacion){
-         System.out.println("Error");
-     }
-     
-     public void atacar(Personaje[] personajes){
-         
-         
-         
-     }
 
+    public void atacar(Personaje[] personajes) {
+
+    }
+
+    public void crearPersonaje() throws ExcepcionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion {
+        throw new ExcepcionRestringidaEdificio("Este edificio no puede crear personajes");
+    }
+
+    @Override
     public String toString() {
         return "edificio";
     }
 
     public void describirEdificio() {
-        System.out.println("Salud: " + ps);
+        System.out.println("Tipo: " + this.toString());
+        System.out.println("Salud: " + salud);
         System.out.println("Capacidad de Alojamiento para defenderlo " + capAlojDef);
         System.out.println("Capacidad de ataque: " + getAtaque());
         System.out.println("Capacidad de defensa: " + getDefensa());
@@ -153,14 +143,13 @@ public abstract class Edificio {
         System.out.println("Civilizacion: " + civilizacion.getNombre());
     }
 
-    public void danar(int dano) {
-        if (dano > 0) {
-            if (ps - dano > 0) {
-                ps -= dano;
+    public void danar(int dano) throws ExcepcionArgumentosInternos {
+        if (dano >= 0) {
+            if (salud - dano > 0) {
+                salud -= dano;
             } else {
-                ps = 0;
+                salud = 0;
                 destruido = true;
-                civilizacion.getMapa().getCelda(this.posicion).setTipoCont(0);
                 civilizacion.getMapa().getCelda(posicion).setEdificio(null);
                 civilizacion.getEdificios().remove(this.getNombre());
                 civilizacion.getMapa().imprimirCabecera();
@@ -169,12 +158,12 @@ public abstract class Edificio {
 
             }
         } else {
-            System.out.println("Error dañando edificio.");
+            throw new ExcepcionArgumentosInternos("El daño a un edificio no puede ser menor que 0");
         }
     }
 
     public void reparar() {
-        ps = getMaxVida();
+        salud = getMaxVida();
     }
 
 }

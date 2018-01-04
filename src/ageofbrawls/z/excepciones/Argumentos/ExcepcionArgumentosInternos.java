@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ageofbrawls.z.excepciones.EscasezRecursos;
+package ageofbrawls.z.excepciones.Argumentos;
 
 /**
  *
  * @author mprad
  */
-public class ExcepcionNadaQueRecolectar extends ExcepcionEscasezRecursos{
+public class ExcepcionArgumentosInternos extends ExcepcionArgumentos{
+    
+    public ExcepcionArgumentosInternos(String mensaje) {
+        super(mensaje);
+    }
     
 }

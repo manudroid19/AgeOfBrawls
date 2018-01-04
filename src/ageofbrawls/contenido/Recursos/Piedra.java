@@ -11,15 +11,19 @@ package ageofbrawls.contenido.Recursos;
  */
 public final class Piedra extends Recurso {
 
+    private final int cantidadInicial;
+
     public Piedra(int cantidad) {
         super(cantidad);
+        cantidadInicial = cantidad;
     }
-    
-    
-    
+    public int getCantidadInicial(){
+        return cantidadInicial;
+    }
+
     @Override
     public String toString() {
         return "piedra";
     }
-    
+
 }

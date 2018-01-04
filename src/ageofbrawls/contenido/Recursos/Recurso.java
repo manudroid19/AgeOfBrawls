@@ -5,6 +5,8 @@
  */
 package ageofbrawls.contenido.Recursos;
 
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+
 /**
  *
  * @author Santiago
@@ -13,12 +15,11 @@ public abstract class Recurso {
 
     private int cantidad;
 
-    public Recurso(int cantidad) {
+    public Recurso(int cantidad) throws ExcepcionArgumentosInternos {
         if (cantidad >= 0) {
-
             this.cantidad = cantidad;
         } else {
-            this.cantidad = 0;
+            throw new ExcepcionArgumentosInternos("La cantidad de un recurso no puede ser menor que 0");
         }
 
     }
@@ -27,17 +28,29 @@ public abstract class Recurso {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
-        if (cantidad > 0) {
+    public void setCantidad(int cantidad) throws ExcepcionArgumentosInternos {
+        if (cantidad >= 0) {
             this.cantidad = cantidad;
         } else {
-            this.cantidad = 0;
+            throw new ExcepcionArgumentosInternos("La cantidad de un recurso no puede ser menor que 0");
         }
     }
 
+    @Override
+    public Recurso clone() {
+        if(this instanceof Comida){
+            return (Recurso) new Comida(cantidad);
+        }else if(this instanceof Piedra){
+            return (Recurso) new Piedra(cantidad);
+        }else if(this instanceof Madera){
+            return (Recurso) new Madera(cantidad);
+        }else{
+            return null;
+        }
+    }
 
-@Override
-        public String toString() {
+    @Override
+    public String toString() {
         return "recurso";
     }
 

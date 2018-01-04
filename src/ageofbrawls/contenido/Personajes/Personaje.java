@@ -188,7 +188,7 @@ public abstract class Personaje {
             return;
         }
 
-        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() == 0) {
+        if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() == 0) {
             System.out.println(civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " ya está al máximo de su capacidad. El " + this.getNombre() + "no ha podido entrar en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " .");
             return;
         }
@@ -200,7 +200,7 @@ public abstract class Personaje {
         civilizacion.getMapa().imprimir(civilizacion);
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-1, true);
         this.recuperarVida();
-        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj1() + ").");
+        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
 
     }
 
@@ -333,7 +333,7 @@ public abstract class Personaje {
     }
 
     protected void repararGenerico(Posicion pos) {
-        if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getPs() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
+        if (pos == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null || civilizacion.getMapa().getCelda(pos).getEdificio().getSalud() == civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida()) {
             System.out.println("Nada que reparar.");
             return;
         }
@@ -341,7 +341,7 @@ public abstract class Personaje {
             System.out.println("No se puede reparar desde un edificio");
             return;
         }
-        int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getPs();
+        int puntosAReparar = civilizacion.getMapa().getCelda(pos).getEdificio().getMaxVida() - civilizacion.getMapa().getCelda(pos).getEdificio().getSalud();
         int costeMadera = (int) (puntosAReparar * 0.4);
         int costePiedra = (int) (puntosAReparar * 0.5);
         if (civilizacion.getMadera() < costeMadera || civilizacion.getPiedra() < costePiedra) {
