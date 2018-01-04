@@ -33,6 +33,8 @@ public final class Cantera extends Contenedor {
        float disminucion=((float)Incremento)*0.1f/0.2f;
        cantidad -= cantidad*(1-disminucion)/5;
        }
+       
+       return this.getRecurso();
     
 }
     

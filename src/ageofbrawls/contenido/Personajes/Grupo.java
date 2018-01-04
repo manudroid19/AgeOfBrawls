@@ -12,6 +12,9 @@ import ageofbrawls.plataforma.Civilizacion;
 import ageofbrawls.plataforma.Mapa;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.contenido.Personajes.Soldados.Caballero;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -281,7 +284,7 @@ public class Grupo extends Personaje {
             System.out.println("Error: La celda destino no es un contenedor de recursos.");
             return;
         }
-        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad()), tipoC = contenedor.getTipo();
+        int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).setTipoCont(Celda.PRADERA);
         }
@@ -289,59 +292,57 @@ public class Grupo extends Personaje {
         if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
-        switch (tipoC) {
-            case Contenedor.BOSQUE:
-                System.out.println("Has recolectado " + recolectando + " unidades de madera");
-                for (int i = 0; i < this.getPersonajes().size(); i++) {
-                    if (this.getPersonajes().get(i) instanceof Paisano) {
-                        int loQuePuedeRec = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
-                        if (recolectando > loQuePuedeRec) {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + loQuePuedeRec);
-                            recolectando = recolectando - loQuePuedeRec;
-                        } else {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolectando);
-                            recolectando = 0;
-                        }
-
+        if (contenedor instanceof Bosque) {
+            System.out.println("Has recolectado " + recolectando + " unidades de madera");
+            for (int i = 0; i < this.getPersonajes().size(); i++) {
+                if (this.getPersonajes().get(i) instanceof Paisano) {
+                    int loQuePuedeRec = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
+                    if (recolectando > loQuePuedeRec) {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + loQuePuedeRec);
+                        recolectando = recolectando - loQuePuedeRec;
+                    } else {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecMadera(this.getPersonajes().get(i).getCantRecMadera() + recolectando);
+                        recolectando = 0;
                     }
+
                 }
-                break;
-            case Contenedor.ARBUSTO:
-                System.out.println("Has recolectado " + recolectando + " unidades de comida");
-                for (int i = 0; i < this.getPersonajes().size(); i++) {
-                    if (this.getPersonajes().get(i) instanceof Paisano) {
-                        int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
-                        if (recolectando > recolect) {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolect);
-                            recolectando = recolectando - recolect;
-                        } else {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolectando);
-                            recolectando = 0;
-                        }
-
+            }
+        }
+        if (contenedor instanceof Arbusto) {
+            System.out.println("Has recolectado " + recolectando + " unidades de comida");
+            for (int i = 0; i < this.getPersonajes().size(); i++) {
+                if (this.getPersonajes().get(i) instanceof Paisano) {
+                    int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
+                    if (recolectando > recolect) {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolect);
+                        recolectando = recolectando - recolect;
+                    } else {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecComida(this.getPersonajes().get(i).getCantRecComida() + recolectando);
+                        recolectando = 0;
                     }
+
                 }
-                break;
-            case Contenedor.CANTERA:
-                System.out.println("Has recolectado " + recolectando + " unidades de piedra");
-                for (int i = 0; i < this.getPersonajes().size(); i++) {
-                    if (recolectando == 0) {
-                        return;
-                    }
-
-                    if (this.getPersonajes().get(i) instanceof Paisano) {
-                        int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
-                        if (recolectando > recolect) {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolect);
-                            recolectando = recolectando - recolect;
-                        } else {
-                            ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolectando);
-                            recolectando = 0;
-                        }
-
-                    }
+            }
+        } else if (contenedor instanceof Cantera) {
+            System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+            for (int i = 0; i < this.getPersonajes().size(); i++) {
+                if (recolectando == 0) {
+                    return;
                 }
-                break;
+
+                if (this.getPersonajes().get(i) instanceof Paisano) {
+                    int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
+                    if (recolectando > recolect) {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolect);
+                        recolectando = recolectando - recolect;
+                    } else {
+                        ((Paisano) this.getPersonajes().get(i)).setCantRecPiedra(this.getPersonajes().get(i).getCantRecPiedra() + recolectando);
+                        recolectando = 0;
+                    }
+
+                }
+            }
+
         }
     }
 

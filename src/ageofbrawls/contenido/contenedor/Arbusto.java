@@ -16,6 +16,10 @@ public class Arbusto extends Contenedor {
     public Arbusto(Recurso recurso, String nombre) {
         super(recurso, nombre);
     }
+
+    public Arbusto(int parseInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
    

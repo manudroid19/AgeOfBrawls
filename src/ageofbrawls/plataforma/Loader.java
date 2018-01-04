@@ -6,6 +6,16 @@ import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.Personajes.Soldado;
+import ageofbrawls.contenido.Recursos.Comida;
+import ageofbrawls.contenido.Recursos.Madera;
+import ageofbrawls.contenido.Recursos.Piedra;
+import ageofbrawls.contenido.Recursos.Recurso;
+import ageofbrawls.contenido.contenedor.Arbusto;
+import ageofbrawls.contenido.contenedor.Bosque;
+import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.contenido.edificio.Casa;
+import ageofbrawls.contenido.edificio.Ciudadela;
+import ageofbrawls.contenido.edificio.Cuartel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -69,7 +79,7 @@ public class Loader {
                     lineas.add(p.getPosicion().getY() + "," + p.getPosicion().getX() + ";" + p.toString() + ";" + p.getNombre() + ";" + p.danhoAtaque() + ";" + p.getDefensa() + ";" + p.getSalud() + ";" + p.getCapRec() + ";" + p.leerGrupo() + ";" + p.getCivilizacion().getNombre());
                 }
                 for (Edificio e : civ.getEdificios().values()) {
-                    edificios.add(e.getPosicion().getY() + "," + e.getPosicion().getX() + ";" + e.leerTipo() + ";" + e.getNombre() + ";" + e.getCivilizacion().getNombre());
+                    edificios.add(e.getPosicion().getY() + "," + e.getPosicion().getX() + ";" + e.getNombre() + ";" + e.getCivilizacion().getNombre());
                 }
             }
             Files.write(files[1].toPath(), lineas);
@@ -91,13 +101,16 @@ public class Loader {
             } else {
                 switch (linea[1].toLowerCase()) {
                     case "bosque":
-                        crearRecurso(pos, Contenedor.BOSQUE, linea[2], Integer.parseInt(linea[3]));
+                        Recurso recurso = new Madera(Integer.parseInt(linea[3]));
+                        crearRecurso(pos, 1, linea[2], recurso);
                         break;
                     case "arbusto":
-                        crearRecurso(pos, Contenedor.ARBUSTO, linea[2], Integer.parseInt(linea[3]));
+                        Recurso recurso1 = new Comida(Integer.parseInt(linea[3]));
+                        crearRecurso(pos, 2, linea[2], recurso1);
                         break;
                     case "cantera":
-                        crearRecurso(pos, Contenedor.CANTERA, linea[2], Integer.parseInt(linea[3]));
+                        Recurso recurso2 = new Piedra(Integer.parseInt(linea[3]));
+                        crearRecurso(pos, 3, linea[2], recurso2);
                         break;
                 }
             }
@@ -131,13 +144,13 @@ public class Loader {
                 }
                 switch (linea[1].toLowerCase()) {
                     case "casa":
-                        crearEdificio(pos, Edificio.CASA, linea[2], linea[3]);
+                        crearEdificio(pos, 3, linea[2], linea[3]);
                         break;
                     case "cuartel":
-                        crearEdificio(pos, Edificio.CUARTEL, linea[2], linea[3]);
+                        crearEdificio(pos, 2, linea[2], linea[3]);
                         break;
                     case "ciudadela":
-                        crearEdificio(pos, Edificio.CIUDADELA, linea[2], linea[3]);
+                        crearEdificio(pos, 1, linea[2], linea[3]);
                         break;
                 }
             }
@@ -150,13 +163,30 @@ public class Loader {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
         Civilizacion current = mapa.getCivilizaciones().get(civilizacion);
-        Edificio edificio = new Edificio(tipo, pos, nombre, current);
-        mapa.getCelda(pos).setEdificio(edificio);
-        current.getEdificios().put(nombre, edificio);
-        current.makeAdyVisible(pos);
-        if (edificio.getTipo() == Edificio.CIUDADELA) {
+        Edificio edificio;
+        if (tipo == 1) {
+            Ciudadela ciud = new Ciudadela(pos, nombre, current);
+            mapa.getCelda(pos).setEdificio(ciud);
+            current.getEdificios().put(nombre, ciud);
+            current.makeAdyVisible(pos);
             current.anadirCiudadela();
+
         }
+        if (tipo == 2) {
+            Cuartel cuart = new Cuartel(pos, nombre, current);
+            mapa.getCelda(pos).setEdificio(cuart);
+            current.getEdificios().put(nombre, cuart);
+            current.makeAdyVisible(pos);
+
+        }
+        if (tipo == 3) {
+            Casa casa = new Casa(pos, nombre, current);
+            mapa.getCelda(pos).setEdificio(casa);
+            current.getEdificios().put(nombre, casa);
+            current.makeAdyVisible(pos);
+
+        }
+
     }
 
     private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) {
@@ -169,8 +199,8 @@ public class Loader {
             personaje = new Paisano(pos, nombre, current);
             personaje.setSalud(salud, false);
             personaje.setDefensa(defensa);
-            ((Paisano)personaje).setCapRec(capacidad);
-            
+            ((Paisano) personaje).setCapRec(capacidad);
+
         } else {
             personaje = new Soldado(pos, nombre, current);
             personaje.setSalud(salud, false);
@@ -195,9 +225,16 @@ public class Loader {
         current.makeAdyVisible(pos);
     }
 
-    private void crearRecurso(Posicion pos, int tipo, String nombre, int cantidad) {
-        mapa.getCelda(pos).setTipoCont(tipo, cantidad);
-        mapa.getCelda(pos).getContenedorRec().setNombre(nombre);
+    private void crearRecurso(Posicion pos, int tipo, String nombre, Recurso recurso) {
+        if (tipo == 1) {
+            Bosque bos = new Bosque(recurso, nombre);
+        }
+        if (tipo == 2) {
+            Arbusto arb = new Arbusto(recurso, nombre);
+        }
+        if (tipo == 3) {
+            Cantera cant = new Cantera(recurso, nombre);
+        }
     }
 
     private ArrayList<String[]> leer(File file) {

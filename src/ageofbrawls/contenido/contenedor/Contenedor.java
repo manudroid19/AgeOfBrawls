@@ -62,9 +62,7 @@ public abstract class Contenedor {
     
     public Recurso procesar(){
         
-        
-        
-        
+   
     }
 
     public boolean esTransitable() {
