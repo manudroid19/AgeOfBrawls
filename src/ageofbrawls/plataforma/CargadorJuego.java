@@ -7,13 +7,17 @@ package ageofbrawls.plataforma;
 
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 
 /**
  *
  * @author mprad
  */
 public interface CargadorJuego {
-    public Juego cargarJuego() throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
+    public Juego cargarJuego() throws ExcepcionNoExisteArchivo, ExcepcionDireccionNoValida,ExcepcionNoExistePosicion,ExcepcionNoExisteMapa,ExcepcionNoExisteCivilizacion,ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
 }

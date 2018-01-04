@@ -29,9 +29,9 @@ public interface Comando {
     public void cambiar(String destino) throws ExcepcionNoExisteCivilizacion;
     public void cargar(String ruta) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje;
     public void civilizacion();
-    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion;
-    public void crear(String edificio, String tipo) throws ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos;
-    public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaGrupo, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente;
+    public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos,ExcepcionArgumentosValoresIncorrectos,ExcepcionAccionRestringidaGrupo, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion;
+    public void crear(String edificio, String tipo) throws ExcepcionArgumentosValoresIncorrectos,ExcepcionNoExisteEdificio,ExcepcionAccionRestringidaEdificio, ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos;
+    public void defender(String defensor,String direccion) throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEspacioInsuficiente;
     public void desagrupar(String grupo) throws ExcepcionNoExisteGrupo, ExcepcionAccionRestringidaPersonaje;
     public void describir(String sujeto) throws ExcepcionNoExisteSujeto;
     public void desligar(String desligado, String grupo) throws ExcepcionNoExisteSujeto, ExcepcionNoExisteGrupo,ExcepcionArgumentosInternos,ExcepcionAccionRestringidaPersonaje;
@@ -46,6 +46,6 @@ public interface Comando {
     public void mirar(String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
     public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites, ExcepcionNadaQueRecolectar;
     public void recolectar(String recolector, String direccion)throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaPersonaje,ExcepcionArgumentosValoresIncorrectos,ExcepcionNadaQueRecolectar,ExcepcionAccionRestringidaGrupo, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
-    public void reparar(String reparador, String direccion)throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaGrupo, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje;
+    public void reparar(String reparador, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionArgumentosValoresIncorrectos, ExcepcionDireccionNoValida,ExcepcionAccionRestringidaGrupo, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje;
     
 }

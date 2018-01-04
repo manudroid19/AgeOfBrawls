@@ -10,6 +10,7 @@ import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public abstract class Soldado extends Personaje {
     }
 
     @Override
-    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosValoresIncorrectos {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 100 - this.getSalud();
         if (puntosARecuperar == 0) {

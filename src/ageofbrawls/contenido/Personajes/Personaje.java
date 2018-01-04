@@ -176,7 +176,7 @@ public abstract class Personaje {
 
     }
 
-    public void defender(String direccion) throws ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionAccionRestringidaPersonaje,ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos,ExcepcionDireccionNoValida, ExcepcionAccionRestringidaPersonaje,ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente, ExcepcionArgumentosValoresIncorrectos {
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
             throw new ExcepcionArgumentosInternos("No hay edificio en la posición indicada.");
@@ -228,7 +228,7 @@ public abstract class Personaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede vaciar su cantidad recolectada de madera");
     }
 
-    public void recuperarVida()throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos {
+    public void recuperarVida() throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos,ExcepcionArgumentosValoresIncorrectos {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede recuperar vida");
     }
 
@@ -244,12 +244,12 @@ public abstract class Personaje {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede almacenar recursos");
     }
 
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosValoresIncorrectos, ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede construir");
         
     }
 
-    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
         throw new ExcepcionAccionRestringidaPersonaje("Este personaje no puede reparar");
     }
 

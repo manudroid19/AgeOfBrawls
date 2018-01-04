@@ -19,8 +19,12 @@ import ageofbrawls.contenido.edificio.Ciudadela;
 import ageofbrawls.contenido.edificio.Cuartel;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +49,7 @@ public class CargadorArchivo implements CargadorJuego{
     }
 
     @Override
-    public Juego cargarJuego() throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
+    public Juego cargarJuego() throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         Juego juego = new Juego();
         this.mapa = juego.getMapa();
         this.mapa.clear();
@@ -130,7 +134,7 @@ public class CargadorArchivo implements CargadorJuego{
         }
     }
 
-    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -147,7 +151,7 @@ public class CargadorArchivo implements CargadorJuego{
         }
     }
 
-    private void cargarEdificios(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo {
+    private void cargarEdificios(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -171,7 +175,7 @@ public class CargadorArchivo implements CargadorJuego{
         }
     }
 
-    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) throws ExcepcionArgumentosInternos {
+    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
@@ -202,7 +206,7 @@ public class CargadorArchivo implements CargadorJuego{
 
     }
 
-    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }

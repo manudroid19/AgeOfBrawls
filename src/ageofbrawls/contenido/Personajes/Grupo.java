@@ -359,7 +359,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos {
         if (tipoC == null || dir == null) {
             throw new ExcepcionDireccionNoValida("Error en consEdif.");
             
@@ -372,7 +372,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionAccionRestringidaGrupo {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos {
         if (this.haySoldado) {
             throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede recolectar");
             
@@ -381,7 +381,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente, ExcepcionDireccionNoValida {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente, ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);

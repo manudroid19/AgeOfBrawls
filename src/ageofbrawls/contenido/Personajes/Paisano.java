@@ -183,7 +183,7 @@ public class Paisano extends Personaje {
     }
 
     @Override
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos {
         if (tipoC == null || dir == null) {
             throw new ExcepcionDireccionNoValida("Error en consEdif.");
            
@@ -196,7 +196,7 @@ public class Paisano extends Personaje {
         construirGenerico(tipoC, dir);
     }
 
-    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosValoresIncorrectos {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 50 - this.getSalud();
         if (puntosARecuperar == 0) {
@@ -215,7 +215,7 @@ public class Paisano extends Personaje {
         Juego.CONSOLA.imprimir("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
     }
 
-    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos {
         if (getGrupo() != null) {
             throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede reparar por si solo ya que pertenece a un grupo");
             
