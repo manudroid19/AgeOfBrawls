@@ -69,7 +69,7 @@ public class Loader {
             ArrayList<String> lineas = new ArrayList<>(), edificios = new ArrayList<>();
             for (Celda celda : mapa.getCeldas()) {
                 String a;
-                if (celda.getContenedorRec() == null) {
+                if (celda.getContenedorRec().getRecurso() == null) {
                     a = "";
                 } else {
                     a = celda.getContenedorRec().getNombre() + ";" + celda.getContenedorRec().getRecurso().getCantidad();

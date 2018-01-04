@@ -136,7 +136,7 @@ public class Paisano extends Personaje {
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
             mapa.getCelda(pos).hacerPradera();
         }
-        if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
+        if (mapa.getCelda(pos).getContenedorRec().getRecurso() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
         if (contenedor instanceof Bosque) {

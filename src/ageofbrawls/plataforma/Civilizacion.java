@@ -113,7 +113,6 @@ public class Civilizacion {
     }
 
     public int getContador(Contenedor clase) {
-
         if (clase instanceof Bosque) {
             return bosques++;
         } else if (clase instanceof Cantera) {
@@ -232,7 +231,7 @@ public class Civilizacion {
                 Celda c = mapa.getCelda(h, k);
                 if (c != null && c.isOculto(this) && (h == i || j == k || (c.getEdificio() != null && c.getEdificio() instanceof Ciudadela))) {
                     c.setOculto(this, false);
-                    if (c.getContenedorRec() != null) {
+                    if (c.getContenedorRec().getRecurso() != null) {
                         if (c.getContenedorRec().getNombre() == null || "".equals(c.getContenedorRec().getNombre())) {
                             int n = getContador(c.getContenedorRec());
                             while (recursosVisibles.containsKey(c.getContenedorRec().toString() + n)) {

@@ -285,7 +285,7 @@ public class Grupo extends Personaje {
             mapa.getCelda(pos).hacerPradera();
         }
         contenedor.getRecurso().setCantidad(contenedor.getRecurso().getCantidad() - recolectando);
-        if (mapa.getCelda(pos).getContenedorRec() == null) { //si se ha vuelto pradera, imprimo
+        if (mapa.getCelda(pos).getContenedorRec().getRecurso() == null) { //si se ha vuelto pradera, imprimo
             mapa.imprimir(civilizacion);
         }
         if (contenedor instanceof Bosque) {

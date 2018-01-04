@@ -75,7 +75,7 @@ public class Mapa {
                 for (int j = 0; j < mapa.get(0).size(); j++) { //columnas, j j=x
                     if (i % 2 == 0 && j % 2 == 0) {
                         if (j > 1 && i % 4 == 0) {
-                            if (getCelda(i, j - 2).getContenedorRec() == null) {
+                            if (getCelda(i, j - 2).getContenedorRec().getRecurso() == null) {
                                 this.makeBloqueRec(i, j);
                             }
                         } else if (j % 4 == 0 && i % 4 == 2) {
@@ -217,14 +217,14 @@ public class Mapa {
                     celda = mapa.get(i).get(j).toString();
                 }
                 System.out.print(ANSI_RESET + "│" + celda);
-                if (mapa.get(i).get(j).getContenedorRec() != null) {
+                if (mapa.get(i).get(j).getContenedorRec().getRecurso() != null) {
                     flagrec = true;
                 }
             }
             System.out.print(ANSI_RESET + "│");//Ultimo separador de fila
             if (flagrec) {
                 for (int j = 0; j < columnas; j++) {
-                    if (mapa.get(i).get(j).getContenedorRec() != null && !mapa.get(i).get(j).isOculto(activa)) {
+                    if (mapa.get(i).get(j).getContenedorRec().getRecurso() != null && !mapa.get(i).get(j).isOculto(activa)) {
                         System.out.print(mapa.get(i).get(j).getContenedorRec().getNombre() + " ");
                     }
                 }

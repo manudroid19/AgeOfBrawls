@@ -102,7 +102,7 @@ public class Celda {
 
     public void setEdificio(Edificio edificio) {
         if (edificio != null) {
-            contenedor = null;
+            hacerPradera();
             this.edificio = edificio;
         } else {
             this.edificio = null;
@@ -140,7 +140,7 @@ public class Celda {
     }
 
     public String leerTipoCont() {
-        if (contenedor == null) {
+        if (contenedor.getRecurso() == null) {
             return "pradera";
         }
         if (contenedor instanceof Bosque) {
@@ -217,7 +217,7 @@ public class Celda {
     }
 
     public boolean esCeldaLibre(boolean personaje) {
-        if (getContenedorRec() == null && getEdificio() == null) {
+        if (getContenedorRec().getRecurso() == null && getEdificio() == null) {
             if (personaje) {
                 return personajes.isEmpty();
             }
@@ -269,7 +269,7 @@ public class Celda {
             }
         }
 
-        if (this.contenedor == null) {
+        if (this.contenedor.getRecurso() == null) {
             if (this.edificio == null) {
                 return Mapa.ANSI_GREEN_BACKGROUND + "   ";
             } else if (this.edificio instanceof Ciudadela) {

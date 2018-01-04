@@ -261,7 +261,7 @@ public class Juego implements Comando {
                 per.describir();
             }
         }
-        if (celda.getContenedorRec() != null) {
+        if (celda.getContenedorRec().getRecurso() != null) {
             celda.getContenedorRec().describirContenedorRecurso();
         }
         if (!celda.getGrupos().isEmpty()) {
