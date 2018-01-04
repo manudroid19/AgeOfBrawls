@@ -14,11 +14,16 @@ import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.contenedor.Arbusto;
 import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
+import ageofbrawls.plataforma.Juego;
+import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaGrupo;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -147,7 +152,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void vaciarCantRecComida() {
+    public void vaciarCantRecComida() throws ExcepcionArgumentosValoresIncorrectos {
         for (Personaje p : personajes) {
             if (p instanceof Paisano) {
                 ((Paisano) p).setCantRecComida(0);
@@ -156,7 +161,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void vaciarCantRecMadera() {
+    public void vaciarCantRecMadera() throws ExcepcionArgumentosValoresIncorrectos {
         for (Personaje p : personajes) {
             if (p instanceof Paisano) {
                 ((Paisano) p).setCantRecMadera(0);
@@ -165,7 +170,7 @@ public class Grupo extends Personaje {
     }
 
     @Override
-    public void vaciarCantRecPiedra() {
+    public void vaciarCantRecPiedra() throws ExcepcionArgumentosValoresIncorrectos {
         for (Personaje p : personajes) {
             if (p instanceof Paisano) {
                 ((Paisano) p).setCantRecPiedra(0);
@@ -197,7 +202,7 @@ public class Grupo extends Personaje {
         revisarVacio();
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println(personaje.getNombre() + " desligado de " + getNombre());
+        Juego.CONSOLA.imprimir(personaje.getNombre() + " desligado de " + getNombre());
 
     }
 
@@ -213,25 +218,25 @@ public class Grupo extends Personaje {
         civilizacion.getGrupos().remove(getNombre());
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println(getNombre() + " desagrupado.");
+        Juego.CONSOLA.imprimir(getNombre() + " desagrupado.");
     }
 
     @Override
     public void describir() {
-        System.out.println("Nombre del grupo: " + getNombre());
-        System.out.println("Civilizacion: " + getCivilizacion().getNombre());
-        System.out.println("Armadura :" + getDefensa());
+        Juego.CONSOLA.imprimir("Nombre del grupo: " + getNombre());
+        Juego.CONSOLA.imprimir("Civilizacion: " + getCivilizacion().getNombre());
+        Juego.CONSOLA.imprimir("Armadura :" + getDefensa());
         if (this.haySoldado) {
-            System.out.println("Ataque :" + danhoAtaque());
+            Juego.CONSOLA.imprimir("Ataque :" + danhoAtaque());
         }
         if (!this.haySoldado) {
-            System.out.println("Capacidad de recoleccion del grupo:" + getCapRec());
-            System.out.println("Cantidad de madera que transporta: " + getCantRecMadera());
-            System.out.println("Cantidad de comida que transporta: " + getCantRecComida());
-            System.out.println("Cantidad de piedra que transporta: " + getCantRecPiedra());
-            System.out.println("Cantidad de recursos que lleva: " + (getCantRecTotal()));
+            Juego.CONSOLA.imprimir("Capacidad de recoleccion del grupo:" + getCapRec());
+            Juego.CONSOLA.imprimir("Cantidad de madera que transporta: " + getCantRecMadera());
+            Juego.CONSOLA.imprimir("Cantidad de comida que transporta: " + getCantRecComida());
+            Juego.CONSOLA.imprimir("Cantidad de piedra que transporta: " + getCantRecPiedra());
+            Juego.CONSOLA.imprimir("Cantidad de recursos que lleva: " + (getCantRecTotal()));
         }
-        System.out.println("En este grupo están los siguientes personajes: ");
+        Juego.CONSOLA.imprimir("En este grupo están los siguientes personajes: ");
         for (Personaje p : personajes) {
             p.describir();
         }
@@ -248,21 +253,21 @@ public class Grupo extends Personaje {
         actualizarPosiciones();
         mapa.getCelda(posicion).addGrupo(this);
 
-        System.out.println();
+        Juego.CONSOLA.imprimir();
         mapa.imprimirCabecera();
         mapa.imprimir(getCivilizacion());
 
     }
 
-    public void recolectar(String direccion) throws ExcepcionArgumentosInternos {
+    public void recolectar(String direccion) throws ExcepcionArgumentosInternos,ExcepcionAccionRestringidaGrupo,ExcepcionArgumentosValoresIncorrectos, ExcepcionDireccionNoValida, ExcepcionNadaQueRecolectar {
         Mapa mapa = getCivilizacion().getMapa();
         if (direccion == null) {
-            System.out.println("Error en recolectar.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error en recolectar.");
+            
         }
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            
         }
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
@@ -272,16 +277,16 @@ public class Grupo extends Personaje {
             return;
         }
         if (civilizacion.getMapa().getCelda(posicion).getEdificio() != null) {
-            System.out.println("No se puede recolectar desde un edificio");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("No se puede recolectar desde un edificio");
+            
         }
         if (this.getCantRecTotal() == getCapRec()) {
-            System.out.println(this.getNombre() + " no puede recolectar más");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo(this.getNombre() + " no puede recolectar más");
+            
         }
         if (contenedor == null) {
-            System.out.println("Error: La celda destino no es un contenedor de recursos.");
-            return;
+            throw new ExcepcionNadaQueRecolectar("Error: La celda destino no es un contenedor de recursos.");
+            
         }
         int recolectando = Math.min(getCapRec() - this.getCantRecTotal(), contenedor.getRecurso().getCantidad());
         if (contenedor.getRecurso().getCantidad() - recolectando == 0) {
@@ -292,7 +297,7 @@ public class Grupo extends Personaje {
             mapa.imprimir(civilizacion);
         }
         if (contenedor instanceof Bosque) {
-            System.out.println("Has recolectado " + recolectando + " unidades de madera");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de madera");
             for (int i = 0; i < this.getPersonajes().size(); i++) {
                 if (this.getPersonajes().get(i) instanceof Paisano) {
                     int loQuePuedeRec = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
@@ -308,7 +313,7 @@ public class Grupo extends Personaje {
             }
         }
         if (contenedor instanceof Arbusto) {
-            System.out.println("Has recolectado " + recolectando + " unidades de comida");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de comida");
             for (int i = 0; i < this.getPersonajes().size(); i++) {
                 if (this.getPersonajes().get(i) instanceof Paisano) {
                     int recolect = (this.getPersonajes().get(i).getCapRec() - this.getPersonajes().get(i).getCantRecTotal());
@@ -323,7 +328,7 @@ public class Grupo extends Personaje {
                 }
             }
         } else if (contenedor instanceof Cantera) {
-            System.out.println("Has recolectado " + recolectando + " unidades de piedra");
+            Juego.CONSOLA.imprimir("Has recolectado " + recolectando + " unidades de piedra");
             for (int i = 0; i < this.getPersonajes().size(); i++) {
                 if (recolectando == 0) {
                     return;
@@ -345,52 +350,52 @@ public class Grupo extends Personaje {
         }
     }
 
-    public void almacenar(String direccion) throws ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void almacenar(String direccion) throws ExcepcionDireccionNoValida,ExcepcionArgumentosValoresIncorrectos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionAccionRestringidaGrupo {
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede almacenar");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede almacenar");
+            
         }
         almacenarGenerico(direccion);
     }
 
     @Override
-    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void construir(String tipoC, String dir) throws ExcepcionArgumentosInternos, EscasezRecursosConstruccion, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo {
         if (tipoC == null || dir == null) {
-            System.out.println("Error en consEdif.");
-            return;
+            throw new ExcepcionDireccionNoValida("Error en consEdif.");
+            
         }
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede construir");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede construir");
+            
         }
         construirGenerico(tipoC, dir);
     }
 
     @Override
-    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos {
+    public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionAccionRestringidaGrupo {
         if (this.haySoldado) {
-            System.out.println("Como hay un soldado en el grupo, este grupo no puede recolectar");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            
         }
         repararGenerico(pos);
     }
 
     @Override
-    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    public void defender(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionAccionRestringidaGrupo, ExcepcionEspacioInsuficiente, ExcepcionDireccionNoValida {
         Posicion posicion = getPosicion();
         Civilizacion civilizacion = getCivilizacion();
         Posicion pos = posicion.getAdy(direccion);
         if (direccion == null || pos == null || civilizacion.getMapa() == null || !civilizacion.getMapa().perteneceAMapa(pos) || civilizacion.getMapa().getCelda(pos).getEdificio() == null) {
-            System.out.println("No hay edificio en la posición indicada.");
-            return;
+            throw new ExcepcionDireccionNoValida("No hay edificio en la posición indicada.");
+            
         }
         if (civilizacion != civilizacion.getMapa().getCelda(pos).getEdificio().getCivilizacion()) {
-            System.out.println("El grupo no puede entrar en el edificio de la otra civilización");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("El grupo no puede entrar en el edificio de la otra civilización");
+            
         }
         if (civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() < this.getPersonajes().size()) {
-            System.out.println("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
-            return;
+            throw new ExcepcionEspacioInsuficiente("No se puede mover el grupo. El número " + this.getPersonajes().size() + "de componentes del grupo (" + this.getNombre() + ") supera la capacidad de alojamiento actual (" + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ") de " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + ".");
+            
         }
 
         civilizacion.getMapa().getCelda(posicion).removeGrupo(this);
@@ -401,17 +406,17 @@ public class Grupo extends Personaje {
         civilizacion.getMapa().getCelda(pos).getEdificio().setCapAloj(-(this.getPersonajes().size()), true);
         civilizacion.getMapa().imprimirCabecera();
         civilizacion.getMapa().imprimir(civilizacion);
-        System.out.println("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
+        Juego.CONSOLA.imprimir("El " + this.getNombre() + " ha entrado en " + civilizacion.getMapa().getCelda(pos).getEdificio().getNombre() + " (capacidad restante " + civilizacion.getMapa().getCelda(pos).getEdificio().getCapAloj() + ").");
         for (int i = 0; i < this.getPersonajes().size(); i++) {
             this.getPersonajes().get(i).recuperarVida();
         }
     }
 
     @Override
-    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
+    public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo {
         if (!this.haySoldado) {
-            System.out.println("El grupo no tiene soldados y no puede atacar");
-            return;
+            throw new ExcepcionAccionRestringidaGrupo("El grupo no tiene soldados y no puede atacar");
+            
         }
         atacarGenerico(direccion);
     }
@@ -449,12 +454,12 @@ public class Grupo extends Personaje {
 
     @Override
     public void recuperarVida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void recuperar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
 }

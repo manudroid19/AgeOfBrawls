@@ -6,6 +6,7 @@
 package ageofbrawls.contenido.Personajes;
 
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPersonaje;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
@@ -36,13 +37,13 @@ public class Soldado extends Personaje {
 
     public void describir() {
         super.describir();
-        System.out.println("Ataque :" + ataque);
+        Juego.CONSOLA.imprimir("Ataque :" + ataque);
     }
 
     public void atacar(String direccion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida {
         if (super.getGrupo() != null) {
-            System.out.println("El personaje no puede atacar ya que pertenece a un grupo");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje no puede atacar ya que pertenece a un grupo");
+            
         }
         atacarGenerico(direccion);
     }
@@ -53,12 +54,12 @@ public class Soldado extends Personaje {
     }
 
     @Override
-    public void recuperarVida() throws ExcepcionArgumentosInternos {
+    public void recuperarVida() throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         Civilizacion civilizacion = super.getCivilizacion();
         int puntosARecuperar = 100 - this.getSalud();
         if (puntosARecuperar == 0) {
-            System.out.println("El personaje tiene toda la vida");
-            return;
+            throw new ExcepcionAccionRestringidaPersonaje("El personaje tiene toda la vida");
+            
         }
         int costeAlimento = (int) (puntosARecuperar * 0.8);
         if (civilizacion.getAlimentos() < costeAlimento) {
@@ -69,7 +70,7 @@ public class Soldado extends Personaje {
         }
         civilizacion.setAlimentos(-costeAlimento, true);
         this.recuperar();
-        System.out.println("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
+        Juego.CONSOLA.imprimir("Coste de la recuperación de la vida: " + costeAlimento + " unidades de alimento de la ciudadela.");
     }
 
     @Override

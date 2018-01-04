@@ -20,6 +20,7 @@ import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPer
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class Loader {
 
     Mapa mapa;
 
-    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje {
+    public Loader(Mapa mapa, String dir) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExisteCivilizacion {
         this.mapa = mapa;
         this.mapa.clear();
         String[] aLeer = new String[]{"mapa", "personajes", "edificios"};
@@ -121,7 +122,7 @@ public class Loader {
         }
     }
 
-    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    private void cargarPersonajes(File file) throws ExcepcionNoExisteArchivo, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExisteCivilizacion {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
@@ -138,13 +139,13 @@ public class Loader {
         }
     }
 
-    private void cargarEdificios(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo {
+    private void cargarEdificios(File file) throws ExcepcionArgumentosInternos, ExcepcionNoExisteArchivo, ExcepcionNoExisteCivilizacion {
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
             if (linea.length == 4) {
                 if (mapa.getCelda(pos).getEdificio() != null) {
-                    System.out.println("Sobreescribiendo edificio: " + mapa.getCelda(pos).getEdificio().getNombre());
+                    Juego.CONSOLA.imprimir("Sobreescribiendo edificio: " + mapa.getCelda(pos).getEdificio().getNombre());
                 }
                 switch (linea[1].toLowerCase()) {
                     case "casa":
@@ -162,7 +163,7 @@ public class Loader {
         }
     }
 
-    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) throws ExcepcionArgumentosInternos {
+    private void crearEdificio(Posicion pos, int tipo, String nombre, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionNoExisteCivilizacion {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
@@ -193,7 +194,7 @@ public class Loader {
 
     }
 
-    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
+    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExisteCivilizacion {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }

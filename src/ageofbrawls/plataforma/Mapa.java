@@ -14,7 +14,10 @@ import ageofbrawls.contenido.contenedor.Bosque;
 import ageofbrawls.contenido.contenedor.Cantera;
 import ageofbrawls.contenido.contenedor.Contenedor;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -64,11 +67,11 @@ public class Mapa {
             this.filas = filas;
             this.columnas = columnas;
         } else {
-            System.out.println("Error construyendo Mapa.");
+            throw new ExcepcionArgumentosInternos("Error construyendo Mapa.");
         }
     }
 
-    public Mapa(int filas, boolean inicializar) throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos { //Inicializo mapa cuadrado con elementos
+    public Mapa(int filas, boolean inicializar) throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionDireccionNoValida { //Inicializo mapa cuadrado con elementos
         this(filas, filas);
         if (inicializar) {
             for (int i = 0; i < mapa.size(); i++) { //numero de filas, i recorriendo filas,i=y
@@ -88,7 +91,7 @@ public class Mapa {
         }
     }
 
-    public Mapa() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos {
+    public Mapa() throws ExcepcionArgumentosInternos, ExcepcionCorrespondenciaRecursos, ExcepcionDireccionNoValida {
         this(10, true);
     }
 
@@ -125,18 +128,18 @@ public class Mapa {
         return posicion.getX() < columnas && posicion.getY() < filas && posicion.getX() > -1 && posicion.getY() > -1;
     }
 
-    public void addCivilizacion(String nombre, Civilizacion civilizacion) {
+    public void addCivilizacion(String nombre, Civilizacion civilizacion) throws ExcepcionNoExisteCivilizacion {
         if (civilizacion == null || civilizaciones.containsKey(nombre)) {
-            System.out.println("Error añadiendo civilizacion");
-            return;
+            throw new ExcepcionNoExisteCivilizacion("Error añadiendo civilizacion");
+            
         }
         civilizaciones.put(nombre, civilizacion);
     }
 
-    void makeAdyPrad(Posicion posicion) { //Hacer todas las celdas adacentes pradera
+    void makeAdyPrad(Posicion posicion) throws ExcepcionNoExistePosicion { //Hacer todas las celdas adacentes pradera
         if (posicion == null) {
-            System.out.println("Error.");
-            return;
+            throw new ExcepcionNoExistePosicion("Error.");
+            
         }
         int i = posicion.getX();
         int j = posicion.getY();
@@ -160,7 +163,7 @@ public class Mapa {
     public void listarCivilizaciones() {
         Set<String> civs = civilizaciones.keySet();
         for (String civ : civs) {
-            System.out.println(civ);
+            Juego.CONSOLA.imprimir(civ);
         }
     }
     public void clear(){
@@ -175,7 +178,7 @@ public class Mapa {
             }
         }
     }
-    private void makeBloqueRec(int i, int j) throws ExcepcionCorrespondenciaRecursos, ExcepcionArgumentosInternos {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
+    private void makeBloqueRec(int i, int j) throws ExcepcionCorrespondenciaRecursos, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida {//Hacer un bloque de 4 celdas de recursos a partir de la celda dada
         Random rt = new Random();
         int[] cantidad = new int[]{rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1, rt.nextInt(100) + 1};
         ArrayList<Contenedor> bloque = new ArrayList<>(3);
@@ -195,7 +198,7 @@ public class Mapa {
         for (int i = 0; i < columnas; i++) {
             System.out.print("C" + i + ((i > 9) ? "" : " ") + "│");
         }
-        System.out.println();
+        Juego.CONSOLA.imprimir();
         //Primera linea: numeracion de columna
 
         for (int i = 0; i < filas; i++) {
@@ -204,7 +207,7 @@ public class Mapa {
             for (int j = 0; j < columnas; j++) {
                 System.out.print("───");
             }
-            System.out.println();
+            Juego.CONSOLA.imprimir();
             //Linea de separacion entre filas
 
             System.out.print("F" + i + ((i > 9) ? "" : " ")); //Numeracion de fila
@@ -229,40 +232,40 @@ public class Mapa {
                     }
                 }
             }
-            System.out.println();
+            Juego.CONSOLA.imprimir();
             //Linea de mapa
         }
-        System.out.println();
+        Juego.CONSOLA.imprimir();
     }
 
     public void imprimirCabecera() {
-        System.out.println("Leyenda: Pradera transitable" + Mapa.ANSI_GREEN_BACKGROUND + "   " + Mapa.ANSI_RESET + " Ciudadela:" + Mapa.ANSI_PURPLE_BACKGROUND + " U " + Mapa.ANSI_RESET);
-        System.out.println("Casa:" + Mapa.ANSI_PURPLE_BACKGROUND + " K " + Mapa.ANSI_RESET + "Cuartel:" + Mapa.ANSI_PURPLE_BACKGROUND + " Z " + Mapa.ANSI_RESET + "Bosque:" + Mapa.ANSI_CYAN_BACKGROUND + " B " + Mapa.ANSI_RESET + "Cantera:" + Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C " + Mapa.ANSI_RESET + "Arbusto:" + Mapa.ANSI_YELLOW_BACKGROUND + " A " + Mapa.ANSI_RESET);
-        System.out.println("Casa con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " K*" + Mapa.ANSI_RESET + "Cuartel con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " Z*" +Mapa.ANSI_RESET + "Ciudadela con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " U*" + Mapa.ANSI_RESET);
-        System.out.println("En las praderas transitables puede haber paisanos, (" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET + "), soldados(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S " + Mapa.ANSI_RESET + ") o varios personajes(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*" + Mapa.ANSI_RESET + ").");
-        System.out.println("Los nombres de los contenedores de recursos aparecer\u00e1n al lado de su fila.");
-        System.out.println();
-        System.out.println("Los comandos disponibles son: \n\rmover [nombre personaje o nombre grupo] [direccion: norte, sur, este o oeste]");
-        System.out.println("manejar [personaje] (permite manejar el personaje usando ASDW)");
-        System.out.println("listar [personajes,edificios,grupos o civilizaciones]");
-        System.out.println("describir [nombre de personaje,edificio,contenedor de recurso o grupo]");
-        System.out.println("mirar (fila,columna)");
-        System.out.println("construir [paisano o grupo] [casa o cuartel] [direccion: norte, sur, este o oeste]");
-        System.out.println("crear [cuartel o ciudadela] [soldado o paisano]");
-        System.out.println("reparar [paisano o grupo] [direccion edificio]");
-        System.out.println("recolectar [paisano o grupo] [direccion Contenedor Recursos]");
-        System.out.println("almacenar [paisano o grupo] [direccion Ciudadela]");
-        System.out.println("cambiar [civilizacion]");
-        System.out.println("civilizacion");
-        System.out.println("imprimir [mapa]");
-        System.out.println("agrupar (fila,columna)");
-        System.out.println("desagrupar [grupo]");
-        System.out.println("desligar [personaje] [grupo]");
-        System.out.println("defender [personaje o grupo] [direccion: norte, sur, este o oeste]");
-        System.out.println("atacar [personaje o grupo] [direccion: norte, sur, este o oeste]");
-        System.out.println("cargar [directorio]");
-        System.out.println("guardar [directorio]");
-        System.out.println("salir");
-        System.out.println();
+        Juego.CONSOLA.imprimir("Leyenda: Pradera transitable" + Mapa.ANSI_GREEN_BACKGROUND + "   " + Mapa.ANSI_RESET + " Ciudadela:" + Mapa.ANSI_PURPLE_BACKGROUND + " U " + Mapa.ANSI_RESET);
+        Juego.CONSOLA.imprimir("Casa:" + Mapa.ANSI_PURPLE_BACKGROUND + " K " + Mapa.ANSI_RESET + "Cuartel:" + Mapa.ANSI_PURPLE_BACKGROUND + " Z " + Mapa.ANSI_RESET + "Bosque:" + Mapa.ANSI_CYAN_BACKGROUND + " B " + Mapa.ANSI_RESET + "Cantera:" + Mapa.ANSI_BLUE_BACKGROUND + Mapa.ANSI_WHITE + " C " + Mapa.ANSI_RESET + "Arbusto:" + Mapa.ANSI_YELLOW_BACKGROUND + " A " + Mapa.ANSI_RESET);
+        Juego.CONSOLA.imprimir("Casa con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " K*" + Mapa.ANSI_RESET + "Cuartel con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " Z*" +Mapa.ANSI_RESET + "Ciudadela con personajes o grupos:" + Mapa.ANSI_PURPLE_BACKGROUND + " U*" + Mapa.ANSI_RESET);
+        Juego.CONSOLA.imprimir("En las praderas transitables puede haber paisanos, (" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P " + Mapa.ANSI_RESET + "), soldados(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " S " + Mapa.ANSI_RESET + ") o varios personajes(" + Mapa.ANSI_WHITE + Mapa.ANSI_RED_BACKGROUND + " P*" + Mapa.ANSI_RESET + ").");
+        Juego.CONSOLA.imprimir("Los nombres de los contenedores de recursos aparecer\u00e1n al lado de su fila.");
+        Juego.CONSOLA.imprimir();
+        Juego.CONSOLA.imprimir("Los comandos disponibles son: \n\rmover [nombre personaje o nombre grupo] [direccion: norte, sur, este o oeste]");
+        Juego.CONSOLA.imprimir("manejar [personaje] (permite manejar el personaje usando ASDW)");
+        Juego.CONSOLA.imprimir("listar [personajes,edificios,grupos o civilizaciones]");
+        Juego.CONSOLA.imprimir("describir [nombre de personaje,edificio,contenedor de recurso o grupo]");
+        Juego.CONSOLA.imprimir("mirar (fila,columna)");
+        Juego.CONSOLA.imprimir("construir [paisano o grupo] [casa o cuartel] [direccion: norte, sur, este o oeste]");
+        Juego.CONSOLA.imprimir("crear [cuartel o ciudadela] [soldado o paisano]");
+        Juego.CONSOLA.imprimir("reparar [paisano o grupo] [direccion edificio]");
+        Juego.CONSOLA.imprimir("recolectar [paisano o grupo] [direccion Contenedor Recursos]");
+        Juego.CONSOLA.imprimir("almacenar [paisano o grupo] [direccion Ciudadela]");
+        Juego.CONSOLA.imprimir("cambiar [civilizacion]");
+        Juego.CONSOLA.imprimir("civilizacion");
+        Juego.CONSOLA.imprimir("imprimir [mapa]");
+        Juego.CONSOLA.imprimir("agrupar (fila,columna)");
+        Juego.CONSOLA.imprimir("desagrupar [grupo]");
+        Juego.CONSOLA.imprimir("desligar [personaje] [grupo]");
+        Juego.CONSOLA.imprimir("defender [personaje o grupo] [direccion: norte, sur, este o oeste]");
+        Juego.CONSOLA.imprimir("atacar [personaje o grupo] [direccion: norte, sur, este o oeste]");
+        Juego.CONSOLA.imprimir("cargar [directorio]");
+        Juego.CONSOLA.imprimir("guardar [directorio]");
+        Juego.CONSOLA.imprimir("salir");
+        Juego.CONSOLA.imprimir();
     }
 }

@@ -8,10 +8,13 @@ package ageofbrawls.contenido.edificio;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.plataforma.Civilizacion;
+import ageofbrawls.plataforma.Juego;
 import ageofbrawls.plataforma.Posicion;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
+import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacion;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 
 /**
@@ -26,7 +29,7 @@ public final class Ciudadela extends Edificio {
     
     
     @Override
-    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion{
+    public void crearPersonaje() throws ExcepcionEspacioInsuficiente, EscasezRecursosCreacion, ExcepcionNoExistePosicion, ExcepcionArgumentosInternos, ExcepcionArgumentosValoresIncorrectos, ExcepcionNoExisteMapa{
         Civilizacion civilizacion = super.getCivilizacion();
         if (civilizacion.getPersonajes().size() >= civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) {
             throw new ExcepcionEspacioInsuficiente("No hay suficiente espacio para crear personajes",civilizacion.getPersonajes().size());
@@ -49,19 +52,19 @@ public final class Ciudadela extends Edificio {
             civilizacion.getMapa().getCelda(pos).setOculto(civilizacion, false);
             civilizacion.setAlimentos(-50, true);
             civilizacion.makeAdyVisible(pos);
-            System.out.println();
+            Juego.CONSOLA.imprimir();
             civilizacion.getMapa().imprimirCabecera();
             civilizacion.getMapa().imprimir(civilizacion);
-            System.out.println("Coste de creacion: 50 unidades de comida");
-            System.out.println("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
-            System.out.println("Se ha creado " + person.getNombre() + " en la celda de " + pos);
+            Juego.CONSOLA.imprimir("Coste de creacion: 50 unidades de comida");
+            Juego.CONSOLA.imprimir("Te quedan " + ((civilizacion.contarEdificios(Casa.class) * Casa.CAPALOJ) - civilizacion.getPersonajes().size()) + " unidades de capacidad de alojamiento");
+            Juego.CONSOLA.imprimir("Se ha creado " + person.getNombre() + " en la celda de " + pos);
         
     }
 
     @Override
     public void describirEdificio() {
         super.describirEdificio();
-        System.out.println("Recursos: " + getCivilizacion().getMadera() + " de madera, " + getCivilizacion().getPiedra() + " de piedra y " + getCivilizacion().getAlimentos() + " de alimentos");
+        Juego.CONSOLA.imprimir("Recursos: " + getCivilizacion().getMadera() + " de madera, " + getCivilizacion().getPiedra() + " de piedra y " + getCivilizacion().getAlimentos() + " de alimentos");
     }
 
     public void danar(int dano) throws ExcepcionArgumentosInternos {
