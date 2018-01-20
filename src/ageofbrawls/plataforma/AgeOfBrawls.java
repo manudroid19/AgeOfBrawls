@@ -94,7 +94,7 @@ public class AgeOfBrawls {
                 } catch (ExcepcionFueraDeLimites ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 } catch (ExcepcionNadaQueRecolectar ex) {
-                    Juego.CONSOLA.imprimir(ex.getMessage());
+                    Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
                     break;
