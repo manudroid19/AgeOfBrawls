@@ -381,7 +381,7 @@ public class Grupo extends Personaje {
     @Override
     public void reparar(Posicion pos) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos {
         if (this.haySoldado) {
-            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede recolectar");
+            throw new ExcepcionAccionRestringidaGrupo("Como hay un soldado en el grupo, este grupo no puede reparar");
             
         }
         repararGenerico(pos);

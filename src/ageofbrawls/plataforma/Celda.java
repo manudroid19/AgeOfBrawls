@@ -82,16 +82,19 @@ public class Celda {
     public boolean isHayGrupo() {
         return haygrupo;
     }
-    public void hacerPradera(){
-        contenedor=new Contenedor();
+
+    public void hacerPradera() {
+        contenedor = new Contenedor();
     }
-    public void setContenedorRecursos(Contenedor contenedor){
-        if(contenedor==null){
+
+    public void setContenedorRecursos(Contenedor contenedor) {
+        if (contenedor == null) {
             hacerPradera();
-        }else{
-            this.contenedor=contenedor;
+        } else {
+            this.contenedor = contenedor;
         }
     }
+
     public void setOculto(Civilizacion civilizacion, boolean oculto) {
         civilizacion.setOculto(posicion, oculto);
     }
@@ -176,7 +179,7 @@ public class Celda {
     public void agrupar(Civilizacion civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede crear un grupo en esta situación");
-            
+
         }
         ArrayList<Personaje> pers = new ArrayList<>();
         if (haygrupo) {
@@ -184,6 +187,7 @@ public class Celda {
                 for (int j = 0; j < this.getGrupos().get(i).getPersonajes().size(); j++) {
                     pers.add(this.getGrupos().get(i).getPersonajes().get(j));
                 }
+                this.getGrupos().get(i).desagrupar();
             }
 
         }
@@ -193,7 +197,7 @@ public class Celda {
         for (int i = 1; i < pers.size(); i++) {
             if (!pers.get(i).getCivilizacion().equals(pers.get(i - 1).getCivilizacion())) {
                 throw new ExcepcionAccionRestringidaPersonaje("No puedes agrupar personajes de distintas civilizaciones!");
-                
+
             }
         }
         int k = 1;
