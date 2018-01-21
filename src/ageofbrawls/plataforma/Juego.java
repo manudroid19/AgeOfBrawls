@@ -64,7 +64,7 @@ public class Juego implements Comando {
 
     @Override
     public void guardar(String ruta) throws ExcepcionNoExisteArchivo {
-        CargadorArchivo loader = new CargadorArchivo(mapa, ruta, true);
+        new CargadorArchivo(ruta).guardar(mapa);
 
     }
 

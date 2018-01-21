@@ -67,7 +67,7 @@ public class CargadorArchivo implements CargadorJuego{
         return juego;
     }
 
-    public CargadorArchivo(Mapa mapa, String dir, boolean save) throws ExcepcionNoExisteArchivo {
+    public void guardar(Mapa mapa) throws ExcepcionNoExisteArchivo {
         try {
             this.mapa = mapa;
             String[] aLeer = new String[]{"mapa", "personajes", "edificios"};

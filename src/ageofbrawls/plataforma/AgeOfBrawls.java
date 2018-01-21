@@ -6,7 +6,6 @@ import ageofbrawls.z.excepciones.AccionRestringida.ExcepcionAccionRestringidaPer
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosInternos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionArgumentosValoresIncorrectos;
 import ageofbrawls.z.excepciones.Argumentos.ExcepcionDireccionNoValida;
-import ageofbrawls.z.excepciones.ExcepcionJuego;
 import ageofbrawls.z.excepciones.Movimiento.ExcepcionFueraDeLimites;
 import ageofbrawls.z.excepciones.Movimiento.ExcepcionNoTransitable;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosConstruccion;
@@ -14,20 +13,16 @@ import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.EscasezRecursosCreacio
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEscasezRecursos;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionEspacioInsuficiente;
 import ageofbrawls.z.excepciones.Recursos.EscasezRecursos.ExcepcionNadaQueRecolectar;
-import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
-import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteCivilizacion;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteGrupo;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExistePosicion;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteSujeto;
-import java.util.Scanner;
 import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
+import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExiste;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteArchivo;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteEdificio;
 import ageofbrawls.z.excepciones.noExiste.ExcepcionNoExisteMapa;
 import static java.lang.System.exit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -50,8 +45,8 @@ public class AgeOfBrawls {
 
         Comando comando=null;
         try {
-            comando = cargador.cargarJuego();
-        } catch (ExcepcionDireccionNoValida | ExcepcionNoExistePosicion | ExcepcionNoExisteMapa | ExcepcionNoExisteCivilizacion  | ExcepcionNoExisteArchivo | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
+            comando = (Comando) cargador.cargarJuego();
+        } catch (ExcepcionDireccionNoValida | ExcepcionNoExiste | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
             Juego.CONSOLA.imprimir(ex.getMensaje());
             exit(0);
         } 
@@ -81,19 +76,7 @@ public class AgeOfBrawls {
             {
                 try {
                     comando.mover(comandos[1], comandos[2]);//quien, donde
-                } catch (ExcepcionNoExisteSujeto ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionArgumentosInternos ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionDireccionNoValida ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionNoTransitable ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionFueraDeLimites ex) {
-                    Juego.CONSOLA.imprimir(ex.getMensaje());
-                } catch (ExcepcionNadaQueRecolectar ex) {
+                } catch (ExcepcionNoExisteSujeto | ExcepcionAccionRestringidaPersonaje | ExcepcionArgumentosInternos | ExcepcionDireccionNoValida | ExcepcionNoTransitable | ExcepcionFueraDeLimites | ExcepcionNadaQueRecolectar ex) {
                     Juego.CONSOLA.imprimir(ex.getMensaje());
                 }
             }
