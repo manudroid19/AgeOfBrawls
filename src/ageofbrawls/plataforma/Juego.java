@@ -86,24 +86,24 @@ public class Juego implements Comando {
         } else if (activa.getGrupos().containsKey(atacante)) {
             Grupo grupo1 = activa.getGrupos().get(atacante);
             grupo1.atacar(direccion);
-        } else if (activa.getEdificios().containsKey(atacante)){
+        } else if (activa.getEdificios().containsKey(atacante)) {
             Edificio ataca = activa.getEdificios().get(atacante);
-            if(ataca.getAtaque()==0){
+            if (ataca.getAtaque() == 0) {
                 throw new ExcepcionNoExisteSujeto("No hay soldados en el edificio para atacar");
             }
             Posicion pos = ataca.getPosicion().getAdy(direccion);
             ArrayList<Personaje> atacados = (ArrayList<Personaje>) mapa.getCelda(pos).getPersonajes().clone();
-            for(Grupo g : mapa.getCelda(pos).getGrupos()){
+            for (Grupo g : mapa.getCelda(pos).getGrupos()) {
                 atacados.addAll((ArrayList<Personaje>) g.getPersonajes().clone());
             }
-            if(atacados.size()==0){
+            if (atacados.size() == 0) {
                 throw new ExcepcionNoExisteSujeto("No hay a quien atacar");
             }
             Personaje[] array = (Personaje[]) atacados.toArray();
-            
+
             ataca.atacar(array);
-            
-        }else{                
+
+        } else {
             throw new ExcepcionNoExisteSujeto("Error: sujeto a atacar no encontrado.");
         }
     }
@@ -206,7 +206,11 @@ public class Juego implements Comando {
     public void almacenar(String almacenador, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionDireccionNoValida, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionEscasezRecursos, ExcepcionArgumentosValoresIncorrectos, ExcepcionAccionRestringidaGrupo {
         if (activa.getPersonajes().containsKey(almacenador)) {
             Personaje personaje2 = activa.getPersonajes().get(almacenador);
-            ((Paisano) personaje2).almacenar(direccion);
+            if (personaje2 instanceof Paisano) {
+                ((Paisano) personaje2).almacenar(direccion);
+            } else {
+                throw new ExcepcionAccionRestringidaPersonaje("El " + personaje2.getNombre() + " no puede almacenar");
+            }
         } else if (activa.getGrupos().containsKey(almacenador)) {
             Grupo grupo1 = activa.getGrupos().get(almacenador);
             grupo1.almacenar(direccion);
@@ -219,12 +223,16 @@ public class Juego implements Comando {
     public void recolectar(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos, ExcepcionNadaQueRecolectar, ExcepcionAccionRestringidaPersonaje {
         if (activa.getPersonajes().containsKey(persona)) {
             Personaje personaje2 = activa.getPersonajes().get(persona);
-            ((Paisano) personaje2).recolectar(direccion);
+            if (personaje2 instanceof Paisano) {
+                ((Paisano) personaje2).recolectar(direccion);
+            } else {
+                throw new ExcepcionAccionRestringidaPersonaje("El " + personaje2.getNombre() + " no puede recolectar");
+            }
         } else if (activa.getGrupos().containsKey(persona)) {
             Grupo grupo1 = activa.getGrupos().get(persona);
             grupo1.recolectar(direccion);
         } else {
-            throw new ExcepcionNoExisteSujeto("Error: sujeto a moverse no encontrado.");
+            throw new ExcepcionNoExisteSujeto("Error: sujeto a recolectar no encontrado.");
         }
     }
 
@@ -256,7 +264,11 @@ public class Juego implements Comando {
     public void reparar(String reparador, String dir) throws ExcepcionNoExisteSujeto, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionAccionRestringidaGrupo, ExcepcionDireccionNoValida, ExcepcionArgumentosValoresIncorrectos {
         if (activa.getPersonajes().containsKey(reparador)) {
             Personaje personaje2 = activa.getPersonajes().get(reparador);
-            ((Paisano) personaje2).reparar(personaje2.getPosicion().getAdy(dir));
+            if (personaje2 instanceof Paisano) {
+                ((Paisano) personaje2).reparar(personaje2.getPosicion().getAdy(dir));
+            } else {
+                throw new ExcepcionAccionRestringidaPersonaje("El " + personaje2.getNombre() + " no puede reparar");
+            }
         } else if (activa.getGrupos().containsKey(reparador)) {
             Grupo grupo1 = activa.getGrupos().get(reparador);
             grupo1.reparar(grupo1.getPosicion().getAdy(dir));
@@ -269,7 +281,12 @@ public class Juego implements Comando {
     public void construir(String constructor, String tipo, String dir) throws ExcepcionArgumentosInternos, ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionDireccionNoValida, EscasezRecursosConstruccion, ExcepcionAccionRestringidaGrupo, ExcepcionArgumentosValoresIncorrectos {
         if (activa.getPersonajes().containsKey(constructor)) {
             Personaje personaje1 = activa.getPersonajes().get(constructor);
-            personaje1.construir(tipo, dir);
+            if(personaje1 instanceof Paisano){
+            ((Paisano)personaje1).construir(tipo, dir);
+            }
+            else{
+                throw new ExcepcionAccionRestringidaPersonaje("El " +personaje1.getNombre()+ " no puede construir");
+            }
         } else if (activa.getGrupos().containsKey(constructor)) {
             Grupo grupo1 = activa.getGrupos().get(constructor);
             grupo1.construir(tipo, dir);
