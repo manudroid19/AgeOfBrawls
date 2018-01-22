@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Movimiento;
  *
  * @author Santiago
  */
-public class ExcepcionFueraDeLimites extends ExcepcionMovimiento {
+public final class ExcepcionFueraDeLimites extends ExcepcionMovimiento {
     
     public ExcepcionFueraDeLimites(String mensaje) {
         super(mensaje);

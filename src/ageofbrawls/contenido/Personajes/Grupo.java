@@ -31,7 +31,7 @@ import java.util.Objects;
  *
  * @author Santiago
  */
-public class Grupo extends Personaje {
+public final class Grupo extends Personaje {
 
     private ArrayList<Personaje> personajes;
     private boolean haySoldado;

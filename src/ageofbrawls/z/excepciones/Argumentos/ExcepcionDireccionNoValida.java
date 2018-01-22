@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Argumentos;
  *
  * @author Santiago
  */
-public class ExcepcionDireccionNoValida extends ExcepcionArgumentos{
+public final class ExcepcionDireccionNoValida extends ExcepcionArgumentos{
     
     public ExcepcionDireccionNoValida(String mensaje) {
         super(mensaje);

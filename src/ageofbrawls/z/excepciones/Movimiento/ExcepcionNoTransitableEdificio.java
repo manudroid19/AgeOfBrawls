@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Movimiento;
  *
  * @author Santiago
  */
-public class ExcepcionNoTransitableEdificio extends ExcepcionNoTransitable {
+public final class ExcepcionNoTransitableEdificio extends ExcepcionNoTransitable {
     
     public ExcepcionNoTransitableEdificio(String mensaje) {
         super(mensaje);

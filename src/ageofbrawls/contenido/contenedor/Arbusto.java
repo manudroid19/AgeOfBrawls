@@ -13,7 +13,7 @@ import ageofbrawls.z.excepciones.Recursos.ExcepcionCorrespondenciaRecursos;
  *
  * @author Santiago
  */
-public class Arbusto extends Contenedor {
+public final class Arbusto extends Contenedor {
 
     public Arbusto(Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
         super(recurso);

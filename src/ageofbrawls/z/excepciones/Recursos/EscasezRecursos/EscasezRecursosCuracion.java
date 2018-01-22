@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Recursos.EscasezRecursos;
  *
  * @author Santiago
  */
-public class EscasezRecursosCuracion extends ExcepcionEscasezRecursos {
+public final class EscasezRecursosCuracion extends ExcepcionEscasezRecursos {
     
     public EscasezRecursosCuracion(String mensaje) {
         super(mensaje);

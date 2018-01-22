@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Argumentos;
  *
  * @author Santiago
  */
-public class ExcepcionArgumentosValoresIncorrectos extends ExcepcionArgumentos {
+public final class ExcepcionArgumentosValoresIncorrectos extends ExcepcionArgumentos {
     
     public ExcepcionArgumentosValoresIncorrectos(String mensaje) {
         super(mensaje);

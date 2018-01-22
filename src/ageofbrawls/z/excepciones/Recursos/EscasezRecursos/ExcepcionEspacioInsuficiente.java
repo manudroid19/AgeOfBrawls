@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.Recursos.EscasezRecursos;
  *
  * @author mprad
  */
-public class ExcepcionEspacioInsuficiente extends ExcepcionEscasezRecursos {
+public final class ExcepcionEspacioInsuficiente extends ExcepcionEscasezRecursos {
 
     private int creados;
 

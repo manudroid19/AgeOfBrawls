@@ -11,7 +11,7 @@ import ageofbrawls.z.excepciones.ExcepcionJuego;
  *
  * @author Santiago
  */
-public class ExcepcionMovimiento extends ExcepcionJuego {
+public abstract class ExcepcionMovimiento extends ExcepcionJuego {
     
     public ExcepcionMovimiento(String mensaje) {
         super(mensaje);

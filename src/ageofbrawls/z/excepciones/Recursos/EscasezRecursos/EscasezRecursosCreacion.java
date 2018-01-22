@@ -9,15 +9,20 @@ package ageofbrawls.z.excepciones.Recursos.EscasezRecursos;
  *
  * @author Santiago
  */
-public class EscasezRecursosCreacion extends ExcepcionEscasezRecursos {
+public final class EscasezRecursosCreacion extends ExcepcionEscasezRecursos {
+
     private int necesitas;
+
     public EscasezRecursosCreacion(String mensaje) {
         super(mensaje);
     }
 
     public EscasezRecursosCreacion(String mensaje, int necesitas) {
         super(mensaje);
-        this.necesitas=necesitas;
+        this.necesitas = necesitas;
     }
-    
+    public int getNecesitas(){
+        return necesitas;
+    }
+
 }

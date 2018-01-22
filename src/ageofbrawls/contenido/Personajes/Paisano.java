@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author mprad
  */
-public class Paisano extends Personaje {
+public final class Paisano extends Personaje {
 
     int capRec, cantRecMadera, cantRecPiedra, cantRecComida;
 

@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.AccionRestringida;
  *
  * @author Santiago
  */
-public class ExcepcionAccionRestringidaPersonaje extends ExcepcionAccionRestringida {
+public final class ExcepcionAccionRestringidaPersonaje extends ExcepcionAccionRestringida {
     
     public ExcepcionAccionRestringidaPersonaje(String mensaje) {
         super(mensaje);
