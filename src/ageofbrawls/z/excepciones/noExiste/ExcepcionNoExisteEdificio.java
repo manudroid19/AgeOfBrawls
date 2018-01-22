@@ -9,7 +9,7 @@ package ageofbrawls.z.excepciones.noExiste;
  *
  * @author Santiago
  */
-public class ExcepcionNoExisteEdificio extends ExcepcionNoExiste {
+public final class ExcepcionNoExisteEdificio extends ExcepcionNoExiste {
     
     public ExcepcionNoExisteEdificio(String mensaje) {
         super(mensaje);
