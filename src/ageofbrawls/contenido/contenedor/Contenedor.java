@@ -59,7 +59,7 @@ public class Contenedor {
     }
 
     public void setNombre(String nombre) {
-        if (nombre != null) {
+        if (nombre != null && !"".equals(nombre)) {
             this.nombre = nombre;
         }
     }

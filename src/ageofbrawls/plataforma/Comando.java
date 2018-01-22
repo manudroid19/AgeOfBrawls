@@ -44,7 +44,7 @@ public interface Comando {
     public void listarPersonajes();
     public void manejar(String quien) throws ExcepcionNoExisteSujeto,  ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
     public void mirar(String donde) throws ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos;
-    public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites, ExcepcionNadaQueRecolectar;
+    public void mover(String persona, String direccion) throws ExcepcionNoExisteSujeto, ExcepcionAccionRestringidaPersonaje, ExcepcionArgumentosInternos, ExcepcionDireccionNoValida, ExcepcionNoTransitable, ExcepcionFueraDeLimites;
     public void recolectar(String recolector, String direccion)throws ExcepcionNoExisteSujeto,ExcepcionAccionRestringidaPersonaje,ExcepcionArgumentosValoresIncorrectos,ExcepcionNadaQueRecolectar,ExcepcionAccionRestringidaGrupo, ExcepcionDireccionNoValida,ExcepcionArgumentosInternos;
     public void reparar(String reparador, String direccion)throws ExcepcionNoExisteSujeto, ExcepcionArgumentosValoresIncorrectos, ExcepcionDireccionNoValida,ExcepcionAccionRestringidaGrupo, ExcepcionEscasezRecursos, ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje;
     

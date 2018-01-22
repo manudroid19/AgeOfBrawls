@@ -6,6 +6,8 @@ import ageofbrawls.contenido.Personajes.Grupo;
 import ageofbrawls.contenido.Personajes.Paisano;
 import ageofbrawls.contenido.Personajes.Personaje;
 import ageofbrawls.contenido.Personajes.Soldado;
+import ageofbrawls.contenido.Personajes.Soldados.Arquero;
+import ageofbrawls.contenido.Personajes.Soldados.Caballero;
 import ageofbrawls.contenido.Personajes.Soldados.Legionario;
 import ageofbrawls.contenido.Recursos.Comida;
 import ageofbrawls.contenido.Recursos.Madera;
@@ -39,7 +41,7 @@ import java.util.logging.Logger;
  *
  * @author mprad
  */
-public class CargadorArchivo implements CargadorJuego{
+public class CargadorArchivo implements CargadorJuego {
 
     Mapa mapa;
     String dir;
@@ -64,6 +66,7 @@ public class CargadorArchivo implements CargadorJuego{
         cargarMapa(files[0]);
         cargarPersonajes(files[1]);
         cargarEdificios(files[2]);
+        juego.cambiar((String)mapa.getCivilizaciones().keySet().toArray()[0]);
         return juego;
     }
 
@@ -119,15 +122,15 @@ public class CargadorArchivo implements CargadorJuego{
                 switch (linea[1].toLowerCase()) {
                     case "bosque":
                         Recurso recurso = new Madera(Integer.parseInt(linea[3]));
-                        crearRecurso(pos, 1, linea[2], recurso);
+                        crearRecurso(pos, linea[2], recurso);
                         break;
                     case "arbusto":
                         Recurso recurso1 = new Comida(Integer.parseInt(linea[3]));
-                        crearRecurso(pos, 2, linea[2], recurso1);
+                        crearRecurso(pos, linea[2], recurso1);
                         break;
                     case "cantera":
                         Recurso recurso2 = new Piedra(Integer.parseInt(linea[3]));
-                        crearRecurso(pos, 3, linea[2], recurso2);
+                        crearRecurso(pos, linea[2], recurso2);
                         break;
                 }
             }
@@ -138,16 +141,7 @@ public class CargadorArchivo implements CargadorJuego{
         ArrayList<String[]> datos = leer(file);
         for (String[] linea : datos) {
             Posicion pos = new Posicion("(" + linea[0] + ")");
-
-            switch (linea[1].toLowerCase()) {
-                case "paisano":
-                    crearPersonaje(pos, 0, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
-                    break;
-                case "soldado":
-                    crearPersonaje(pos, 1, linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
-                    break;
-            }
-
+            crearPersonaje(pos, linea[1].toLowerCase(), linea[2], Integer.parseInt(linea[3]), Integer.parseInt(linea[4]), Integer.parseInt(linea[5]), Integer.parseInt(linea[6]), linea[7], linea[8]);
         }
     }
 
@@ -206,20 +200,25 @@ public class CargadorArchivo implements CargadorJuego{
 
     }
 
-    private void crearPersonaje(Posicion pos, int tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
+    private void crearPersonaje(Posicion pos, String tipo, String nombre, int ataque, int defensa, int salud, int capacidad, String grupo, String civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje, ExcepcionNoExistePosicion, ExcepcionNoExisteMapa, ExcepcionNoExisteCivilizacion {
         if (!mapa.getCivilizaciones().containsKey(civilizacion)) {
             mapa.addCivilizacion(civilizacion, new Civilizacion(mapa, civilizacion));
         }
         Civilizacion current = mapa.getCivilizaciones().get(civilizacion);
         Personaje personaje;
-        if (tipo == 0) {
+        if ("paisano".equals(tipo)) {
             personaje = new Paisano(pos, nombre, current);
             personaje.setSalud(salud, false);
             personaje.setDefensa(defensa);
             ((Paisano) personaje).setCapRec(capacidad);
-
         } else {
-            personaje = new Legionario(pos, nombre, current);
+            if ("caballero".equals(tipo)) {
+                personaje = new Caballero(pos, nombre, current);
+            } else if ("arquero".equals(tipo)) {
+                personaje = new Arquero(pos, nombre, current);
+            } else {
+                personaje = new Legionario(pos, nombre, current);
+            }
             personaje.setSalud(salud, false);
             personaje.setDefensa(defensa);
             ((Soldado) personaje).setAtaque(ataque);
@@ -242,16 +241,16 @@ public class CargadorArchivo implements CargadorJuego{
         current.makeAdyVisible(pos);
     }
 
-    private void crearRecurso(Posicion pos, int tipo, String nombre, Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
-        if (tipo == 1) {
-            Bosque bos = new Bosque(recurso, nombre);
+    private void crearRecurso(Posicion pos, String nombre, Recurso recurso) throws ExcepcionCorrespondenciaRecursos {
+        Contenedor cont;
+        if (recurso instanceof Madera) {
+            cont = (Contenedor) new Bosque(recurso, nombre);
+        } else if (recurso instanceof Comida) {
+            cont = (Contenedor) new Arbusto(recurso, nombre);
+        } else {
+            cont = (Contenedor) new Cantera(recurso, nombre);
         }
-        if (tipo == 2) {
-            Arbusto arb = new Arbusto(recurso, nombre);
-        }
-        if (tipo == 3) {
-            Cantera cant = new Cantera(recurso, nombre);
-        }
+        mapa.getCelda(pos).setContenedorRecursos(cont);
     }
 
     private ArrayList<String[]> leer(File file) throws ExcepcionNoExisteArchivo {
