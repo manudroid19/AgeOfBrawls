@@ -123,19 +123,7 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.reparar(comandos[1], comandos[2]);//reparador, direccion
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionEscasezRecursos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaGrupo ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosValoresIncorrectos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionDireccionNoValida ex) {
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionEscasezRecursos | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje | ExcepcionAccionRestringidaGrupo | ExcepcionArgumentosValoresIncorrectos | ExcepcionDireccionNoValida ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -146,21 +134,7 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.crear(comandos[1], comandos[2]); //edificio creador, tipo de edificio
-                        } catch (ExcepcionAccionRestringidaEdificio ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionEspacioInsuficiente ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (EscasezRecursosCreacion ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionNoExistePosicion ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionNoExisteMapa ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosValoresIncorrectos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionNoExisteEdificio ex) {
+                        } catch (ExcepcionAccionRestringidaEdificio | ExcepcionEspacioInsuficiente | EscasezRecursosCreacion | ExcepcionNoExistePosicion | ExcepcionArgumentosInternos | ExcepcionNoExisteMapa | ExcepcionArgumentosValoresIncorrectos | ExcepcionNoExisteEdificio ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -170,22 +144,8 @@ public class AgeOfBrawls {
                             throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
-                            try {
-                                juego.recolectar(comandos[1], comandos[2]);//persona, direccion
-                            } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            } catch (ExcepcionArgumentosValoresIncorrectos ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            } catch (ExcepcionNadaQueRecolectar ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            } catch (ExcepcionAccionRestringidaGrupo ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            }
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionDireccionNoValida ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
+                            juego.recolectar(comandos[1], comandos[2]);//persona, direccion
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionDireccionNoValida | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje | ExcepcionArgumentosValoresIncorrectos | ExcepcionNadaQueRecolectar | ExcepcionAccionRestringidaGrupo ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -195,22 +155,8 @@ public class AgeOfBrawls {
                             throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
-                            try {
-                                juego.almacenar(comandos[1], comandos[2]); //quien almacena, direccion
-                            } catch (ExcepcionAccionRestringidaGrupo ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            } catch (ExcepcionArgumentosValoresIncorrectos ex) {
-                                Juego.CONSOLA.imprimir(ex.getMensaje());
-                            }
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionDireccionNoValida ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionEscasezRecursos ex) {
+                            juego.almacenar(comandos[1], comandos[2]); //quien almacena, direccion
+                        } catch (ExcepcionAccionRestringidaGrupo | ExcepcionArgumentosValoresIncorrectos | ExcepcionNoExisteSujeto | ExcepcionDireccionNoValida | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje | ExcepcionEscasezRecursos ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -220,11 +166,7 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.manejar(comandos[1]);
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionAccionRestringidaPersonaje | ExcepcionArgumentosInternos ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -254,40 +196,29 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.agrupar(comandos[1]);
-                        } catch (ExcepcionNoExistePosicion ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
+                        } catch (ExcepcionNoExistePosicion | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
 
                     case "desligar":
                         if (comandos.length != 3) {
-                            Juego.CONSOLA.imprimir("Error de sintaxis");
-                            break;
+                            throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
                             juego.desligar(comandos[1], comandos[2]); //personaje desligado, grupo
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
 
                     case "desagrupar":
                         if (comandos.length != 2) {
-                            Juego.CONSOLA.imprimir("Error de sintaxis");
+                            throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
                             juego.desagrupar(comandos[1]);
-                        } catch (ExcepcionNoExisteGrupo ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
+                        } catch (ExcepcionNoExisteGrupo | ExcepcionAccionRestringidaPersonaje ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -298,19 +229,7 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.defender(comandos[1], comandos[2]);
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionDireccionNoValida ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionEspacioInsuficiente ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaGrupo ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosValoresIncorrectos ex) {
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionDireccionNoValida | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje | ExcepcionEspacioInsuficiente | ExcepcionAccionRestringidaGrupo | ExcepcionArgumentosValoresIncorrectos ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
@@ -321,38 +240,24 @@ public class AgeOfBrawls {
                         }
                         try {
                             juego.atacar(comandos[1], comandos[2]);
-                        } catch (ExcepcionNoExisteSujeto ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionDireccionNoValida ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaGrupo ex) {
+                        } catch (ExcepcionNoExisteSujeto | ExcepcionDireccionNoValida | ExcepcionArgumentosInternos | ExcepcionAccionRestringidaPersonaje | ExcepcionAccionRestringidaGrupo ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
 
                     case "cargar":
                         if (comandos.length != 2) {
-                            Juego.CONSOLA.imprimir("Error de sintaxis");
+                            throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
                             juego.cargar(comandos[1]);
-                        } catch (ExcepcionNoExisteArchivo ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionArgumentosInternos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionCorrespondenciaRecursos ex) {
-                            Juego.CONSOLA.imprimir(ex.getMensaje());
-                        } catch (ExcepcionAccionRestringidaPersonaje ex) {
+                        } catch (ExcepcionNoExisteArchivo | ExcepcionArgumentosInternos | ExcepcionCorrespondenciaRecursos | ExcepcionAccionRestringidaPersonaje ex) {
                             Juego.CONSOLA.imprimir(ex.getMensaje());
                         }
                         break;
                     case "guardar":
                         if (comandos.length != 2) {
-                            Juego.CONSOLA.imprimir("Error de sintaxis");
+                            throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         try {
                             juego.guardar(comandos[1]);
@@ -378,8 +283,7 @@ public class AgeOfBrawls {
                                 juego.listarCivilizaciones();
                                 break;
                             default:
-                                Juego.CONSOLA.imprimir("Comando no valido");
-                                break;
+                                throw new ExcepcionNumeroArgumentos("Error de sintaxis.");
                         }
                         break;
                     default:

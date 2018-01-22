@@ -147,7 +147,6 @@ public class Celda {
             return "pradera";
         }
         if (contenedor instanceof Bosque) {
-
             return "bosque";
         } else if (contenedor instanceof Cantera) {
             return "cantera";
@@ -158,24 +157,6 @@ public class Celda {
         }
     }
 
-//    public void mirar() {
-//        if (this.getEdificio() != null) {
-//            this.getEdificio().describirEdificio();//En caso de que en la celda haya un edificio, lo describimos
-//        } else if (this.getContenedorRec() != null) {
-//            this.getContenedorRec().describirContenedorRecurso();//En caso de estar en un contenedor de Recursos, imprimimos su descripción
-//        }
-//        if (this.getContenedorRec() != null && this.getPersonajes() != null) {
-//            for (int i = 0; i < this.getPersonajes().size(); i++) {
-//                this.getPersonajes().get(i).describirPersonaje();//enseñamos la info de todos 
-//            }
-//        }
-//        if (this.getContenedorRec() != null && this.isHayGrupo()) {
-//            for (int i = 0; i < this.getGrupos().size(); i++) {
-//                this.getGrupos().get(i).describirGrupo();
-//            }
-//        }
-//
-//    }
     public void agrupar(Civilizacion civilizacion) throws ExcepcionArgumentosInternos, ExcepcionAccionRestringidaPersonaje {
         if ((this.getPersonajes().isEmpty() && this.getGrupos().size() <= 1) || (this.getPersonajes().size() <= 1) && !this.haygrupo) {
             throw new ExcepcionAccionRestringidaPersonaje("No se puede crear un grupo en esta situación");
