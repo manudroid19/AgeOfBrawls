@@ -1,9 +1,0 @@
-Las clases que disponen de más de un constructor son:
-	plataforma.Mapa (3 constructores)
-	plataforma.Celda (2 constructores)
-	plataforma.Posicion (3 constructores)
-	contenido.Edificio (2 constructores)
-Ejemplos de clases con sobrecarga de métodos son:
-	plataforma.Mapa.getCelda()
-	plataforma.Posicion.getAdy()
-	contenido.Personaje.mover()
