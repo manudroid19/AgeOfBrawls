@@ -1,2 +1,4 @@
 # AgeOfBrawls
-Terminal game implemented in Java based on an Age of Empires strategy
+Terminal game implemented in Java inspired on Age of Empires strategy.
+
+![alt text](https://github.com/manudroid19/AgeOfBrawls/raw/master/Captura.PNG)
